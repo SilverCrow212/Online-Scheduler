@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 class OnlineSchedulerController extends Controller
 {
+    public function login(Request $r){
+
+
+    }
     public function Dashboard(){
 
     }
