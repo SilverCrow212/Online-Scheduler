@@ -7,7 +7,14 @@ const dropdownItems = ref([
     { name: 'Option 3', code: 'Option 3' }
 ]);
 
+
+const type = ref([
+    { name: 'Faculty', value:'1' },
+    { name: 'Student', value:'2' },
+]);
+const typeInput = ref(null);
 const dropdownItem = ref(null);
+
 </script>
 
 <template>
@@ -31,6 +38,26 @@ const dropdownItem = ref(null);
                     <div class="field col-12 md:col-6">
                         <label for="lastname2">Lastname</label>
                         <InputText id="lastname2" type="text" />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="state">Type</label>
+                        <Dropdown id="state" v-model="typeInput" :options="type" optionLabel="name" placeholder="Select One"></Dropdown>
+                    </div>
+                    <div v-if="typeInput ==='Student'" class="field col-12 md:col-4">
+                        <label for="city">Level</label>
+                        <InputText id="city" type="text" />
+                    </div>
+                    <div v-else class="field col-12 md:col-4">
+                        <label for="city">Employment Type</label>
+                        <InputText id="city" type="text" />
+                    </div>
+                    <div v-if="typeInput ==='Student'" class="field col-12 md:col-4">
+                        <label for="city">Program</label>
+                        <InputText id="city" type="text" />
+                    </div>
+                    <div v-else class="field col-12 md:col-4">
+                        <label for="city">Employment Type</label>
+                        <InputText id="city" type="text" />
                     </div>
                     <div class="field col-12">
                         <label for="address">Address</label>
