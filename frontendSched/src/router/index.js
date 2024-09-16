@@ -23,7 +23,11 @@ const router = createRouter({
                     name: 'createacc',
                     component: () => import('@/views/AccountCreation/CreateAcc.vue')
                 },
-                
+                {
+                    path: '/patient-list',
+                    name: 'patientlist',
+                    component: () => import('@/views/PatientDetails/PatientList.vue')
+                },
             ]
         },
     ]
