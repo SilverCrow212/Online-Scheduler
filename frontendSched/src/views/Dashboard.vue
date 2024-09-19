@@ -43,9 +43,9 @@ const minDate = new Date();
 
 
 // Function to disable filled slots
-const disabledDates = computed(() => {
-  return filledSlots.value.map(date => new Date(date));
-});
+// const disabledDates = computed(() => {
+//   return filledSlots.value.map(date => new Date(date));
+// });
 
 
 // Selected date
@@ -53,13 +53,13 @@ const selectedDate = ref(null);
 
 
 const checkboxOptions = ref([
-  { label: '8:00 am - 9:00 am', value: 1, checked: false },
-  { label: '9:00 am - 10:00 am', value: 2, checked: false },
-  { label: '10:00 am - 11:00 am', value: 3, checked: false },
-  { label: '11:00 am - 12:00 pm', value: 4, checked: false },
-  { label: '1:00 pm - 2:00 pm', value: 5, checked: false },
-  { label: '2:00 pm - 3:00 pm', value: 6, checked: false },
-  { label: '3:00 pm - 4:00 pm', value: 7, checked: false },
+  '8:00 am - 9:00 am',
+  '9:00 am - 10:00 am', 
+  '10:00 am - 11:00 am',
+  '11:00 am - 12:00 pm',
+  '1:00 pm - 2:00 pm', 
+  '2:00 pm - 3:00 pm', 
+  '3:00 pm - 4:00 pm',
 ]);
 // { label: '4:00 pm - 5:00 pm', value: 8, checked: false },
 
@@ -67,7 +67,77 @@ const checkboxOptions = ref([
 const isOptionDisableds = (option) => {
   return returnedData.value.includes(option.label);
 };
+
+
+const formatDate = (date) => {
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}/${day}/${year}`;
+};
 const selectedCategories=ref();
+
+const categories = ref([
+    { name: 'Accounting', key: 'A' },
+    { name: 'Marketing', key: 'M' },
+    { name: 'Production', key: 'P' },
+    { name: 'Research', key: 'R' }
+]);
+
+const selectedCategory = ref(null);
+
+const sampleDates = ref(
+  [
+    {date: '09/20/2024' , available_time: [
+      '8:00 am - 9:00 am',
+      '9:00 am - 10:00 am', 
+      '10:00 am - 11:00 am',
+      '11:00 am - 12:00 pm',
+      '1:00 pm - 2:00 pm', 
+      '2:00 pm - 3:00 pm', 
+      '3:00 pm - 4:00 pm',
+      ]
+    },
+    {date: '09/21/2024' , available_time: [
+      '9:00 am - 10:00 am', 
+      '10:00 am - 11:00 am',
+      '11:00 am - 12:00 pm',
+      '1:00 pm - 2:00 pm', 
+      '2:00 pm - 3:00 pm', 
+      '3:00 pm - 4:00 pm',
+      ]
+    },
+  ]
+);
+
+const selecteDates = [ 
+
+];
+
+const stringToDate = (dateString) => {
+  const [month, day, year] = dateString.split('/').map(Number);
+  return new Date(year, month - 1, day);
+};
+
+// Computed property to determine disabled dates
+const disabledDates = computed(() => {
+  return sampleDates.value
+    .filter(dateObj => dateObj.available_time.length >= 7)
+    .map(dateObj => stringToDate(dateObj.date));
+});
+
+const isCategoryDisabled = (category) => {
+  // Check if a date is selected
+  if (!selectedDate.value) return false;
+
+  const formattedSelectedDate = formatDate(selectedDate.value);
+
+  // Find the selected date in sampleDates
+  const dateInfo = sampleDates.value.find(dateObj => dateObj.date === formattedSelectedDate);
+  
+  // If the date exists, check if the category (time slot) is included in available_time
+  return dateInfo ? dateInfo.available_time.includes(category) : false;
+};
 </script>
 
 <template>
@@ -100,6 +170,7 @@ const selectedCategories=ref();
                 optionLabel="name"
                 :disabled="isOptionDisabled"
                 />
+                
 
                 <Calendar
                 :showIcon="true" 
@@ -119,16 +190,41 @@ const selectedCategories=ref();
                 {{ option.label }}
                 
             </Checkbox> -->
- 
-            <div v-for="category of checkboxOptions" :key="category.key" class="flex align-items-center">
+            
+            <p v-if="selectedDate!=null">Selected Date: {{ formatDate(selectedDate) }}</p>
+
+            <!-- {{ selectedDate }} -->
+            <!-- <div v-for="category of checkboxOptions" :key="category.key" class="flex align-items-center">
                 <Checkbox v-model="selectedCategories" :inputId="category.key" name="category" :value="category.label" />
                 <label :for="category.key">{{ category.label }}</label>
-            </div>
+            </div> -->
             {{ selectedCategories }}
             </div>
-            <div v-for="category in categories" :key="category.key" class="flex items-center">
+            <!-- <div v-for="category in categories" :key="category.key" class="flex items-center">
                 <RadioButton v-model="selectedCategory" :inputId="category.key" name="dynamic" :value="category.label" />
                 <label :for="category.key" class="ml-2">{{ category.name }}</label>
+            </div> -->
+
+            <!-- <div v-for="category in checkboxOptions"  class="flex align-items-center">
+                <RadioButton v-model="selectedCategory" name="dynamic" :value="category" />
+                <label :for="category" class="ml-2">{{ category }}</label>
+            </div> -->
+
+            <Calendar
+              :showIcon="true" 
+              :showButtonBar="true"
+              v-model="selectedDate"
+              :min-date="minDate"
+              :disabled-dates="disabledDates"
+            />
+            <div v-for="category in checkboxOptions" class="flex align-items-center" :key="category">
+              <RadioButton 
+                v-model="selectedCategory" 
+                name="dynamic" 
+                :value="category" 
+                :disabled="isCategoryDisabled(category)" 
+              />
+              <label :for="category" class="ml-2">{{ category }}</label>
             </div>
             <Button label="Submit" />
         </div>
