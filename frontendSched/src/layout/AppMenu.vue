@@ -27,8 +27,12 @@ const model = ref([
         items: [{ label: 'Logs', icon: 'pi pi-fw pi-home', to: '/' }]
     },
     {
-        label: 'Account_creation',
+        label: 'Account Creation',
         items: [{ label: 'Create Account', icon: 'pi pi-fw pi-home', to: '/create-account' }]
+    },
+    {
+        label: 'Patient Records',
+        items: [{ label: 'Patient Records', icon: 'pi pi-fw pi-home', to: '/patient-records' }]
     },
 ]);
 </script>
