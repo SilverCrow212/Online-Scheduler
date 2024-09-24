@@ -12,7 +12,7 @@ const model = ref([
     },
     {
         label: 'Appointments',
-        items: [{ label: 'Appointments', icon: 'pi pi-fw pi-home', to: '/' }]
+        items: [{ label: 'Appointments', icon: 'pi pi-fw pi-home', to: '/appointment' }]
     },
     {
         label: 'Patient List',
