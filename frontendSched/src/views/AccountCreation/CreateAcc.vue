@@ -9,8 +9,8 @@ const dropdownItems = ref([
 
 
 const type = ref([
-    { name: 'Faculty', value:'1' },
-    { name: 'Student', value:'2' },
+    { name: 'Student', id:1 },
+    { name: 'Faculty', id:2 },
 ]);
 const typeInput = ref(null);
 const dropdownItem = ref(null);
@@ -21,7 +21,7 @@ const dropdownItem = ref(null);
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <h5>Advanced</h5>
+                <h5>Patient Profile</h5>
                 <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-6">
                         <label for="firstname2">ID number</label>
@@ -41,39 +41,55 @@ const dropdownItem = ref(null);
                     </div>
                     <div class="field col-12 md:col-4">
                         <label for="state">Type</label>
-                        <Dropdown id="state" v-model="typeInput" :options="type" optionLabel="name" placeholder="Select One"></Dropdown>
+                        <Dropdown id="state" v-model="typeInput" :options="type" optionLabel="name" optionValue="id" placeholder="Select One"></Dropdown>
                     </div>
-                    <div v-if="typeInput ==='Student'" class="field col-12 md:col-4">
+                    <div v-if="typeInput === 1" class="field col-12 md:col-4">
+                        <label for="city">Student Type</label>
+                        <InputText id="city" type="text" />
+                    </div>
+                    <div v-else class="field col-12 md:col-4">
+                        <label for="city">Employment Type</label>
+                        <InputText id="city" type="text" />
+                    </div>
+                    <div v-if="typeInput ===1" class="field col-12 md:col-4">
                         <label for="city">Level</label>
                         <InputText id="city" type="text" />
                     </div>
                     <div v-else class="field col-12 md:col-4">
-                        <label for="city">Employment Type</label>
+                        <label for="city">Office / College</label>
                         <InputText id="city" type="text" />
                     </div>
-                    <div v-if="typeInput ==='Student'" class="field col-12 md:col-4">
+                    <div v-if="typeInput ===1" class="field col-12 md:col-4">
                         <label for="city">Program</label>
                         <InputText id="city" type="text" />
                     </div>
                     <div v-else class="field col-12 md:col-4">
-                        <label for="city">Employment Type</label>
+                        <label for="city">Department</label>
+                        <InputText id="city" type="text" />
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label for="city">Email</label>
+                        <InputText id="city" type="text" />
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label for="city">Contact Number</label>
+                        <InputText id="city" type="text" />
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label for="city">Parent/Guardian</label>
+                        <InputText id="city" type="text" />
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label for="city">Contact Number</label>
                         <InputText id="city" type="text" />
                     </div>
                     <div class="field col-12">
-                        <label for="address">Address</label>
-                        <Textarea id="address" rows="4" />
+                        <label for="address">Permanent Address</label>
+                        <Textarea id="address" rows="3" />
                     </div>
-                    <div class="field col-12 md:col-6">
-                        <label for="city">City</label>
-                        <InputText id="city" type="text" />
-                    </div>
-                    <div class="field col-12 md:col-3">
-                        <label for="state">State</label>
-                        <Dropdown id="state" v-model="dropdownItem" :options="dropdownItems" optionLabel="name" placeholder="Select One"></Dropdown>
-                    </div>
-                    <div class="field col-12 md:col-3">
-                        <label for="zip">Zip</label>
-                        <InputText id="zip" type="text" />
+                    <div class="field col-12">
+                        <label for="address">Address while at BSU</label>
+                        <Textarea id="address" rows="3" />
                     </div>
                 </div>
             </div>
