@@ -44,6 +44,7 @@ const formattedDate = computed(() => {
                     <Column field="name" header="Patient Name"></Column>
                     <Column field="time" header="Time"></Column>
                     <Column field="department" header="Department"></Column>
+                    <Column field="status" header="Status"></Column>
                 </DataTable>
             </div>
         </div>
