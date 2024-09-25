@@ -99,6 +99,7 @@ watch(selectedDate, () => {
 
 <template>
       <div class="grid p-fluid">
+        <!-- {{ formattedSelectedDate }} -->
         <div class="col-12 md:col-12">
             <div class="card">
               <div class="field col-12 md:col-12">
