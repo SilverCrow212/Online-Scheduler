@@ -38,6 +38,11 @@ const router = createRouter({
                     name: 'appointmentlist',
                     component: () => import('@/views/AppointmentList/AppointmentList.vue')
                 },
+                {
+                    path: '/editprofile/:id',
+                    name: 'editprofile',
+                    component: () => import('@/views/AccountCreation/EditProfile.vue')
+                },
             ]
         },
     ]

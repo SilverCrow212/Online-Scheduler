@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue'
+import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue';
+import { useRouter } from 'vue-router';
 // import { ProductService } from '@/service/ProductService';
 
 // onMounted(() => {
@@ -22,7 +23,12 @@ const patients = ref(
 
 function dialogOpen(){
     visible.value = true;
+}
 
+const router = useRouter();
+function openProfile(){
+    router.push({ name: 'editprofile', params: { id: selectedPatient.value.id } });
+    console.log(selectedPatient.value);
 }
 </script>
 
@@ -42,7 +48,11 @@ function dialogOpen(){
 
 
     <Dialog v-model:visible="visible" modal :header="selectedPatient?.name" :style="{ width: '70rem' }">
-            <!-- <span class="p-text-secondary block mb-5">Update your information.</span> -->
+            <span class="p-text-secondary">
+                <Button type="button" label="View Profile" icon="pi pi-profile" size="small" @click="openProfile()"/>
+            </span>
+            
+            <!-- :loading="loading" @click="load"  -->
             <!-- <div class="flex align-items-center gap-3 mb-3">
                 <label for="username" class="font-semibold w-6rem">Username</label>
                 <InputText id="username" class="flex-auto" v-model="selectedPatient.id" autocomplete="off" />
