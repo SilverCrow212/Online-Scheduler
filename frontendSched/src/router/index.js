@@ -43,6 +43,11 @@ const router = createRouter({
                     name: 'editprofile',
                     component: () => import('@/views/AccountCreation/EditProfile.vue')
                 },
+                {
+                    path: '/record/:id',
+                    name: 'record',
+                    component: () => import('@/views/PatientDetails/Record.vue')
+                },
             ]
         },
     ]
