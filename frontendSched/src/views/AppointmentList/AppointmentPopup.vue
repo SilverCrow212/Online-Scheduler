@@ -40,7 +40,7 @@ const selectedCategory = ref(null);
 
 const sampleDates = ref(
   [
-    {date: '09/23/2024' , available_time: [
+    {date: '10/03/2024' , available_time: [
       '8:00 am - 9:00 am',
       '9:00 am - 10:00 am', 
       '10:00 am - 11:00 am',
@@ -50,7 +50,7 @@ const sampleDates = ref(
       '3:00 pm - 4:00 pm',
       ]
     },
-    {date: '09/25/2024' , available_time: [
+    {date: '10/04/2024' , available_time: [
       '9:00 am - 10:00 am', 
       '10:00 am - 11:00 am',
       '11:00 am - 12:00 pm',
