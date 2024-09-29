@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue'
+import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue'
 // import { ProductService } from '@/service/ProductService';
 
 // onMounted(() => {
@@ -32,6 +33,8 @@ const formattedDate = computed(() => {
     const inputDate = new Date(date.value);
     return `${inputDate.getMonth() + 1}/${inputDate.getDate()}/${inputDate.getFullYear()}`;
 });
+
+const visibleSetAppointment = ref(false);
 </script>
 
 <template>
@@ -39,7 +42,14 @@ const formattedDate = computed(() => {
         <!-- {{ formattedDate }} -->
         <div class="col-12">
             <div class="card">
-                <Calendar v-model="date" dateFormat="mm/dd/yy"/>
+                <div class="flex justify-content-between align-items-center">
+                    <div>
+                        <Calendar v-model="date" dateFormat="mm/dd/yy"/>
+                    </div>
+                    <div>
+                        <Button label="Add New Appointment" @click="visibleSetAppointment = true" />
+                    </div>
+                </div>
                 <DataTable v-model:selection="selectedPatient" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen()">
                     <Column field="name" header="Patient Name"></Column>
                     <Column field="time" header="Time"></Column>
@@ -49,6 +59,15 @@ const formattedDate = computed(() => {
             </div>
         </div>
     </div>
+
+
+    <Dialog v-model:visible="visibleSetAppointment" modal header="Edit Profile" :style="{ width: '25rem' }">
+        <AppointmentPopup/>
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="visibleSetAppointment = false"></Button>
+            <Button type="button" label="Save" @click="visibleSetAppointment = false"></Button>
+        </div>
+    </Dialog>
 </template>
 
 <style scoped lang="scss">
