@@ -67,19 +67,19 @@ const dropdownItem = ref(null);
                         <label for="city">Department</label>
                         <InputText id="city" type="text" />
                     </div>
-                    <div class="field col-12 md:col-3">
+                    <div class="field col-12 md:col-4">
                         <label for="city">Email</label>
                         <InputText id="city" type="text" />
                     </div>
-                    <div class="field col-12 md:col-3">
+                    <div class="field col-12 md:col-4">
                         <label for="city">Contact Number</label>
                         <InputText id="city" type="text" />
                     </div>
-                    <div class="field col-12 md:col-3">
+                    <div class="field col-12 md:col-6">
                         <label for="city">Parent/Guardian</label>
                         <InputText id="city" type="text" />
                     </div>
-                    <div class="field col-12 md:col-3">
+                    <div class="field col-12 md:col-6">
                         <label for="city">Contact Number</label>
                         <InputText id="city" type="text" />
                     </div>
