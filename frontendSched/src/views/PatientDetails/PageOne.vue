@@ -8,7 +8,7 @@ const imageurl = '/asd.png'; // Use the path directly
         <img :src="imageurl" alt="Description of image" style="width: 100%; height: auto;"/>
     </div>
      <Divider layout="vertical" />
-    <div class="col-5">
+    <div class="col-4">
         asdfg
     </div>
 </div>
