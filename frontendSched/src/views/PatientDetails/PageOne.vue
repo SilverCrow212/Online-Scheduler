@@ -1,5 +1,6 @@
 <script setup>
 import {ref} from 'vue'
+import Teeth from '@/views/Teeth/Teeth.vue';
 const imageurl = '/asd.png'; // Use the path directly
 
 const categories = ref([
@@ -54,7 +55,8 @@ const selectedCategories = ref(['Bleeding']);
 <template>
 <div class="grid formgrid col-12 m-0 p-0" style="display: flex;">
     <div class="col-7"> 
-        <img :src="imageurl" alt="Description of image" style="width: 100%; height: auto;"/>
+        <Teeth/>
+        <!-- <img :src="imageurl" alt="Description of image" style="width: 100%; height: auto;"/> -->
     </div>
     <Divider layout="vertical" class="p-0 m-0"/>
     <div class="col-5 p-0 m-0" style=" flex-shrink: 0;">
