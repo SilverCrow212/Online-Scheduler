@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue';
 import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue'
 import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue'
+import {useRouter} from 'vue-router'
 // import { ProductService } from '@/service/ProductService';
 
 // onMounted(() => {
@@ -9,9 +10,9 @@ import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue'
 // });
 
 const products = ref();
-const selectedPatient = ref();
+const selectedPatient = ref(null);
 const metaKey = ref(true);
-
+const router = useRouter();
 const visible = ref(false);
 const patients = ref(
     [{id:'1', name:'Doe, John Jr.', time:'8:00 am - 9:00 am', department:'College of Agriculture'},
@@ -21,10 +22,17 @@ const patients = ref(
     ]
 );
 
-function dialogOpen(){
-    visible.value = true;
-
+function dialogOpen(event) {
+    console.log('Row clicked', event.data);
+    if (event) {
+        selectedPatient.value = event.data;
+        router.push({ name: 'record', params: { id: selectedPatient.value.id } });
+        console.log('patid', selectedPatient.value.id);
+    } else {
+        console.warn('No patient selected');
+    }
 }
+
 
 const today = new Date();
 const date = ref(today);
@@ -50,7 +58,7 @@ const visibleSetAppointment = ref(false);
                         <Button label="Add New Appointment" @click="visibleSetAppointment = true" />
                     </div>
                 </div>
-                <DataTable v-model:selection="selectedPatient" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen()">
+                <DataTable v-model:selection="selectedPatient" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
                     <Column field="name" header="Patient Name"></Column>
                     <Column field="time" header="Time"></Column>
                     <Column field="department" header="Department"></Column>
