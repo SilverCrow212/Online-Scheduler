@@ -100,7 +100,7 @@ const visible = ref(false)
     <span class="input-container font-bold border-1">{{ tooth.id }}</span>
   </div>
 
-  <Dialog v-model:visible="visible" modal header="Edit Profile" :style="{ width: '35rem' }">
+  <Dialog v-model:visible="visible" modal :closable="false" :style="{ width: '35rem' }">
       
         <div class="flex flex-column gap-3">
           <div v-for="choice in choices" :key="choice.id" class="flex align-items-center">
