@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Fragment, ref } from 'vue';
 
-export const toothChoices = defineStore('toothChoices', () => {
+export const toothCondition = defineStore('toothCondition', () => {
     const legend = ref([
         {id:1, name: 'Decayed (indicated for filling)', key: 'D' },
         {id:2, name: 'Recurrent Caries', key: 'RC' },
@@ -31,6 +31,23 @@ export const toothChoices = defineStore('toothChoices', () => {
         {id:26, name: 'Present', key: '✓' },
         {id:27, name: 'Missing', key: 'X' },
         
+    ]);
+    return { legend };
+});
+export const toothTreatment = defineStore('toothTreatment', () => {
+    const legend = ref([
+        {id:1, name: 'Amaigam Filling', key: 'Am' },
+        {id:2, name: 'Composite Filling', key: 'Co' },
+        {id:3, name: 'Jacket Crown', key: 'JC' },
+        {id:4, name: 'Abutment', key: 'Ab' },
+        {id:5, name: 'Attachment', key: 'Att' },
+        {id:6, name: 'Pontic', key: 'P' },
+        {id:7, name: 'Inlay', key: 'In' },
+        {id:8, name: 'Implant', key: 'Imp' },
+        {id:9, name: 'Sealants', key: 'S' },
+        {id:10, name: 'Removable Denture', key: 'Rm' },
+        {id:11, name: 'Extraction Due to Caries', key: 'X' },
+        {id:12, name: 'Extraction due to Other Causes', key: 'XO' },
     ]);
     return { legend };
 });
