@@ -5,7 +5,7 @@ export const toothCondition = defineStore('toothCondition', () => {
     const legend = ref([
         {id:1, name: 'Decayed (indicated for filling)', key: 'D' },
         {id:2, name: 'Recurrent Caries', key: 'RC' },
-        {id:3, name: 'Indicated for extraction', key: 'EX' },
+        {id:3, name: 'Indicated for extraction', key: 'X' },
         {id:4, name: 'Root Fragment', key: 'RF' },
         {id:5, name: 'Impacted Tooth', key: 'IM' },
         {id:6, name: 'Partially Erupted', key: 'PE' },
@@ -28,12 +28,12 @@ export const toothCondition = defineStore('toothCondition', () => {
         {id:23, name: 'Pontic', key: 'P' },
         {id:24, name: 'Mobile Tooth', key: 'MT' },
         {id:25, name: 'Root Canal Treated / -diastema', key: 'RCT' },
-        {id:26, name: 'Present', key: '✓' },
-        {id:27, name: 'Missing', key: 'X' },
+        
         
     ]);
     return { legend };
 });
+
 export const toothTreatment = defineStore('toothTreatment', () => {
     const legend = ref([
         {id:1, name: 'Amaigam Filling', key: 'Am' },
@@ -48,30 +48,51 @@ export const toothTreatment = defineStore('toothTreatment', () => {
         {id:10, name: 'Removable Denture', key: 'Rm' },
         {id:11, name: 'Extraction Due to Caries', key: 'X' },
         {id:12, name: 'Extraction due to Other Causes', key: 'XO' },
+        {id:13, name: 'Present Teeth', key: '✓' },
+        // {id:27, name: 'Missing', key: 'X' },
     ]);
     return { legend };
 });
 
+export const serviceRendered = defineStore('serviceRendered', () => {
+    const legend = ref([
+        {id:1, name: 'Oral Examination', key: 'OE' },
+        {id:2, name: 'Oral Prophylaxis', key: 'OP' },
+        {id:3, name: 'Extraction', key:'Exo' },
+        {id:4, name: 'Light Cure Filling', key: 'LC' },
+        {id:5, name: 'Prescribed', key: 'Rx' },
+        {id:6, name: 'Dispensed', key: 'Dx' },
+        {id:7, name: 'Amoxicillin', key: 'AMX' },
+        {id:8, name: 'Paracetamol', key: 'PCM' },
+        {id:9, name: 'Mefenamic Acid', key: 'MA' },
+        {id:10, name: 'Tranexamic Acid', key: 'TXA' },
+        {id:11, name: 'Referred', key: 'Ref' },
+        {id:12, name: 'Removable Partial Denture', key: 'RPD' },
+        {id:13, name: 'Jacket Crown', key: 'JC' },
+        {id:14, name: 'Fixed Bridge', key: 'FB' },
+        {id:15, name: 'Root Canal Treatment', key: 'RCT' },
+    ]);
+    return { legend };
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const medicalHistoryChoices = defineStore('medicalHistoryChoices', () => {
+    const legend = ref([
+        {id:1, question: 'Are you in good health?'},
+        {id:2, question: 'Are you under medical treatment now?', followUp:'If so, what is the condition being treated?'},
+        {id:3, question: 'Have you ever had serious illness or surgical operation?', followUp:'If so, illness or operation?'},
+        {id:4, question: 'Have you ever been hospitalized?', followUp:'If so when and why?'},
+        {id:5, question: 'Are you taking prescription / non-prescription medicine?', followUp:'If so, please specify'},
+        {id:6, question: 'Do you use tobacco products?'},
+        {id:7, question: 'Do you use alcohol, cocaine or other dangerous drugs?'},
+        {id:8, question: 'Are you allergic to any of the following'},
+        // Local Anaesthetic (e.g. Iidocane)
+        // Antibiotics (e.g. Penicillin, Sulfa drugs)
+        // Others (please specify)
+        {id:9, question: 'For women only:'},
+        // Are you pregnant?
+        // Are you nursing?
+        // Are you taking birth control pills?
+        {id:10, question: 'Please check if you have or had any of the following:'},
+    ]);
+    return { legend };
+});
