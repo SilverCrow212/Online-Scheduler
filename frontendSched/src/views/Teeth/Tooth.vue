@@ -1,9 +1,11 @@
 <script setup>
 import { ref, defineProps, onMounted, watch } from 'vue';
-import {toothChoices} from '@/store/choices';
+import {toothCondition, toothTreatment} from '@/store/choices';
 
-const toothChoicesStore = toothChoices();
-const choices = toothChoicesStore.legend;
+const toothConditionStore = toothCondition();
+const toothTreatmentStore = toothTreatment();
+const conditionChoices = toothConditionStore.legend;
+const treatmentChoices = toothTreatmentStore.legend;
 // Define props
 const props = defineProps({
   tooth: {
@@ -77,15 +79,16 @@ watch([arcColors, centerColor], () => {
   updateClassArray('center', centerColor.value);
 });
 
-const visible = ref(false)
+const treatmentDialog = ref(false)
+const conditionDialog = ref(false)
 </script>
 
 <template>
-  <!-- {{ choices }} -->
+  <!-- {{ conditionChoices }} -->
   <div>
     <div class="input-container">
-      <Button @click="visible=true" severity="secondary" :label="choices.find(choice => choice.id === tooth.topBox)?.key" class="small-input" />
-        <Button @click="visible=true" severity="secondary" :label="choices.find(choice => choice.id === tooth.botBox)?.key" class="small-input" />
+      <Button @click="treatmentDialog=true" severity="secondary" :label="conditionChoices.find(choice => choice.id === tooth.topBox)?.key" class="small-input" />
+        <Button @click="conditionDialog=true" severity="secondary" :label="conditionChoices.find(choice => choice.id === tooth.botBox)?.key" class="small-input" />
 
     </div>
     <div class="px-1 py-1" color="indigo lighten-4">
@@ -100,10 +103,10 @@ const visible = ref(false)
     <span class="input-container font-bold border-1">{{ tooth.id }}</span>
   </div>
 
-  <Dialog v-model:visible="visible" modal :closable="false" :style="{ width: '35rem' }">
+  <Dialog v-model:visible="treatmentDialog" modal  :style="{ width: '35rem' }" :dismissableMask="true">
       
         <div class="flex flex-column gap-3">
-          <div v-for="choice in choices" :key="choice.id" class="flex align-items-center">
+          <div v-for="choice in treatmentChoices" :key="choice.id" class="flex align-items-center">
             <RadioButton
               v-model="tooth.topBox"
               :inputId="choice.id"
@@ -114,11 +117,31 @@ const visible = ref(false)
           </div>
         </div>
       
-      <div class="flex justify-content-end gap-2">
-        <Button type="button" label="Cancel" severity="secondary" @click="visible=false"></Button>
-        <Button type="button" label="Select" @click="visible=false"></Button>
-      </div>
+      <!-- <div class="flex justify-content-end gap-2">
+        <Button type="button" label="Cancel" severity="secondary" @click="treatmentDialog=false"></Button>
+        <Button type="button" label="Select" @click="treatmentDialog=false"></Button>
+      </div> -->
     </Dialog>
+
+    <Dialog v-model:visible="conditionDialog" modal  :style="{ width: '35rem' }" :dismissableMask="true"> 
+      
+      <div class="flex flex-column gap-3">
+        <div v-for="choice in conditionChoices" :key="choice.id" class="flex align-items-center">
+          <RadioButton
+            v-model="tooth.botBox"
+            :inputId="choice.id"
+            name="dynamic"
+            :value="choice.id" 
+          />
+          <label :for="choice.id" class="ml-2">{{ choice.name }}</label>
+        </div>
+      </div>
+    
+    <!-- <div class="flex justify-content-end gap-2">
+      <Button type="button" label="Cancel" severity="secondary" @click="conditionDialog=false"></Button>
+      <Button type="button" label="Select" @click="conditionDialog=false"></Button>
+    </div> -->
+  </Dialog>
 </template>
 
 <style>
