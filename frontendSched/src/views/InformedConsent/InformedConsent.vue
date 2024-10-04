@@ -63,22 +63,6 @@ const finalconsent = informedConsentStore.finalconsent;
                     <label >Contact Number</label>
                     <InputText type="text" v-model="medicalHistory.contactNumber"/>
                 </div>
-                <div class="field col-12">
-                    <label >Address</label>
-                    <Textarea  rows="4" />
-                </div>
-                <div class="field col-12 md:col-6">
-                    <label >City</label>
-                    <InputText type="text" />
-                </div>
-                <div class="field col-12 md:col-3">
-                    <label >State</label>
-                    <Dropdown  v-model="dropdownItem" :options="dropdownItems" optionLabel="name" placeholder="Select One"></Dropdown>
-                </div>
-                <div class="field col-12 md:col-3">
-                    <label >Zip</label>
-                    <InputText type="text" />
-                </div>
             </div>
         </div>
     </div>
