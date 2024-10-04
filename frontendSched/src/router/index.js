@@ -48,6 +48,11 @@ const router = createRouter({
                     name: 'record',
                     component: () => import('@/views/PatientDetails/Record.vue')
                 },
+                {
+                    path: '/informedconsent/:id',
+                    name: 'informedconsent',
+                    component: () => import('@/views/InformedConsent/InformedConsent.vue')
+                },
             ]
         },
     ]
