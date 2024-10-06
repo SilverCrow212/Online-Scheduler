@@ -1,7 +1,12 @@
 <script setup>
 import { ref } from 'vue';
 import { informedConsent } from '@/store/informedconsent';
+import { medicalHistoryChoices } from '@/store/choices';
+
 const informedConsentStore = informedConsent();
+const medicalHistoryChoicesStore= medicalHistoryChoices();
+
+const questions= medicalHistoryChoicesStore.legend;
 const details = informedConsentStore.details;
 const dentalHistory = informedConsentStore.dentalHistory;
 const medicalHistory = informedConsentStore.medicalHistory;
@@ -63,6 +68,9 @@ const finalconsent = informedConsentStore.finalconsent;
                     <label >Contact Number</label>
                     <InputText type="text" v-model="medicalHistory.contactNumber"/>
                 </div>
+                <!-- <div v-for="" class="">
+                    loop choices here
+                </div> -->
             </div>
         </div>
     </div>
