@@ -10,6 +10,11 @@ const router = createRouter({
             component: () => import('@/views/LoginPage/Login.vue')
         },
         {
+            path: '/create-account',
+            name: 'createacc',
+            component: () => import('@/views/AccountCreation/CreateAcc.vue')
+        },
+        {
             path: '/',
             component: AppLayout,
             children: [
@@ -18,11 +23,7 @@ const router = createRouter({
                     name: 'dashboard',
                     component: () => import('@/views/Dashboard.vue')
                 },
-                {
-                    path: '/create-account',
-                    name: 'createacc',
-                    component: () => import('@/views/AccountCreation/CreateAcc.vue')
-                },
+                
                 {
                     path: '/patient-list',
                     name: 'patientlist',

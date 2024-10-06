@@ -2,7 +2,7 @@
 import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
-
+import { useRouter } from 'vue-router';
 const { layoutConfig } = useLayout();
 const login = ref({
     idnum : null,
@@ -15,6 +15,17 @@ const checked = ref(false);
 const logoUrl = computed(() => {
     return `/layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
 });
+
+const router = useRouter();
+function createAccount(){
+    router.push({ name: 'createacc' });
+    // console.log(selectedPatient.value);
+}
+
+function openDashboard(){
+    router.push({ name: 'dashboard' });
+}
+
 </script>
 
 <template>
@@ -37,9 +48,9 @@ const logoUrl = computed(() => {
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">
                             </div>
-                            <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
+                            <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)" @click="createAccount">Create New Account</a>
                         </div>
-                        <Button label="Sign In" class="w-full p-3 text-xl"></Button>
+                        <Button label="Sign In" class="w-full p-3 text-xl" @click="openDashboard"></Button>
                     </div>
                 </div>
             </div>
