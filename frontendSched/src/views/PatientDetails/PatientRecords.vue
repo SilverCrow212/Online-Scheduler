@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue';
 import { useRouter } from 'vue-router';
+import { FilterMatchMode } from 'primevue/api';
 // import { ProductService } from '@/service/ProductService';
 
 // onMounted(() => {
@@ -30,6 +31,11 @@ function openProfile(){
     router.push({ name: 'editprofile', params: { id: selectedPatient.value.id } });
     console.log(selectedPatient.value);
 }
+
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+});
 </script>
 
 <template>
@@ -37,7 +43,17 @@ function openProfile(){
         <div class="col-12">
             <div class="card">
                 
-                <DataTable v-model:selection="selectedPatient" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen()">
+                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['name']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" paginator :rows="10" @row-click="dialogOpen()">
+                    <template #header>
+                        <div class="flex justify-content-end">
+                            <IconField iconPosition="left">
+                                <InputIcon>
+                                    <i class="pi pi-search" />
+                                </InputIcon>
+                                <InputText v-model="filters['global'].value" placeholder="Name Search" />
+                            </IconField>
+                        </div>
+                    </template>
                     <Column field="name" header="Patient Name"></Column>
                     <Column field="type" header="Type"></Column>
                     <Column field="department" header="Department"></Column>

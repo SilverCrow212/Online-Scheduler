@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue';
 import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue'
 import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue'
 import {useRouter} from 'vue-router'
+import { FilterMatchMode } from 'primevue/api';
 // import { ProductService } from '@/service/ProductService';
 
 // onMounted(() => {
@@ -43,6 +44,14 @@ const formattedDate = computed(() => {
 });
 
 const visibleSetAppointment = ref(false);
+
+
+
+
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+});
 </script>
 
 <template>
@@ -58,7 +67,17 @@ const visibleSetAppointment = ref(false);
                         <Button label="Add New Appointment" @click="visibleSetAppointment = true" />
                     </div>
                 </div>
-                <DataTable v-model:selection="selectedPatient" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
+                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['name']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
+                    <template #header>
+                        <div class="flex justify-content-end">
+                            <IconField iconPosition="left">
+                                <InputIcon>
+                                    <i class="pi pi-search" />
+                                </InputIcon>
+                                <InputText v-model="filters['global'].value" placeholder="Name Search" />
+                            </IconField>
+                        </div>
+                    </template>
                     <Column field="name" header="Patient Name"></Column>
                     <Column field="time" header="Time"></Column>
                     <Column field="department" header="Department"></Column>
