@@ -101,7 +101,6 @@ watch(selectedDate, () => {
       <div class="grid p-fluid">
         <!-- {{ formattedSelectedDate }} -->
         <div class="col-12 md:col-12">
-            <div class="card">
               <div class="field col-12 md:col-12">
                   <label>ID number</label>
                   <InputText id="firstname2" type="text" />
@@ -132,9 +131,7 @@ watch(selectedDate, () => {
             
               <!-- <p v-if="selectedDate!=null">Selected Date: {{ formatDate(selectedDate) }}</p> -->
               <!-- {{ selectedCategories }} -->
-            </div>
         </div>
-        
     </div>
     
 </template>
