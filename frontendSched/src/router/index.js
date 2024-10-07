@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import AppLayout from '@/layout/AppLayout.vue';
+import BlankPage from '@/layout/BlankPage.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -9,11 +10,7 @@ const router = createRouter({
             name: 'login',
             component: () => import('@/views/LoginPage/Login.vue')
         },
-        {
-            path: '/create-account',
-            name: 'createacc',
-            component: () => import('@/views/AccountCreation/CreateAcc.vue')
-        },
+        
         {
             path: '/',
             component: AppLayout,
@@ -53,6 +50,24 @@ const router = createRouter({
                     path: '/informedconsent/:id',
                     name: 'informedconsent',
                     component: () => import('@/views/InformedConsent/InformedConsent.vue')
+                },
+            ]
+        },
+        {
+            path: '/',
+            component: BlankPage,
+            children: [
+                {
+                    path: 'create-account',
+                    name: 'createacc',
+                    component: () => import('@/views/AccountCreation/CreateAcc.vue')
+                },
+                
+                {
+                    path: 'print/record',
+                    name: 'printrecord',
+                    component: () => import('@/views/printouts/PatientRecord.vue')
+
                 },
             ]
         },

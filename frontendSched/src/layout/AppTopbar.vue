@@ -22,11 +22,14 @@ const logoUrl = computed(() => {
 });
 
 const onTopBarMenuButton = () => {
+    router.push({ name: 'editprofile', params: { id: 1 } });
     topbarMenuActive.value = !topbarMenuActive.value;
 };
 const onSettingsClick = () => {
+    // console.log("Navigating to edit profile...");
+    router.push({ name: 'login' });
     topbarMenuActive.value = false;
-    router.push('/documentation');
+    
 };
 const topbarMenuClasses = computed(() => {
     return {
@@ -75,20 +78,20 @@ const isOutsideClicked = (event) => {
             <i class="pi pi-ellipsis-v"></i>
         </button>
 
-        <!-- <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
+        <div class="layout-topbar-menu" :class="topbarMenuClasses">
+            <!-- <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
                 <i class="pi pi-calendar"></i>
                 <span>Calendar</span>
-            </button>
+            </button> -->
             <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
                 <i class="pi pi-user"></i>
                 <span>Profile</span>
             </button>
             <button @click="onSettingsClick()" class="p-link layout-topbar-button">
-                <i class="pi pi-cog"></i>
-                <span>Settings</span>
+                <i class="pi pi-sign-out"></i>
+                <span>Sign Out</span>
             </button>
-        </div> -->
+        </div>
     </div>
 </template>
 
