@@ -36,13 +36,25 @@ const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
 });
+
+const openProfileWindow = () => {
+    const width = 800;  // Desired width
+    const height = 600; // Desired height
+    const left = (window.screen.width / 2) - (width / 2);  // Center horizontally
+    const top = (window.screen.height / 2) - (height / 2); // Center vertically
+
+     // Construct the URL for the route
+     const url = `${window.location.origin}/print/record`;
+
+// Open the new window/tab with the specified dimensions
+window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top},left=${left}`);
+};
 </script>
 
 <template>
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                
                 <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['name']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" paginator :rows="10" @row-click="dialogOpen()">
                     <template #header>
                         <div class="flex justify-content-end">
@@ -63,10 +75,15 @@ const filters = ref({
     </div>
 
 
-    <Dialog v-model:visible="visible" modal :header="selectedPatient?.name" :style="{ width: '70rem' }">
-            <span class="p-text-secondary">
-                <Button type="button" label="View Profile" icon="pi pi-profile" size="small" @click="openProfile()"/>
+    <Dialog v-model:visible="visible" modal :header="selectedPatient?.name" :style="{ width: '70rem' }" :dismissableMask="true">
+        <div class="flex justify-content-end">
+            <span class="p-text-secondary mr-2">
+                <Button type="button" label="View Profile" icon="pi pi-profile" size="small" @click="openProfile()" />
             </span>
+            <span class="p-text-secondary">
+                <Button type="button" label="Print Record" icon="pi pi-profile" size="small" @click="openProfileWindow()" />
+            </span>
+        </div>
             
             <!-- :loading="loading" @click="load"  -->
             <!-- <div class="flex align-items-center gap-3 mb-3">
@@ -78,10 +95,10 @@ const filters = ref({
                 <InputText id="email" class="flex-auto" autocomplete="off" />
             </div> -->
             <PatientRecordTable/>
-            <div class="flex justify-content-end gap-2">
+            <!-- <div class="flex justify-content-end gap-2">
                 <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
                 <Button type="button" label="Save" @click="visible = false"></Button>
-            </div>
+            </div> -->
         </Dialog>
 </template>
 
