@@ -54,23 +54,43 @@ export const toothTreatment = defineStore('toothTreatment', () => {
     return { legend };
 });
 
+// export const serviceRendered = defineStore('serviceRendered', () => {
+//     const legend = ref([
+//         {id:1, name: 'Oral Examination', key: 'OE' },
+//         {id:2, name: 'Oral Prophylaxis', key: 'OP' },
+//         {id:3, name: 'Extraction', key:'Exo' },
+//         {id:4, name: 'Light Cure Filling', key: 'LC' },
+//         {id:5, name: 'Prescribed', key: 'Rx' },
+//         {id:6, name: 'Dispensed', key: 'Dx' },
+//         {id:7, name: 'Amoxicillin', key: 'AMX' },
+//         {id:8, name: 'Paracetamol', key: 'PCM' },
+//         {id:9, name: 'Mefenamic Acid', key: 'MA' },
+//         {id:10, name: 'Tranexamic Acid', key: 'TXA' },
+//         {id:11, name: 'Referred', key: 'Ref' },
+//         {id:12, name: 'Removable Partial Denture', key: 'RPD' },
+//         {id:13, name: 'Jacket Crown', key: 'JC' },
+//         {id:14, name: 'Fixed Bridge', key: 'FB' },
+//         {id:15, name: 'Root Canal Treatment', key: 'RCT' },
+//     ]);
+//     return { legend };
+// });
 export const serviceRendered = defineStore('serviceRendered', () => {
     const legend = ref([
-        {id:1, name: 'Oral Examination', key: 'OE' },
-        {id:2, name: 'Oral Prophylaxis', key: 'OP' },
-        {id:3, name: 'Extraction', key:'Exo' },
-        {id:4, name: 'Light Cure Filling', key: 'LC' },
-        {id:5, name: 'Prescribed', key: 'Rx' },
-        {id:6, name: 'Dispensed', key: 'Dx' },
-        {id:7, name: 'Amoxicillin', key: 'AMX' },
-        {id:8, name: 'Paracetamol', key: 'PCM' },
-        {id:9, name: 'Mefenamic Acid', key: 'MA' },
-        {id:10, name: 'Tranexamic Acid', key: 'TXA' },
-        {id:11, name: 'Referred', key: 'Ref' },
-        {id:12, name: 'Removable Partial Denture', key: 'RPD' },
-        {id:13, name: 'Jacket Crown', key: 'JC' },
-        {id:14, name: 'Fixed Bridge', key: 'FB' },
-        {id:15, name: 'Root Canal Treatment', key: 'RCT' },
+        {id:1, name: 'Examination'},
+        {id:2, name: 'Treatment'},
+        {id:3, name: 'Oral Prophylaxis/Scaling'},
+        {id:4, name: 'Extraction'},
+        {id:5, name: 'Permanent Tooth'},
+        {id:6, name: 'Temporary Tooth'},
+        {id:7, name: 'Filling/Restoration'},
+        {id:8, name: 'Tooth filled w/ Comp.'},
+        {id:9, name: 'Tooth filled w/ GIC'},
+        {id:10, name: 'Sealant'},
+        {id:11, name: 'Tooth Applied w/ sealant'},
+        {id:12, name: 'Other Treatment'},
+        {id:13, name: 'Oral Health Instruction'},
+        {id:14, name: 'Referral'},
+        {id:15, name: 'Issuance of Med Cert'},
     ]);
     return { legend };
 });
@@ -88,11 +108,20 @@ export const medicalHistoryChoices = defineStore('medicalHistoryChoices', () => 
         // Local Anaesthetic (e.g. Iidocane)
         // Antibiotics (e.g. Penicillin, Sulfa drugs)
         // Others (please specify)
-        {id:9, question: 'For women only:'},
+        {id:9, question: 'For women only:',followUp1:'Are you pregnant?', followUp2:'Are you nursing?', followUp3:'Are you taking birth control pills?',},
         // Are you pregnant?
         // Are you nursing?
         // Are you taking birth control pills?
         {id:10, question: 'Please check if you have or had any of the following:'},
     ]);
-    return { legend };
+
+    const q8Choices = ref([
+        {id:1, name: 'Local Anaesthetic (e.g. lidocaine)'},
+        {id:2, name: 'Antibiotics (e.g. Penicilin, Sulfa drugs)'},
+        {id:3, name: 'Others (Please Specify)'},
+        
+    ]);
+
+
+    return { legend,q8Choices };
 });
