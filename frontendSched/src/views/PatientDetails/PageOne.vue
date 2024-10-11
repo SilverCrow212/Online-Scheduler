@@ -59,64 +59,56 @@ const selectedCategories = ref(['Bleeding']);
         <!-- <img :src="imageurl" alt="Description of image" style="width: 100%; height: auto;"/> -->
     </div>
     <!-- <Divider layout="vertical" class="p-0 m-0"/> -->
-    <div class="col-5 p-0 m-0" style=" flex-shrink: 0;">
-        <h5>Periodical Screening</h5>
-        <div class="grid formgrid col-12 p-0 m-0">
-            <div v-for="category of categories" :key="category.key" class="col-4 mb-1" >
-                <Checkbox v-model="selectedCategories" :inputId="category.key" name="category" :value="category.name" />
-                <label :for="category.key">{{ category.name }}</label>
+    
+</div>
+<div class="p-fluid formgrid grid mt-3">
+        <div class="field col-12 md:col-6">
+            <h5>Periodical Screening</h5>
+            <div class="grid formgrid col-12 p-0 m-0">
+                <div v-for="category of categories" :key="category.key" class="col-4 mb-1" >
+                    <Checkbox v-model="selectedCategories" :inputId="category.key" name="category" :value="category.name" />
+                    <label :for="category.key">{{ category.name }}</label>
+                </div>
             </div>
         </div>
-        <h5>Occlusion</h5>
-        <div class="grid formgrid col-12 p-0 m-0">
-            <div v-for="category of categories2" :key="category.key" class="col-6" >
-                <Checkbox v-model="selectedCategories" :inputId="category.key" name="category" :value="category.name" />
-                <label :for="category.key">{{ category.name }}</label>
+        <div class="field col-12 md:col-6">
+            <h5>Occlusion</h5>
+            <div class="grid formgrid col-12 p-0 m-0">
+                <div v-for="category of categories2" :key="category.key" class="col-6" >
+                    <Checkbox v-model="selectedCategories" :inputId="category.key" name="category" :value="category.name" />
+                    <label :for="category.key">{{ category.name }}</label>
+                </div>
             </div>
         </div>
-        <h5>Appliances</h5>
-        <div class="grid formgrid col-12 p-0 m-0">
-            <div v-for="category of categories3" :key="category.key" class="col-6" >
-                <Checkbox v-model="selectedCategories" :inputId="category.key" name="category" :value="category.name" />
-                <label :for="category.key">{{ category.name }}</label>
-                <div v-if="category.id ===8">
+        <div class="field col-12 md:col-6">
+            <h5>Appliances</h5>
+            <div class="grid formgrid col-12 p-0 m-0">
+                <div v-for="category of categories3" :key="category.key" class="col-6" >
+                    <Checkbox v-model="selectedCategories" :inputId="category.key" name="category" :value="category.name" />
+                    <label :for="category.key">{{ category.name }}</label>
+                    <div v-if="category.id ===8">
+                        <InputText type="text" class="w-full"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field col-12 md:col-6">
+            <h5>TMD</h5>
+            <div class="grid formgrid col-12 p-0 m-0">
+                <div v-for="category of categories4" :key="category.key" class="col-6" >
+                    <Checkbox v-model="selectedCategories" :inputId="category.key" name="category" :value="category.name" />
+                    <label :for="category.key">{{ category.name }}</label>
+                </div>
+            </div>
+        </div>
+        <div class="field col-12 md:col-12">
+            <h5>Others</h5>
+            <div class="col-12 p-0 m-0">
+                <div class="field col-12 md:col-12">
                     <InputText type="text" class="w-full"/>
                 </div>
             </div>
         </div>
-        <h5>TMD</h5>
-        <div class="grid formgrid col-12 p-0 m-0">
-            <div v-for="category of categories4" :key="category.key" class="col-6" >
-                <Checkbox v-model="selectedCategories" :inputId="category.key" name="category" :value="category.name" />
-                <label :for="category.key">{{ category.name }}</label>
-            </div>
-        </div>
-        <h5>Others</h5>
-        <div class="col-12 p-0 m-0">
-            <div class="field col-12 md:col-12">
-                <InputText type="text" class="w-full"/>
-            </div>
-        </div>
-        <h5>Date of Examination</h5>
-        <div class="grid formgrid col-12 p-0 m-0" >
-            <div class="field col-3 md:col-3" >
-                <InputText type="text" class="w-full"/>
-                <label>&nbsp;&nbsp;E G F P /</label>
-            </div>
-            <div class="field col-3 md:col-3">
-                <InputText type="text" class="w-full"/>
-                <label>&nbsp;&nbsp;E G F P /</label>
-            </div>
-            <div class="field col-3 md:col-3">
-                <InputText type="text" class="w-full"/>
-                <label>&nbsp;&nbsp;E G F P /</label>
-            </div>
-            <div class="field col-3 md:col-3">
-                <InputText type="text" class="w-full"/>
-                <label>&nbsp;&nbsp;E G F P </label>
-            </div>
-        </div>
     </div>
-</div>
 
 </template>
