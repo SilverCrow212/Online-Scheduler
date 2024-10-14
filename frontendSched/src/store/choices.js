@@ -125,3 +125,56 @@ export const medicalHistoryChoices = defineStore('medicalHistoryChoices', () => 
 
     return { legend,q8Choices };
 });
+
+
+export const periodicalScreeningChoices = defineStore('periodicalScreeningChoices', () => {
+    const legend = ref([
+        {id:1, name: 'Bleeding '},
+        {id:2, name: 'Calculus'},
+        {id:3, name: 'Perio Pocket'},
+    ]);
+    return { legend };
+});
+
+export const occlusionChoices = defineStore('occlusionChoices', () => {
+    const legend = ref([
+        {name: "Crowding", id:1},
+        {name: "Spacing", id:2},
+        {name: "Overjet", id:3},
+        {name: "Overbite", id:4},
+        {name: "Open bite", id:5},
+        {name: "Underbite", id:6},
+        {name: "Crossbite", id:7},
+        {name: "Midline Deviation", id:8},
+        {name: "Abnormal eruption", id:9},
+        {name: "Class (Molar)", id:10},
+    ]);
+    return { legend };
+});
+
+export const appliancesChoices = defineStore('appliancesChoices', () => {
+    const legend = ref([
+        {name: "Braces", id:1},
+        {name: "Retainer", id:2},
+        {name: "Other Ortho", id:3},
+        {name: "Crown", id:4},
+        {name: "Bridge", id:5},
+        {name: "Implant", id:6},
+        {name: "CD", id:7},
+        {name: "RPD", id:8},
+    ]);
+    return { legend };
+});
+
+export const tmdChoices = defineStore('tmdChoices', () => {
+    const legend = ref([
+        {name: "Pain in the:", id:1},
+        {name: "Jaw", id:2},
+        {name: "Temple", id:3},
+        {name: "Ear", id:4},
+        {name: "Clicking", id:5},
+        {name: "Locking", id:6},
+        {name: "Others", id:7},
+    ]);
+    return { legend };
+});
