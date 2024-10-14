@@ -2,6 +2,8 @@
 import {ref} from 'vue'
 import Teeth from '@/views/Teeth/Teeth.vue';
 const imageurl = '/asd.png'; // Use the path directly
+import {periodicalScreeningChoices, occlusionChoices, appliancesChoices, tmdChoices} from '@/store/choices';
+
 
 const categories = ref([
     {name: "Bleeding", key: "B", id:1},
