@@ -10,7 +10,10 @@ const appliancesStore = appliancesChoices();
 const tmdStore = tmdChoices();
 const others = otherInputs();
 
-const conditionChoices = toothConditionStore.legend;
+const periodicalScreeningChoice = periodicalScreeningStore.legend;
+const occlusionChoice = occlusionStore.legend;
+const appliancesChoice = appliancesStore.legend;
+const tmdChoice = tmdStore.legend;
 
 const categories = ref([
     {name: "Bleeding", key: "B", id:1},
