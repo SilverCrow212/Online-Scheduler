@@ -3,7 +3,14 @@ import {ref} from 'vue'
 import Teeth from '@/views/Teeth/Teeth.vue';
 const imageurl = '/asd.png'; // Use the path directly
 import {periodicalScreeningChoices, occlusionChoices, appliancesChoices, tmdChoices} from '@/store/choices';
+import {otherInputs} from '@/store/teethothers';
+const periodicalScreeningStore = periodicalScreeningChoices();
+const occlusionStore = occlusionChoices();
+const appliancesStore = appliancesChoices();
+const tmdStore = tmdChoices();
+const others = otherInputs();
 
+const conditionChoices = toothConditionStore.legend;
 
 const categories = ref([
     {name: "Bleeding", key: "B", id:1},
