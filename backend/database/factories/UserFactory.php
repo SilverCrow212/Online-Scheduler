@@ -30,6 +30,13 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
+        // return [
+        //     'name' => 'user',
+        //     'email' => 'user@example.com',
+        //     'email_verified_at' => now(),
+        //     'password' => Hash::make('password'),
+        //     'remember_token' => Str::random(10),
+        // ];
     }
 
     /**
