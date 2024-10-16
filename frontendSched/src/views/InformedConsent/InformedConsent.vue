@@ -188,25 +188,49 @@ const finalconsent = informedConsentStore.finalconsent;
                 <div class="field col-12 md:col-12 grid">
                     <div class="col-8">
                         {{ questions[7].question }}
-                        <div v-if="medicalHistory.q8.answ === 'Yes'" class="ml-4">
-                            <div v-for="category of q8Choices" :key="category.id" class="flex align-items-center mt-2">
-                                <Checkbox v-model="medicalHistory.q8.remarks" :inputId="category.id" :value="category.id" class="mr-2" />
-                                <label :for="category.id">{{ category.name }}</label>
-                                
-                                <!-- Conditional input box for ID 3 -->
-                                <div v-if="category.id === 3 && medicalHistory.q8.remarks.includes(category.id)">
-                                    <InputText type="text" v-model="medicalHistory.q8.others" />
-                                </div>
+                    </div>
+                    <div class="col-4">
+                        <div v-for="category of q8Choices" :key="category.id" class="flex align-items-center mt-2">
+                            <Checkbox v-model="medicalHistory.q8.remarks" :inputId="category.id" :value="category.id" class="mr-2" />
+                            <label :for="category.id">{{ category.name }}</label>
+                            
+                            <!-- Conditional input box for ID 3 -->
+                            <div v-if="category.id === 3 && medicalHistory.q8.remarks.includes(category.id)">
+                                <InputText type="text" v-model="medicalHistory.q8.others" />
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="field col-12 md:col-12 grid">
+                    <div class="col-8">
+                        <div class="grid">
+                            <span class="col-12">{{ questions[8].question }}</span>
+                            <span class="ml-4 mb-2 col-10">{{ questions[8].followUp1 }}</span>
+                            <span class="ml-4 mb-2 col-10">{{ questions[8].followUp2 }}</span>
+                            <span class="ml-4 col-10">{{ questions[8].followUp3 }}</span>
+                        </div>
+                    </div>
                     <div class="col-4">
-                        <div class="flex flex-wrap gap-3 align-items-center">
-                            <RadioButton v-model="medicalHistory.q8.answ" value="Yes" />
+                        <div class="flex mb-2 flex-wrap gap-3 align-items-center">
+                            <RadioButton v-model="medicalHistory.q9.pregnant" value="Yes" />
                             <label class="ml-2">Yes</label>
-                            <RadioButton v-model="medicalHistory.q8.answ" value="No" />
+                            <RadioButton v-model="medicalHistory.q9.pregnant" value="No" />
                             <label class="ml-2">No</label>
                         </div>
+                        <div class="flex mb-2 flex-wrap gap-3 align-items-center">
+                            <RadioButton v-model="medicalHistory.q9.nursing" value="Yes" />
+                            <label class="ml-2">Yes</label>
+                            <RadioButton v-model="medicalHistory.q9.nursing" value="No" />
+                            <label class="ml-2">No</label>
+                        </div>
+                        <div class="flex flex-wrap gap-3 align-items-center">
+                            <RadioButton v-model="medicalHistory.q9.birthcontrol" value="Yes" />
+                            <label class="ml-2">Yes</label>
+                            <RadioButton v-model="medicalHistory.q9.birthcontrol" value="No" />
+                            <label class="ml-2">No</label>
+                        </div>
+                        
                     </div>
                 </div>
                 
