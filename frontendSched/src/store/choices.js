@@ -122,6 +122,37 @@ export const medicalHistoryChoices = defineStore('medicalHistoryChoices', () => 
         
     ]);
 
+    const q10Choices = ref([
+        {
+            id:1, 
+            name: 'Cardiovascular Disease', 
+            sub_choices:[
+            {id:1, name:'High Blood Pressure'},
+            {id:2, name:'Prosthetic Valves'},
+            {id:3, name:'Stroke'},
+            {id:4, name:'Infective Carditis'},
+            {id:5, name:'Others'},
+        ]
+        },
+        {id:2, name: 'Cancer (Please Specify)'},
+        {id:3, name: 'Respiratory problem (Please Specify)'},
+        {id:4, name: 'Blood disease (Please Specify)'},
+        {id:5, name: 'Thyroid problem'},
+        {id:6, name: 'Hepatitis'},
+        {id:7, name: 'Epilepsy / Seizure'},
+        {id:8, name: 'Tubercolosis'},
+        {id:9, name: 'Hip / Joint Replacement'},
+        {id:10, name: 'Arthritis / Rheumatism'},
+        {id:11, name: 'Diabetes'},
+        {id:12, name: 'Kidney disease'},
+        {id:13, name: 'Liver disease'},
+        {id:14, name: 'HIV / AIDS'},
+        {id:15, name: 'Others'},
+
+        
+    ]);
+    
+
 
     return { legend,q8Choices };
 });
