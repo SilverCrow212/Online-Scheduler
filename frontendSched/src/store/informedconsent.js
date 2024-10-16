@@ -22,8 +22,8 @@ export const informedConsent = defineStore('informedConsent', () => {
             q6:{ answ:null},
             q7:{ answ:null},
             q8:{ answ:null, remarks:[],others:null},
-            q9:{ answ:{pregnant:null, nursing:null, birthcontrol:null}},
-            q10:{answ:[]},
+            q9:{pregnant:null, nursing:null, birthcontrol:null},
+            q10:{answ:[], c1:[], c1others:null, c2cancer:null,},
             
         }
         
