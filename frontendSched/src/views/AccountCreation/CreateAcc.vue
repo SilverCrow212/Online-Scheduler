@@ -1,6 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import {createacc} from '@/store/createacc'
+
+const createAccStore = createacc();
+const createaccount = createAccStore.accDetails
 
 // State
 const router = useRouter();
@@ -30,72 +34,76 @@ const dropdownItem = ref(null);
             <h5 class="text-center">Patient Profile</h5>
             <div class="p-fluid formgrid grid">
                 <div class="field col-12 md:col-6">
-                    <label for="idNumber">ID number</label>
-                    <InputText id="idNumber" type="text" />
+                    <label>ID number</label>
+                    <InputText v-model="createaccount.school_id_number" type="text" />
                 </div>
                 <div class="field col-12 md:col-6">
-                    <label for="password">Password</label>
-                    <Password id="password" :toggleMask="true" class="w-full mb-3" inputClass="w-full"></Password>
+                    <label>Password</label>
+                    <Password v-model="createaccount.password" :toggleMask="true" class="w-full mb-3" inputClass="w-full"></Password>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <label for="firstname">Firstname</label>
-                    <InputText id="firstname" type="text" />
+                    <label>Firstname</label>
+                    <InputText v-model="createaccount.firstname" id="firstname" type="text" />
                 </div>
                 <div class="field col-12 md:col-6">
-                    <label for="lastname">Lastname</label>
-                    <InputText id="lastname" type="text" />
+                    <label>Lastname</label>
+                    <InputText v-model="createaccount.lastname" type="text" />
                 </div>
                 <div class="field col-12 md:col-4">
-                    <label for="type">Type</label>
-                    <Dropdown id="type" v-model="typeInput" :options="type" optionLabel="name" optionValue="id" placeholder="Select One"></Dropdown>
+                    <label >Type</label>
+                    <Dropdown v-model="createaccount.type" :options="type" optionLabel="name" optionValue="id" placeholder="Select One"></Dropdown>
                 </div>
-                <div v-if="typeInput === 1" class="field col-12 md:col-4">
-                    <label for="studentType">Student Type</label>
-                    <InputText id="studentType" type="text" />
-                </div>
-                <div v-else class="field col-12 md:col-4">
-                    <label for="employmentType">Employment Type</label>
-                    <InputText id="employmentType" type="text" />
-                </div>
-                <div v-if="typeInput === 1" class="field col-12 md:col-4">
-                    <label for="level">Level</label>
-                    <InputText id="level" type="text" />
+                <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
+                    <label>Student Type</label>
+                    <InputText v-model="createaccount.employee_student_type" type="text" />
                 </div>
                 <div v-else class="field col-12 md:col-4">
-                    <label for="officeCollege">Office / College</label>
-                    <InputText id="officeCollege" type="text" />
+                    <label>Employment Type</label>
+                    <InputText v-model="createaccount.employee_student_type" type="text" />
                 </div>
-                <div v-if="typeInput === 1" class="field col-12 md:col-4">
-                    <label for="program">Program</label>
-                    <InputText id="program" type="text" />
+                <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
+                    <label>Level</label>
+                    <InputText v-model="createaccount.office_level" type="text" />
                 </div>
                 <div v-else class="field col-12 md:col-4">
-                    <label for="department">Department</label>
-                    <InputText id="department" type="text" />
+                    <label >Office / College</label>
+                    <InputText v-model="createaccount.office_level" type="text" />
+                </div>
+                <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
+                    <label>Program</label>
+                    <InputText v-model="createaccount.department_program" type="text" />
+                </div>
+                <div v-else class="field col-12 md:col-4">
+                    <label>Department</label>
+                    <InputText v-model="createaccount.department_program" type="text" />
                 </div>
                 <div class="field col-12 md:col-4">
-                    <label for="email">Email</label>
-                    <InputText id="email" type="text" />
+                    <label>Email</label>
+                    <InputText v-model="createaccount.email" type="text" />
                 </div>
                 <div class="field col-12 md:col-4">
-                    <label for="contactNumber">Contact Number</label>
-                    <InputText id="contactNumber" type="text" />
+                    <label>Contact Number</label>
+                    <InputText v-model="createaccount.contact_no" type="text" />
                 </div>
-                <div class="field col-12 md:col-6">
-                    <label for="guardian">Parent/Guardian</label>
-                    <InputText id="guardian" type="text" />
+                <div class="field col-12 md:col-4">
+                    <label>Civil Status</label>
+                    <InputText v-model="createaccount.civil_status" type="text" />
                 </div>
-                <div class="field col-12 md:col-6">
-                    <label for="guardianContact">Contact Number</label>
-                    <InputText id="guardianContact" type="text" />
+                <div class="field col-12 md:col-4">
+                    <label>Parent/Guardian</label>
+                    <InputText v-model="createaccount.guardian" type="text" />
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label>Contact Number</label>
+                    <InputText v-model="createaccount.guardian_no" type="text" />
                 </div>
                 <div class="field col-12">
-                    <label for="permanentAddress">Permanent Address</label>
-                    <Textarea id="permanentAddress" rows="3" />
+                    <label>Permanent Address</label>
+                    <Textarea v-model="createaccount.permanent_address" rows="3" />
                 </div>
                 <div class="field col-12">
-                    <label for="bsuAddress">Address while at BSU</label>
-                    <Textarea id="bsuAddress" rows="3" />
+                    <label>Address while at BSU</label>
+                    <Textarea v-model="createaccount.bsu_address" rows="3" />
                 </div>
                 <div class="field col-12 flex justify-content-end gap-2">
                     <Button label="Back" @click="goBack" />
