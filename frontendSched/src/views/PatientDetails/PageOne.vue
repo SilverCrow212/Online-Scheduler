@@ -61,7 +61,7 @@ const categories4 = ref([
     {name: "Others", key: "B", id:7},
     
 ]);
-const selectedCategories = ref(['Bleeding']);
+const selectedCategories = ref([]);
 </script>
 
 <template>
@@ -76,11 +76,16 @@ const selectedCategories = ref(['Bleeding']);
 <div class="p-fluid formgrid grid mt-3">
         <div class="field col-12 md:col-6">
             <h5>Periodical Screening</h5>
+            {{ others.firstPage.periodicalScreening }}
             <div class="grid formgrid col-12 p-0 m-0">
-                <div v-for="category of categories" :key="category.key" class="col-4 mb-1" >
-                    <Checkbox v-model="selectedCategories" :inputId="category.key" name="category" :value="category.name" />
-                    <label :for="category.key">{{ category.name }}</label>
-                </div>
+                <div v-for="category in periodicalScreeningChoice" :key="category.id" class="col-4 mb-1">
+                <Checkbox
+                    v-model="others.firstPage.periodicalScreening"
+                    name="category"
+                    :value="category.id"
+                />
+                <label :for="category.id">{{ category.name }}</label>
+            </div>
             </div>
         </div>
         <div class="field col-12 md:col-6">
