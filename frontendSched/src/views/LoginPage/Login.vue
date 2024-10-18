@@ -3,9 +3,11 @@ import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+
 const { layoutConfig } = useLayout();
 const login = ref({
-    idnum : null,
+    school_id_number : null,
     password: null
 })
 const idnum = ref('');
@@ -19,11 +21,17 @@ const logoUrl = computed(() => {
 const router = useRouter();
 function createAccount(){
     router.push({ name: 'createacc' });
-    // console.log(selectedPatient.value);
 }
 
-function openDashboard(){
-    router.push({ name: 'dashboard' });
+async function openDashboard(){
+    try{
+        const receive = await axios.post('http://192.168.7.69:8001/api/login', login.value)
+        console.log(receive,'logged in');
+        router.push({ name: 'dashboard' });
+    }
+    catch(err){
+        console.error('error',err)
+    }
 }
 
 </script>
@@ -40,7 +48,7 @@ function openDashboard(){
 
                     <div>
                         <label for="idnumber" class="block text-900 text-xl font-medium mb-2">ID number</label>
-                        <InputText id="idnumber" type="text" placeholder="ID number" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="login.idnum" />
+                        <InputText id="idnumber"  v-model="login.school_id_number"  type="text" placeholder="ID number" class="w-full md:w-30rem mb-5" style="padding: 1rem"/>
 
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
                         <Password id="password1" v-model="login.password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
