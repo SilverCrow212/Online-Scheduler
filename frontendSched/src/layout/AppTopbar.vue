@@ -25,8 +25,17 @@ const onTopBarMenuButton = () => {
     router.push({ name: 'editprofile', params: { id: 1 } });
     topbarMenuActive.value = !topbarMenuActive.value;
 };
-const onSettingsClick = () => {
+const onSettingsClick = async() => {
     // console.log("Navigating to edit profile...");
+    
+    try{
+        const receive = await axios.post('http://192.168.7.69:8001/api/logout', login.value)
+        console.log(receive,'logged in');
+        router.push({ name: 'dashboard' });
+    }
+    catch(err){
+        console.error('error',err)
+    }
     router.push({ name: 'login' });
     topbarMenuActive.value = false;
     
