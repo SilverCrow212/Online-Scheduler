@@ -6,6 +6,7 @@ export const otherInputs = defineStore('otherInputs', () => {
         periodicalScreening:[],
         occlusion:[],
         appliances:[],
+        rpd:null,
         tmd:[],
         tmdOthers:null,
         others:null,
