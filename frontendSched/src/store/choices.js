@@ -154,7 +154,7 @@ export const medicalHistoryChoices = defineStore('medicalHistoryChoices', () => 
     
 
 
-    return { legend,q8Choices };
+    return { legend,q8Choices, q10Choices };
 });
 
 
@@ -206,6 +206,16 @@ export const tmdChoices = defineStore('tmdChoices', () => {
         {name: "Clicking", id:5},
         {name: "Locking", id:6},
         {name: "Others", id:7},
+    ]);
+    return { legend };
+});
+
+export const oralHygieneChoices = defineStore('oralHygieneChoices', () => {
+    const legend = ref([
+        {name: "E", id:1},
+        {name: "G", id:2},
+        {name: "F", id:3},
+        {name: "P", id:4},
     ]);
     return { legend };
 });
