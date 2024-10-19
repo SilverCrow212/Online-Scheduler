@@ -1,7 +1,7 @@
 <script setup>
 import { ref,computed,watch } from 'vue';
 import axios from 'axios';
-
+import InformedConsent from '@/views/InformedConsent/InformedConsent.vue';
 
 const filledSlots = ref(['2024-05-28', '2024-05-30']);
 
@@ -10,11 +10,17 @@ const minDate = new Date();
 
 
 
-
+const visibleInformedConsent = ref(false);
 // Selected date
 const selectedDate = ref(null);
 
+import { informedConsent } from '@/store/informedconsent';
 
+const informedConsentStore= informedConsent();
+
+const test= informedConsentStore.data;
+
+console.log('testing',test)
 const checkboxOptions = ref([
   '8:00 am - 9:00 am',
   '9:00 am - 10:00 am', 
@@ -95,12 +101,26 @@ watch(selectedDate, () => {
   selectedCategory.value = null;
 });
 
+// const openInformedConsent = () => {
+//     const width = 800;  // Desired width
+//     const height = 800; // Desired height
+//     const left = (window.screen.width / 2) - (width / 2);  // Center horizontally
+//     const top = (window.screen.height / 2) - (height / 2); // Center vertically
+
+//      // Construct the URL for the route
+//      const url = `${window.location.origin}/informedconsent/`+1;
+
+// // Open the new window/tab with the specified dimensions
+// window.open(url, 'InformedConsent', `width=${width},height=${height},top=${top},left=${left}`);
+// };
 </script>
 
 <template>
       <div class="grid p-fluid">
+        <!-- {{test}} -->
         <!-- {{ formattedSelectedDate }} -->
         <div class="col-12 md:col-12">
+              <Button label="Informed Consent" @click="visibleInformedConsent=true"/>
               <div class="field col-12 md:col-12">
                   <label>ID number</label>
                   <InputText id="firstname2" type="text" />
@@ -133,6 +153,14 @@ watch(selectedDate, () => {
               <!-- {{ selectedCategories }} -->
         </div>
     </div>
+
+    <Dialog v-model:visible="visibleInformedConsent" modal header="Dental Health Record - Informed Consent" :style="{ width: '75%' }" :dismissableMask="true">
+        <InformedConsent/>
+        <div class="flex justify-content-end gap-2">
+            <!-- <Button type="button" label="Cancel" severity="secondary" @click="visibleInformedConsent = false"></Button> -->
+            <Button type="button" label="Save" @click="visibleInformedConsent = false"></Button>
+        </div>
+    </Dialog>
     
 </template>
 
