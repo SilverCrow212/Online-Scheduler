@@ -22,7 +22,7 @@ Signature:
 
 
 I understand that dentistry is not an exact science that no dentist can properly guarantee accurate results all the time.
-I hereby authorize the dentist to proced with and perform dental treatment/s as explained to me. I understand that these are subject to modifications on undiagnosable circumstances that may arise during the course of treatment. The treatment were properly explained to me and any untoward circumstances that may arise during the procedure, the attending dentist will not be held liable since it is my free will, with full trust and confidence in him/her, to undergo dental treatment under his/her care.
+I hereby authorize the dentist to proceed with and perform dental treatment/s as explained to me. I understand that these are subject to modifications on undiagnosable circumstances that may arise during the course of treatment. The treatment were properly explained to me and any untoward circumstances that may arise during the procedure, the attending dentist will not be held liable since it is my free will, with full trust and confidence in him/her, to undergo dental treatment under his/her care.
 
 Patient Signature:
 Date:
