@@ -46,11 +46,6 @@ const router = createRouter({
                     name: 'record',
                     component: () => import('@/views/PatientDetails/Record.vue')
                 },
-                {
-                    path: '/informedconsent/:id',
-                    name: 'informedconsent',
-                    component: () => import('@/views/InformedConsent/InformedConsent.vue')
-                },
             ]
         },
         {
@@ -67,7 +62,12 @@ const router = createRouter({
                     path: 'print/record',
                     name: 'printrecord',
                     component: () => import('@/views/printouts/PatientRecord.vue')
-
+                    
+                },
+                {
+                    path: '/informedconsent/:id',
+                    name: 'informedconsent',
+                    component: () => import('@/views/InformedConsent/InformedConsent.vue')
                 },
             ]
         },
