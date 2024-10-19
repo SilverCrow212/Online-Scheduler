@@ -1,6 +1,17 @@
 import { defineStore } from 'pinia';
 import { Fragment, ref } from 'vue';
 
+
+
+export const login = defineStore('login', () => {
+    const loginDetails = ref({
+        school_id_number:null,
+        password:null
+     },
+    );
+    return { loginDetails };
+});
+
 export const user = defineStore('user', () => {
     const userDetails = ref({
         id: null, 
