@@ -23,5 +23,10 @@ export const createacc = defineStore('createacc', () => {
         updated_at:null, 
         created_at:null },
     );
-    return { accDetails };
+    const resetAccDetails = () => {
+        Object.keys(accDetails).forEach(key => {
+            accDetails[key] = '';
+        });
+    };
+    return { accDetails, resetAccDetails };
 });
