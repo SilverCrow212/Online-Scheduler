@@ -219,3 +219,32 @@ export const oralHygieneChoices = defineStore('oralHygieneChoices', () => {
     ]);
     return { legend };
 });
+
+export const departmentChoices = defineStore('departmentChoices', () => {
+    const department = ref([
+        {name: "College of Agriculture", id:1},
+        {name: "College of Arts and Humanities", id:2},
+        {name: "College of Engineering", id:3},
+        {name: "College of Forestry", id:4},
+        {name: "College of Home Economics and Technology", id:5},
+        {name: "College of Human Kinetics", id:6},
+        {name: "College of Information Sciences", id:7},
+        {name: "College of Natural Sciences", id:8},
+        {name: "College of Numeracy and Applied Sciences", id:9},
+        {name: "College of Nursing", id:10},
+        {name: "College of Public Administration and Governance", id:11},
+        {name: "College of Social Sciences", id:12},
+        {name: "College of Teacher Education", id:13},
+        {name: "College of Veterinary Medicine", id:14},
+        {name: "Open University", id:15},
+        {name: "Elementary", id:16},
+        {name: "Highschool", id:17},
+        {name: "Senior High School", id:18},
+    ]);
+
+    const type = ref([
+        { name: 'Student', id:1 },
+        { name: 'Faculty', id:2 },
+    ]);
+    return { department, type };
+});
