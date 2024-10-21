@@ -1,31 +1,50 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import {createacc} from '@/store/createacc'
+import { createacc } from '@/store/createacc';
+import { departmentChoices } from '@/store/choices';
 
+const departmentStore = departmentChoices();
 const createAccStore = createacc();
-const createaccount = createAccStore.accDetails
+const createaccount = createAccStore.accDetails;
+const typeChoice = departmentStore.type;
+const departmentChoice = departmentStore.department;
 
-// State
 const router = useRouter();
+const validationErrors = ref({});
+
 const goBack = () => {
     router.push({ name: 'login' }); // Adjust the route name as needed
 };
 
-const dropdownItems = ref([
-    { name: 'Option 1', code: 'Option 1' },
-    { name: 'Option 2', code: 'Option 2' },
-    { name: 'Option 3', code: 'Option 3' }
-]);
+const validateForm = () => {
+    validationErrors.value = {};
 
+    if (!createaccount.school_id_number) {
+        validationErrors.value.school_id_number = 'ID number is required.';
+    }
+    if (!createaccount.firstname) {
+        validationErrors.value.firstname = 'First name is required.';
+    }
+    if (!createaccount.lastname) {
+        validationErrors.value.lastname = 'Last name is required.';
+    }
+    if (!createaccount.email) {
+        validationErrors.value.email = 'Email is required.';
+    } else if (!/\S+@\S+\.\S+/.test(createaccount.email)) {
+        validationErrors.value.email = 'Email is not valid.';
+    }
+    if (!createaccount.password) {
+        validationErrors.value.password = 'Password is required.';
+    }
 
-const type = ref([
-    { name: 'Student', id:1 },
-    { name: 'Faculty', id:2 },
-]);
-const typeInput = ref(null);
-const dropdownItem = ref(null);
-
+    if (Object.keys(validationErrors.value).length === 0) {
+        // Submit the form if there are no validation errors
+        createAccStore.resetAccDetails();
+        console.log('Form submitted:', createaccount);
+        goBack(); // You can replace this with your form submission logic
+    }
+};
 </script>
 
 <template>
@@ -35,23 +54,31 @@ const dropdownItem = ref(null);
             <div class="p-fluid formgrid grid">
                 <div class="field col-12 md:col-6">
                     <label>ID number</label>
-                    <InputText v-model="createaccount.school_id_number" type="text" />
+                    <InputText v-model="createaccount.school_id_number" type="text" :class="{'p-invalid': validationErrors.school_id_number}" />
+                    <small v-if="validationErrors.school_id_number" class="p-error">{{ validationErrors.school_id_number }}</small>
                 </div>
                 <div class="field col-12 md:col-6">
                     <label>Password</label>
-                    <Password v-model="createaccount.password" :toggleMask="true" class="w-full mb-3" inputClass="w-full"></Password>
-                </div>
-                <div class="field col-12 md:col-6">
-                    <label>Firstname</label>
-                    <InputText v-model="createaccount.firstname" id="firstname" type="text" />
-                </div>
-                <div class="field col-12 md:col-6">
-                    <label>Lastname</label>
-                    <InputText v-model="createaccount.lastname" type="text" />
+                    <Password v-model="createaccount.password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.password}" />
+                    <small v-if="validationErrors.password" class="p-error">{{ validationErrors.password }}</small>
                 </div>
                 <div class="field col-12 md:col-4">
-                    <label >Type</label>
-                    <Dropdown v-model="createaccount.type" :options="type" optionLabel="name" optionValue="id" placeholder="Select One"></Dropdown>
+                    <label>Firstname</label>
+                    <InputText v-model="createaccount.firstname" type="text" :class="{'p-invalid': validationErrors.firstname}" />
+                    <small v-if="validationErrors.firstname" class="p-error">{{ validationErrors.firstname }}</small>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label>Middlename</label>
+                    <InputText v-model="createaccount.middlename" type="text" />
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label>Lastname</label>
+                    <InputText v-model="createaccount.lastname" type="text" :class="{'p-invalid': validationErrors.lastname}" />
+                    <small v-if="validationErrors.lastname" class="p-error">{{ validationErrors.lastname }}</small>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label>Type</label>
+                    <Dropdown v-model="createaccount.type" :options="typeChoice" optionLabel="name" optionValue="id" placeholder="Select One"/>
                 </div>
                 <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
                     <label>Student Type</label>
@@ -66,8 +93,8 @@ const dropdownItem = ref(null);
                     <InputText v-model="createaccount.office_level" type="text" />
                 </div>
                 <div v-else class="field col-12 md:col-4">
-                    <label >Office / College</label>
-                    <InputText v-model="createaccount.office_level" type="text" />
+                    <label>Office / College</label>
+                    <Dropdown v-model="createaccount.office_level" :options="departmentChoice" optionLabel="name" optionValue="id" placeholder="Select One"/>
                 </div>
                 <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
                     <label>Program</label>
@@ -79,7 +106,8 @@ const dropdownItem = ref(null);
                 </div>
                 <div class="field col-12 md:col-4">
                     <label>Email</label>
-                    <InputText v-model="createaccount.email" type="text" />
+                    <InputText v-model="createaccount.email" type="text" :class="{'p-invalid': validationErrors.email}" />
+                    <small v-if="validationErrors.email" class="p-error">{{ validationErrors.email }}</small>
                 </div>
                 <div class="field col-12 md:col-4">
                     <label>Contact Number</label>
@@ -94,7 +122,7 @@ const dropdownItem = ref(null);
                     <InputText v-model="createaccount.guardian" type="text" />
                 </div>
                 <div class="field col-12 md:col-4">
-                    <label>Contact Number</label>
+                    <label>Guardian Contact Number</label>
                     <InputText v-model="createaccount.guardian_no" type="text" />
                 </div>
                 <div class="field col-12">
@@ -107,10 +135,19 @@ const dropdownItem = ref(null);
                 </div>
                 <div class="field col-12 flex justify-content-end gap-2">
                     <Button label="Back" @click="goBack" />
-                    <Button label="Submit" @click="goBack"/>
+                    <Button label="Submit" @click="validateForm"/>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
+
+<style>
+.p-error {
+    color: red;
+}
+.p-invalid {
+    border-color: red;
+}
+</style>
