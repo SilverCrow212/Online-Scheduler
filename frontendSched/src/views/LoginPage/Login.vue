@@ -4,7 +4,7 @@ import { ref, computed } from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-import { Login } from '@/api/LoginApi'; 
+import { Login } from '@/api/ApiLogin'; 
 import { login } from '@/store/user';
 const loginStore = login();
 
