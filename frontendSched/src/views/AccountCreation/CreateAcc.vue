@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { createacc } from '@/store/createacc';
 import { departmentChoices } from '@/store/choices';
+import { CreateAcc } from '@/api/ApiLogin';
 
 const departmentStore = departmentChoices();
 const createAccStore = createacc();
@@ -17,7 +18,7 @@ const goBack = () => {
     router.push({ name: 'login' }); // Adjust the route name as needed
 };
 
-const validateForm = () => {
+const validateForm = async () => {
     validationErrors.value = {};
 
     if (!createaccount.school_id_number) {
@@ -40,6 +41,7 @@ const validateForm = () => {
 
     if (Object.keys(validationErrors.value).length === 0) {
         // Submit the form if there are no validation errors
+        await CreateAcc(createaccount);
         createAccStore.resetAccDetails();
         console.log('Form submitted:', createaccount);
         goBack(); // You can replace this with your form submission logic

@@ -11,10 +11,6 @@ const loginStore = login();
 const loginDetails = loginStore.loginDetails;
 
 const { layoutConfig } = useLayout();
-// const login = ref({
-//     school_id_number : null,
-//     password: null
-// })
 const idnum = ref('');
 const password = ref('');
 const checked = ref(false);
@@ -35,7 +31,6 @@ async function handleLogin() {
 </script>
 
 <template>
-    <!-- {{ loginDetails }} -->
     <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
         <div class="flex flex-column align-items-center justify-content-center">
             <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
