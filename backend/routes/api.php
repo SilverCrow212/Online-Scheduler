@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TeethController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -69,4 +70,14 @@ Route::middleware('auth:sanctum')->group (function (){
         Route::get('/index', [TeethController::class, 'index']);
     });
 
+
+
+});
+
+// USER REGISTRATION
+Route::prefix('user')->group(function () {
+    Route::post('/register', [UserManagementController::class, 'register']);
+    Route::post('/update/{patient_id}', [UserManagementController::class, 'update']);
+    Route::get('/fetch/{patient_id}', [UserManagementController::class, 'fetch']);
+    Route::get('/index', [UserManagementController::class, 'index']);
 });
