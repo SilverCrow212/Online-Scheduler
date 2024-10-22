@@ -15,24 +15,6 @@ const medicalHistory = informedConsentStore.data.medicalHistory;
 const preconsent = informedConsentStore.data.preconsent;
 const finalconsent = informedConsentStore.data.finalconsent;
 
-// function handleBeforeUnload(event) {
-//     event.preventDefault();
-//     event.returnValue = ''; // Show confirmation dialog
-// }
-
-// onMounted(() => {
-//     window.addEventListener('beforeunload', handleBeforeUnload);
-// });
-
-// onBeforeUnmount(() => {
-//     window.removeEventListener('beforeunload', handleBeforeUnload);
-// });
-// function closeTab() {
-//     const confirmation = confirm("Are you sure you want to close this tab?");
-//     if (confirmation) {
-//         window.close();
-//     }
-// }
 </script>
 
 <template>
