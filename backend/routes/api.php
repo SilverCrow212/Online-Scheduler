@@ -40,7 +40,6 @@ Route::post('/login', function (Request $request) {
     return response()->json(['message' => 'Invalid credentials'], 401);
 });
 
-Route::post('/createacc', [UserManagementController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group (function (){
 
