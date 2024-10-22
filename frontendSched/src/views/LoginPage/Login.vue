@@ -25,9 +25,25 @@ function createAccount(){
 }
 
 async function handleLogin() {
-    console.log('asd',loginDetails)
-    await Login(loginDetails);
+    console.log('Login details:', loginDetails);
+    try {
+        const result = await Login(loginDetails);
+        
+        // Check if the result is defined and has a token
+        if (result) { // Adjust according to your API response
+            localStorage.setItem('token', result); // Store the token
+            console.log('Token stored:', result);
+            await router.push({ name: 'dashboard' }); // Redirect to dashboard
+        } else {
+            console.error('Login failed: No token returned');
+            // Optionally show an error message to the user
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        // Optionally show an error message to the user
+    }
 }
+
 </script>
 
 <template>
