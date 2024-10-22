@@ -25,21 +25,25 @@ const onTopBarMenuButton = () => {
     router.push({ name: 'editprofile', params: { id: 1 } });
     topbarMenuActive.value = !topbarMenuActive.value;
 };
-const onSettingsClick = async() => {
-    // console.log("Navigating to edit profile...");
-    
-    try{
-        const receive = await axios.post('http://192.168.7.69:8001/api/logout', login.value)
-        console.log(receive,'logged in');
-        router.push({ name: 'dashboard' });
+const onLogout = async () => {
+    try {
+        // Optionally send a logout request to the server
+        await axios.post('http://192.168.7.69:8001/api/logout', login.value);
+        console.log('Logged out successfully');
+    } catch (err) {
+        console.error('Error during logout:', err);
+    } finally {
+        // Remove the token from local storage
+        localStorage.removeItem('token');
+        
+        // Redirect to the login page
+        router.push({ name: 'login' });
+        
+        // Optional: Reset any other state as needed
+        topbarMenuActive.value = false;
     }
-    catch(err){
-        console.error('error',err)
-    }
-    router.push({ name: 'login' });
-    topbarMenuActive.value = false;
-    
 };
+
 const topbarMenuClasses = computed(() => {
     return {
         'layout-topbar-menu-mobile-active': topbarMenuActive.value
@@ -96,7 +100,7 @@ const isOutsideClicked = (event) => {
                 <i class="pi pi-user"></i>
                 <span>Profile</span>
             </button>
-            <button @click="onSettingsClick()" class="p-link layout-topbar-button">
+            <button @click="onLogout()" class="p-link layout-topbar-button">
                 <i class="pi pi-sign-out"></i>
                 <span>Sign Out</span>
             </button>
