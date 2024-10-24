@@ -1,10 +1,18 @@
 <script setup>
-import { ref,computed,watch } from 'vue';
+import { ref,computed,watch,onMounted } from 'vue';
+import { fetchDashboardDataAdmin } from '@/api/ApiDashboard';
+const date = ref(null);
+const values = ref();
+onMounted(async () => {
+   values.value = await fetchDashboardDataAdmin(date.value);
+});
+
 
 </script>
 
 <template>
 <div class="grid">
+    {{ date }}
     <div class="col-12 lg:col-6 xl:col-4">
         <div class="card mb-0">
             <div class="flex justify-content-between mb-3">

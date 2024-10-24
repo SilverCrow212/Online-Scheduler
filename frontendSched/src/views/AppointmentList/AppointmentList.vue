@@ -4,6 +4,11 @@ import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue'
 import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue'
 import {useRouter} from 'vue-router'
 import { FilterMatchMode } from 'primevue/api';
+import { fetchAppointment } from '@/api/ApiAppointment';
+const values = ref();
+onMounted(async () => {
+   values.value = await fetchDashboardDataAdmin(date.value);
+});
 // import { ProductService } from '@/service/ProductService';
 
 // onMounted(() => {
