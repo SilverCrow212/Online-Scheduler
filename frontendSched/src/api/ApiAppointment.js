@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export async function fetchDashboardDataAdmin(date) {
+export async function fetchAppointment(date) {
   try {
     const token = localStorage.getItem('token');
 
