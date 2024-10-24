@@ -46,7 +46,7 @@ const selectedCategory = ref(null);
 
 const sampleDates = ref(
   [
-    {date: '10/03/2024' , available_time: [
+    {date: '10/26/2024' , available_time: [
       '8:00 am - 9:00 am',
       '9:00 am - 10:00 am', 
       '10:00 am - 11:00 am',
@@ -56,7 +56,7 @@ const sampleDates = ref(
       '3:00 pm - 4:00 pm',
       ]
     },
-    {date: '10/04/2024' , available_time: [
+    {date: '10/27/2024' , available_time: [
       '9:00 am - 10:00 am', 
       '10:00 am - 11:00 am',
       '11:00 am - 12:00 pm',
@@ -117,9 +117,9 @@ watch(selectedDate, () => {
 
 <template>
       <div class="grid p-fluid">
-        <!-- {{test}} -->
         <!-- {{ formattedSelectedDate }} -->
         <div class="col-12 md:col-12">
+          <!-- {{selectedCategory}} -->
               <Button label="Informed Consent" @click="visibleInformedConsent=true"/>
               <div class="field col-12 md:col-12">
                   <label>ID number</label>
@@ -133,6 +133,7 @@ watch(selectedDate, () => {
                   :showButtonBar="true"
                   v-model="selectedDate"
                   :min-date="minDate"
+                  dateFormat="mm/dd/yy"
                   :disabled-dates="disabledDates"
                 />
               </div>
