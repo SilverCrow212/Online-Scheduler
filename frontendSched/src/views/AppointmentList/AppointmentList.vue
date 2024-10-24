@@ -6,20 +6,6 @@ import {useRouter} from 'vue-router'
 import { FilterMatchMode } from 'primevue/api';
 import { fetchAppointment } from '@/api/ApiAppointment';
 const values = ref();
-onMounted(async () => {
-   values.value = await fetchDashboardDataAdmin(date.value);
-});
-// import { ProductService } from '@/service/ProductService';
-
-// onMounted(() => {
-//     ProductService.getProductsMini().then((data) => (products.value = data));
-// });
-
-const products = ref();
-const selectedPatient = ref(null);
-const metaKey = ref(true);
-const router = useRouter();
-const visible = ref(false);
 const patients = ref(
     [{id:'1', name:'Doe, John Jr.', time:'8:00 am - 9:00 am', department:'College of Agriculture'},
     {id:'2', name:'Curtis, Anne', time:'9:00 am - 10:00 am', department:'College of Information Sciences'},
@@ -27,6 +13,17 @@ const patients = ref(
 
     ]
 );
+
+onMounted(async () => {
+   values.value = await fetchDashboardDataAdmin(formattedDate.value);
+//    patients.value = await fetchDashboardDataAdmin(date.value);
+});
+
+const products = ref();
+const selectedPatient = ref(null);
+const metaKey = ref(true);
+const router = useRouter();
+const visible = ref(false);
 
 function dialogOpen(event) {
     console.log('Row clicked', event.data);
@@ -47,9 +44,9 @@ const formattedDate = computed(() => {
     const inputDate = new Date(date.value);
     return `${inputDate.getMonth() + 1}/${inputDate.getDate()}/${inputDate.getFullYear()}`;
 });
-
+console.log('formatted Date', formattedDate.value)
 const visibleSetAppointment = ref(false);
-
+function getData(){}
 
 
 
@@ -61,7 +58,7 @@ const filters = ref({
 
 <template>
     <div class="grid">
-        <!-- {{ formattedDate }} -->
+        {{ formattedDate }}
         <div class="col-12">
             <div class="card">
                 <div class="flex justify-content-between align-items-center">
