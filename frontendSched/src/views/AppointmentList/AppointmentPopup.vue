@@ -128,6 +128,7 @@ watch(selectedDate, () => {
                   :min-date="minDate"
                   dateFormat="mm/dd/yy"
                   :disabled-dates="disabledDates"
+                  :disabledDays="[0, 6]"
                 />
               </div>
               <div class="field col-12 md:col-12"  v-if="selectedDate!==null">
