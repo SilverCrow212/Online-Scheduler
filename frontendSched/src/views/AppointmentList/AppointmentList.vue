@@ -1,29 +1,37 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue'
-import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue'
-import {useRouter} from 'vue-router'
+import { ref, onMounted, computed, watch } from 'vue';
+import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue';
+import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue';
+import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
-import { fetchAppointment } from '@/api/ApiAppointment';
+import { fetchDashboardDataAdmin } from '@/api/ApiAppointment';
+
 const values = ref();
-const patients = ref(
-    [{id:'1', name:'Doe, John Jr.', time:'8:00 am - 9:00 am', department:'College of Agriculture'},
-    {id:'2', name:'Curtis, Anne', time:'9:00 am - 10:00 am', department:'College of Information Sciences'},
-    {id:'3', name:'Reyes, Raul', time:'10:00 am - 11:00 am', department:'Office of Student Affairs'}
+const patients = ref([
+    { id: '1', name: 'Doe, John Jr.', time: '8:00 am - 9:00 am', department: 'College of Agriculture' },
+    { id: '2', name: 'Curtis, Anne', time: '9:00 am - 10:00 am', department: 'College of Information Sciences' },
+    { id: '3', name: 'Reyes, Raul', time: '10:00 am - 11:00 am', department: 'Office of Student Affairs' }
+]);
 
-    ]
-);
-
-onMounted(async () => {
-   values.value = await fetchDashboardDataAdmin(formattedDate.value);
-//    patients.value = await fetchDashboardDataAdmin(date.value);
-});
-
-const products = ref();
 const selectedPatient = ref(null);
 const metaKey = ref(true);
 const router = useRouter();
-const visible = ref(false);
+const today = new Date();
+const date = ref(today);
+const formattedDate = computed(() => {
+    if (!date.value) return '';
+    const inputDate = new Date(date.value);
+    return `${inputDate.getMonth() + 1}/${inputDate.getDate()}/${inputDate.getFullYear()}`;
+});
+const visibleSetAppointment = ref(false);
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+});
+
+onMounted(async () => {
+    values.value = await fetchDashboardDataAdmin(formattedDate.value);
+});
 
 function dialogOpen(event) {
     console.log('Row clicked', event.data);
@@ -36,24 +44,11 @@ function dialogOpen(event) {
     }
 }
 
-
-const today = new Date();
-const date = ref(today);
-const formattedDate = computed(() => {
-    if (!date.value) return '';
-    const inputDate = new Date(date.value);
-    return `${inputDate.getMonth() + 1}/${inputDate.getDate()}/${inputDate.getFullYear()}`;
+watch(date, async (newValue, oldValue) => {
+    console.log('Date changed from', oldValue, 'to', newValue);
+    values.value = await fetchDashboardDataAdmin(formattedDate.value);
 });
-console.log('formatted Date', formattedDate.value)
-const visibleSetAppointment = ref(false);
-function getData(){}
 
-
-
-const filters = ref({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-});
 </script>
 
 <template>

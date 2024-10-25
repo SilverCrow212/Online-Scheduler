@@ -5,13 +5,10 @@ import InformedConsent from '@/views/InformedConsent/InformedConsent.vue';
 
 const filledSlots = ref(['2024-05-28', '2024-05-30']);
 
-
 const minDate = new Date();
 
-
-
 const visibleInformedConsent = ref(false);
-// Selected date
+
 const selectedDate = ref(null);
 
 import { informedConsent } from '@/store/informedconsent';
@@ -40,7 +37,6 @@ const formatDate = (date) => {
   const year = date.getFullYear();
   return `${month}/${day}/${year}`;
 };
-const selectedCategories=ref();
 
 const selectedCategory = ref(null);
 
@@ -68,9 +64,6 @@ const sampleDates = ref(
   ]
 );
 
-const selecteDates = [ 
-
-];
 
 const stringToDate = (dateString) => {
   const [month, day, year] = dateString.split('/').map(Number);
