@@ -58,7 +58,7 @@ watch(date, async (newValue, oldValue) => {
             <div class="card">
                 <div class="flex justify-content-between align-items-center">
                     <div>
-                        <Calendar v-model="date" dateFormat="mm/dd/yy"/>
+                        <Calendar v-model="date" dateFormat="mm/dd/yy" :disabledDays="[0, 6]" />
                     </div>
                     <div>
                         <Button label="Add New Appointment" @click="visibleSetAppointment = true" />

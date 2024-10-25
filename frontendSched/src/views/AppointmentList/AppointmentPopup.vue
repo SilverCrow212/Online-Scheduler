@@ -94,18 +94,6 @@ watch(selectedDate, () => {
   selectedCategory.value = null;
 });
 
-// const openInformedConsent = () => {
-//     const width = 800;  // Desired width
-//     const height = 800; // Desired height
-//     const left = (window.screen.width / 2) - (width / 2);  // Center horizontally
-//     const top = (window.screen.height / 2) - (height / 2); // Center vertically
-
-//      // Construct the URL for the route
-//      const url = `${window.location.origin}/informedconsent/`+1;
-
-// // Open the new window/tab with the specified dimensions
-// window.open(url, 'InformedConsent', `width=${width},height=${height},top=${top},left=${left}`);
-// };
 </script>
 
 <template>
