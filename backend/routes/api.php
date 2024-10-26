@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TeethController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\HolidayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/tokens/create', function (Request $request) {
     $credentials = $request->only('school_id_number', 'password');
-
     if (Auth::attempt($credentials)) {
         $user = Auth::user();
         $token = $user->createToken('my-token');
@@ -55,13 +55,13 @@ Route::middleware('auth:sanctum')->group (function (){
         return response()->json(['message' => 'User not authenticated'], 401);
     });
 
-
-    Route::post('/user', function (Request $request) {
-        if ($request->user()) {
-            return 'UKI BALAY BUTU';
-        }
+    // GET USER DETAILS
+    Route::prefix('user')->group(function () {
+        Route::get('/user_details', [UserManagementController::class, 'user_details']);
+        Route::put('/user_details_update', [UserManagementController::class, 'user_details_update']);
     });
 
+    // TEETH
     Route::prefix('teeth')->group(function () {
         Route::post('/store', [TeethController::class, 'store']);
         Route::post('/update/{patient_id}', [TeethController::class, 'update']);
@@ -69,14 +69,17 @@ Route::middleware('auth:sanctum')->group (function (){
         Route::get('/index', [TeethController::class, 'index']);
     });
 
-
+    // HOLIDAYS
+    Route::prefix('holiday')->group(function () {
+        Route::get('/show', [HolidayController::class, 'show']);
+        Route::post('/store', [HolidayController::class, 'store']);
+        Route::put('/update', [HolidayController::class, 'update']);
+        Route::delete('/delete', [HolidayController::class, 'delete']);
+    });
 
 });
 
-// USER REGISTRATION
+// USER ACCOUNT REGISTRATION
 Route::prefix('user')->group(function () {
     Route::post('/register', [UserManagementController::class, 'register']);
-    Route::post('/update/{patient_id}', [UserManagementController::class, 'update']);
-    Route::get('/fetch/{patient_id}', [UserManagementController::class, 'fetch']);
-    Route::get('/index', [UserManagementController::class, 'index']);
 });

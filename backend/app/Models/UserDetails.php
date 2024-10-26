@@ -28,6 +28,7 @@ class UserDetails extends Model
         'guardian',
         'guardian_no',
         'permanent_address',
-        'bsu_address'
+        'bsu_address',
+        'age'
     ];
 }
