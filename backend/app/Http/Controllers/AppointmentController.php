@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\InformedConsent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -40,11 +41,10 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $r)
+    public function show_all(Request $r)
     {
         return Appointment::where([
-            'user_details_id'=> $r->user_details_id,
-            'status'=> 'A',
+            'user_details_id'=> $r->user_details_id
         ])->get();
     }
     public function show_date(Request $r)
@@ -91,5 +91,37 @@ class AppointmentController extends Controller
     public function delete(Request $r)
     {
         return Appointment::where('id', $r->id)->delete();
+    }
+
+    public function store_informed_consent(Request $r)
+    {
+        $informedConsent = InformedConsent::create([
+            'user_details_id' => $r->user_details_id,
+            'details' => json_encode($r->details),
+            'dental_history' => json_encode($r->dentalHistory),
+            'medical_history' => json_encode($r->medicalHistory),
+            'vitals' => json_encode($r->vitals),
+            'pre_consent' => json_encode($r->preconsent),
+            'final_consent' => json_encode($r->finalconsent),
+        ]);
+
+        if($informedConsent){
+            $status = 'success';
+            $message = 'Consent Created!';
+        }else{
+            $status = 'failed';
+            $message = 'Failed to create consent!';
+        }
+
+        return json_encode([
+            'status'=> $status,
+            'message'=> $message
+        ]);
+    }
+    public function get_informed_consent($id)
+    {
+        $informedConsent = InformedConsent::findOrFail($id);
+
+        return response()->json($informedConsent);
     }
 }

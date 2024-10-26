@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/tokens/create', function (Request $request) {
+// USE THIS FOR TESTING PURPOSES ONLY ---DELETE THIS ROUTE LATER
     $credentials = $request->only('school_id_number', 'password');
     if (Auth::attempt($credentials)) {
         $user = Auth::user();
@@ -30,6 +31,7 @@ Route::post('/tokens/create', function (Request $request) {
     return response()->json(['message' => 'Invalid credentials'], 401);
 });
 
+// USER LOGIN
 Route::post('/login', function (Request $request) {
     $credentials = $request->only('school_id_number', 'password');
 
@@ -42,9 +44,15 @@ Route::post('/login', function (Request $request) {
     return response()->json(['message' => 'Invalid credentials'], 401);
 });
 
+// USER ACCOUNT REGISTRATION
+Route::prefix('user')->group(function () {
+    Route::post('register', [UserManagementController::class, 'register']);
+});
+
 
 Route::middleware('auth:sanctum')->group (function (){
 
+    // USER LOGOUT
     Route::post('/logout', function (Request $request) {
         // Check if the user is authenticated
         if ($user = $request->user()) {
@@ -79,13 +87,16 @@ Route::middleware('auth:sanctum')->group (function (){
         Route::delete('delete', [HolidayController::class, 'delete']);
     });
 
-    // APPOINTMENT
+    // APPOINTMENT PER PATIENT
     Route::prefix('appointment')->group(function () {
-        Route::get('show', [AppointmentController::class, 'show']);
+        Route::get('show_all', [AppointmentController::class, 'show_all']);
         Route::get('show_date', [AppointmentController::class, 'show_date']);
         Route::post('store', [AppointmentController::class,'store']);
         Route::put('update', [AppointmentController::class,'update']);
         Route::delete('delete', [AppointmentController::class,'delete']);
+        // CONSENT
+        Route::post('store_informed_consent', [AppointmentController::class,'store_informed_consent']);
+        Route::post('get_informed_consent/{id}', [AppointmentController::class,'get_informed_consent']);
     });
 
     // Dashboard
@@ -94,9 +105,7 @@ Route::middleware('auth:sanctum')->group (function (){
         // add something later
     });
 
-});
+    // SHOW ALL PATIENTS
+    Route::get('all_patients', [PatientController::class,'all_patients']);
 
-// USER ACCOUNT REGISTRATION
-Route::prefix('user')->group(function () {
-    Route::post('register', [UserManagementController::class, 'register']);
 });

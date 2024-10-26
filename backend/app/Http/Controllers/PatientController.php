@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-    public function total_patients(){
+    public function total_patients()
+    {
         $total_patients = User::where('user_type', 'user')->count();
 
         $total_appointments_today = Appointment::where('appointment_date',Carbon::parse(now())->format('Y-m-d'))->count();
@@ -24,5 +25,9 @@ class PatientController extends Controller
             'total_appointments_today'=> $total_appointments_today,
             'total_appointments_this_week'=> $total_appointments_this_week
         ]);
+    }
+
+    public function all_patients(){
+        return User::where('user_type','user')->get();
     }
 }
