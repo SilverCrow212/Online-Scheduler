@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
+import {fetchAllPatient} from '@/api/ApiPatientRecords';
 // import { ProductService } from '@/service/ProductService';
 
 // onMounted(() => {
@@ -18,7 +19,6 @@ const patients = ref(
     [{id:'1', name:'Doe, John Jr.', type:'Student', department:'College of Agriculture'},
     {id:'2', name:'Curtis, Anne', type:'Faculty', department:'College of Information Sciences'},
     {id:'3', name:'Reyes, Raul', type:'Staff', department:'Office of Student Affairs'}
-
     ]
 );
 
@@ -84,21 +84,7 @@ window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top
                 <Button type="button" label="Print Record" icon="pi pi-profile" size="small" @click="openProfileWindow()" />
             </span>
         </div>
-            
-            <!-- :loading="loading" @click="load"  -->
-            <!-- <div class="flex align-items-center gap-3 mb-3">
-                <label for="username" class="font-semibold w-6rem">Username</label>
-                <InputText id="username" class="flex-auto" v-model="selectedPatient.id" autocomplete="off" />
-            </div>
-            <div class="flex align-items-center gap-3 mb-5">
-                <label for="email" class="font-semibold w-6rem">Email</label>
-                <InputText id="email" class="flex-auto" autocomplete="off" />
-            </div> -->
             <PatientRecordTable/>
-            <!-- <div class="flex justify-content-end gap-2">
-                <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
-                <Button type="button" label="Save" @click="visible = false"></Button>
-            </div> -->
         </Dialog>
 </template>
 

@@ -78,6 +78,19 @@ const validateForm = async () => {
                     <InputText v-model="createaccount.lastname" type="text" :class="{'p-invalid': validationErrors.lastname}" />
                     <small v-if="validationErrors.lastname" class="p-error">{{ validationErrors.lastname }}</small>
                 </div>
+                <!-- <div class="field col-12 md:col-4">
+                    <label>Lastname</label>
+                    <InputText v-model="createaccount.lastname" type="text" :class="{'p-invalid': validationErrors.lastname}" />
+                    <small v-if="validationErrors.lastname" class="p-error">{{ validationErrors.lastname }}</small>
+                </div> -->
+                <div class="field col-12 md:col-4">
+                    <label>Age</label>
+                    <InputText v-model="createaccount.age" type="text" />
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label>Sex</label>
+                    <InputText v-model="createaccount.sex" type="text" />
+                </div>
                 <div class="field col-12 md:col-4">
                     <label>Type</label>
                     <Dropdown v-model="createaccount.type" :options="typeChoice" optionLabel="name" optionValue="id" placeholder="Select One"/>

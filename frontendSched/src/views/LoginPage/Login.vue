@@ -3,24 +3,17 @@ import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
-import { Login } from '@/api/ApiLogin'; 
-import { login } from '@/store/user';
+import { Login } from '@/api/ApiLogin';
+import { fetchUserData } from '@/api/ApiUser';
+import { login, user } from '@/store/user';
+
 const loginStore = login();
-
 const loginDetails = loginStore.loginDetails;
-
-const { layoutConfig } = useLayout();
-const idnum = ref('');
-const password = ref('');
-const checked = ref(false);
-
-const logoUrl = computed(() => {
-    return `/layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
-});
+const userStore = user();
 
 const router = useRouter();
-function createAccount(){
+
+function createAccount() {
     router.push({ name: 'createacc' });
 }
 
@@ -28,23 +21,37 @@ async function handleLogin() {
     console.log('Login details:', loginDetails);
     try {
         const result = await Login(loginDetails);
-        
-        // Check if the result is defined and has a token
-        if (result) { // Adjust according to your API response
-            localStorage.setItem('token', result); // Store the token
+
+        if (result) {
+            localStorage.setItem('token', result);
             console.log('Token stored:', result);
-            await router.push({ name: 'dashboard' }); // Redirect to dashboard
+
+            // Fetch user data after successful login
+            const userData = await fetchUserData();
+            console.log('Fetched user data:', userData);
+            
+            // Ensure userData is defined before accessing properties
+            if (userData && userData[0]) {
+                userStore.user_details.value = userData[0].user_details; // Store user details in your state/store
+                localStorage.setItem('user_details', JSON.stringify(userData[0]));
+                console.log('User details:', userStore.user_details.value);
+                await router.push({ name: 'dashboard' });
+            } else {
+                console.error('User data not found');
+                localStorage.removeItem('token');
+            }
         } else {
             console.error('Login failed: No token returned');
-            // Optionally show an error message to the user
+            localStorage.removeItem('token');
         }
     } catch (error) {
         console.error('Login error:', error);
-        // Optionally show an error message to the user
+        localStorage.removeItem('token');
     }
 }
-
 </script>
+
+
 
 <template>
     <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
