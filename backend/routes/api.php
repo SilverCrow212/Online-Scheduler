@@ -87,16 +87,18 @@ Route::middleware('auth:sanctum')->group (function (){
         Route::delete('delete', [HolidayController::class, 'delete']);
     });
 
-    // APPOINTMENT PER PATIENT
+    // APPOINTMENT
     Route::prefix('appointment')->group(function () {
+        // PER PATIENT
         Route::get('show_all', [AppointmentController::class, 'show_all']);
-        Route::get('show_date', [AppointmentController::class, 'show_date']);
         Route::post('store', [AppointmentController::class,'store']);
         Route::put('update', [AppointmentController::class,'update']);
         Route::delete('delete', [AppointmentController::class,'delete']);
         // CONSENT
         Route::post('store_informed_consent', [AppointmentController::class,'store_informed_consent']);
         Route::post('get_informed_consent/{id}', [AppointmentController::class,'get_informed_consent']);
+        // ALL APPOINTMENTS WITHIN A SPECIFIC DATE
+        Route::get('show_all_by_date', [AppointmentController::class, 'show_all_by_date']);
     });
 
     // Dashboard

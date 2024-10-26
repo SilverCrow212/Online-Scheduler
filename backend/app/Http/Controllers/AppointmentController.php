@@ -44,14 +44,15 @@ class AppointmentController extends Controller
     public function show_all(Request $r)
     {
         return Appointment::where([
+            // 'status'=> 'A',
             'user_details_id'=> $r->user_details_id
         ])->get();
     }
-    public function show_date(Request $r)
+    public function show_all_by_date(Request $r)
     {
         return Appointment::with('userDetails')
         ->where([
-            'status'=> 'A',
+            // 'status'=> 'A',
             'appointment_date' => Carbon::parse($r->date)->format('Y-m-d')
         ])->get();
     }
