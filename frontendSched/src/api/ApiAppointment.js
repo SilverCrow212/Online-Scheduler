@@ -4,7 +4,7 @@ export async function fetchDashboardDataAdmin(date) {
   try {
     const token = localStorage.getItem('token');
 
-    const response = await axios.post('/appointment', { date }, {
+    const response = await axios.get('/appointment/show_date', { params:{date} }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

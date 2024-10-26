@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\TeethController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\HolidayController;
@@ -81,9 +82,16 @@ Route::middleware('auth:sanctum')->group (function (){
     // APPOINTMENT
     Route::prefix('appointment')->group(function () {
         Route::get('show', [AppointmentController::class, 'show']);
+        Route::get('show_date', [AppointmentController::class, 'show_date']);
         Route::post('store', [AppointmentController::class,'store']);
         Route::put('update', [AppointmentController::class,'update']);
         Route::delete('delete', [AppointmentController::class,'delete']);
+    });
+
+    // Dashboard
+    Route::prefix('dashboard')->group(function () {
+        Route::get('total_patients', [PatientController::class, 'total_patients']);
+        // add something later
     });
 
 });

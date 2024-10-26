@@ -47,6 +47,14 @@ class AppointmentController extends Controller
             'status'=> 'A',
         ])->get();
     }
+    public function show_date(Request $r)
+    {
+        return Appointment::with('userDetails')
+        ->where([
+            'status'=> 'A',
+            'appointment_date' => Carbon::parse($r->date)->format('Y-m-d')
+        ])->get();
+    }
 
     /**
      * Update the specified resource in storage.

@@ -20,4 +20,9 @@ class Appointment extends Model
         "status",
         "updated_at"
     ];
+
+    public function userDetails()
+    {
+        return $this->hasOne(UserDetails::class, 'user_id', 'user_details_id');
+    }
 }

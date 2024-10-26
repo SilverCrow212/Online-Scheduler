@@ -28,7 +28,7 @@ CREATE TABLE `appointment` (
   `consent_form` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `enccode` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `appointment_date` date DEFAULT NULL,
-  `appointment_time` time DEFAULT NULL,
+  `appointment_time` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `status` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
-INSERT INTO `appointment` VALUES (1,3,'Y','123123','2024-01-25','08:00:00','A',NULL,NULL),(2,3,'Y','123124','2024-02-26','10:30:00','A','2024-10-25 22:17:57','2024-10-26 06:29:23');
+INSERT INTO `appointment` VALUES (1,2,'Y','123123','2024-10-26','08:00:00','A',NULL,NULL),(2,3,'Y','123124','2024-10-28','10:30:00','A','2024-10-25 22:17:57','2024-10-26 06:29:23');
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -345,7 +345,7 @@ CREATE TABLE `personal_access_tokens` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -354,7 +354,7 @@ CREATE TABLE `personal_access_tokens` (
 
 LOCK TABLES `personal_access_tokens` WRITE;
 /*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
-INSERT INTO `personal_access_tokens` VALUES (11,'App\\Models\\User',3,'my-token','c8ea20b708ba1e08d3443100bde700af428ff05fe490fab98e43b0fbfda53993','[\"*\"]','2024-10-22 02:09:47',NULL,'2024-10-22 02:09:03','2024-10-22 02:09:47'),(12,'App\\Models\\User',3,'my-token','07e2d30877652eca325e49a3bfc0720062296f8c6f6a0b0e68964188fc27c1ec','[\"*\"]',NULL,NULL,'2024-10-22 02:12:41','2024-10-22 02:12:41'),(13,'App\\Models\\User',9,'my-token','8e011ce87779e9afdc5f5c21439ad87e4793e36474b92c235d1fcd58f69cbdc0','[\"*\"]',NULL,NULL,'2024-10-22 02:26:28','2024-10-22 02:26:28'),(14,'App\\Models\\User',10,'my-token','9228e59bb06d24dafc8941bfc44073baa31cca50438e05bd8c94591370a65d52','[\"*\"]',NULL,NULL,'2024-10-22 02:29:41','2024-10-22 02:29:41'),(15,'App\\Models\\User',3,'my-token','03de6979446d24afc648addf95b6f459d4a2eab4f113f8a5ec54d54b525cf7cf','[\"*\"]',NULL,NULL,'2024-10-25 20:13:34','2024-10-25 20:13:34'),(16,'App\\Models\\User',3,'my-token','91faed364c6c944fbc2e68cdfe480a7aaaada1eb16258475c3ab967aa005b1a6','[\"*\"]','2024-10-25 22:12:26',NULL,'2024-10-25 20:13:50','2024-10-25 22:12:26'),(17,'App\\Models\\User',3,'my-token','aefb772ad81675279ce79b0343aa431e6b94f5c7dddbb8daf2bb767325886372','[\"*\"]','2024-10-25 22:29:26',NULL,'2024-10-25 22:17:34','2024-10-25 22:29:26');
+INSERT INTO `personal_access_tokens` VALUES (11,'App\\Models\\User',3,'my-token','c8ea20b708ba1e08d3443100bde700af428ff05fe490fab98e43b0fbfda53993','[\"*\"]','2024-10-22 02:09:47',NULL,'2024-10-22 02:09:03','2024-10-22 02:09:47'),(12,'App\\Models\\User',3,'my-token','07e2d30877652eca325e49a3bfc0720062296f8c6f6a0b0e68964188fc27c1ec','[\"*\"]',NULL,NULL,'2024-10-22 02:12:41','2024-10-22 02:12:41'),(13,'App\\Models\\User',9,'my-token','8e011ce87779e9afdc5f5c21439ad87e4793e36474b92c235d1fcd58f69cbdc0','[\"*\"]',NULL,NULL,'2024-10-22 02:26:28','2024-10-22 02:26:28'),(14,'App\\Models\\User',10,'my-token','9228e59bb06d24dafc8941bfc44073baa31cca50438e05bd8c94591370a65d52','[\"*\"]',NULL,NULL,'2024-10-22 02:29:41','2024-10-22 02:29:41'),(15,'App\\Models\\User',3,'my-token','03de6979446d24afc648addf95b6f459d4a2eab4f113f8a5ec54d54b525cf7cf','[\"*\"]',NULL,NULL,'2024-10-25 20:13:34','2024-10-25 20:13:34'),(16,'App\\Models\\User',3,'my-token','91faed364c6c944fbc2e68cdfe480a7aaaada1eb16258475c3ab967aa005b1a6','[\"*\"]','2024-10-25 22:12:26',NULL,'2024-10-25 20:13:50','2024-10-25 22:12:26'),(17,'App\\Models\\User',3,'my-token','aefb772ad81675279ce79b0343aa431e6b94f5c7dddbb8daf2bb767325886372','[\"*\"]','2024-10-26 00:00:15',NULL,'2024-10-25 22:17:34','2024-10-26 00:00:15'),(18,'App\\Models\\User',3,'my-token','07bc666c17a0fc3160fae5a4864fe7270b54d0e899861316ba6c6def32e656a4','[\"*\"]',NULL,NULL,'2024-10-25 23:34:46','2024-10-25 23:34:46'),(19,'App\\Models\\User',3,'my-token','53f495510e12a62d7721d2ef2c8cac5d8667ba4390ad305b627469f86590b3c2','[\"*\"]','2024-10-26 01:38:54',NULL,'2024-10-25 23:59:46','2024-10-26 01:38:54'),(20,'App\\Models\\User',3,'my-token','6a939f990f7c8bf32e3d9e4d91ad3013db93c924a84d9def18995413c0fa887e','[\"*\"]',NULL,NULL,'2024-10-26 00:06:58','2024-10-26 00:06:58'),(21,'App\\Models\\User',3,'my-token','a4e6c107ed771ac6d6939a32dcdbede7174f8b2b4e84e2ddbf71ed98c847d957','[\"*\"]',NULL,NULL,'2024-10-26 00:09:06','2024-10-26 00:09:06');
 /*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -516,7 +516,7 @@ CREATE TABLE `user_details` (
 
 LOCK TABLES `user_details` WRITE;
 /*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
-INSERT INTO `user_details` VALUES (1,3,123123,'asdasd','asdsad','asasd','1','asdasd','asdas','asdsa',NULL,NULL,'aasdsd@gmail.com','123213','asdsad','asdsad','12321312','asdasdas','asddasd','2024-10-22 02:25:40','2024-10-22 10:25:40'),(2,10,1234,'asda','asdasd','asdasd','1','asdasd','asdsad','asdsad',NULL,NULL,'asdasd@gmail.com','123123','asdasd','asdsad','12312321','asdasd','asdasd','2024-10-22 02:28:45','2024-10-22 10:28:45');
+INSERT INTO `user_details` VALUES (1,3,123123,'Ivana','Morales','A','1','student','asdas','Department of kwan',NULL,NULL,'aasdsd@gmail.com','123213','asdsad','asdsad','12321312','asdasdas','asddasd','2024-10-22 02:25:40','2024-10-22 10:25:40'),(2,10,1234,'asda','asdasd','asdasd','1','asdasd','asdsad','asdsad',NULL,NULL,'asdasd@gmail.com','123123','asdasd','asdsad','12312321','asdasd','asdasd','2024-10-22 02:28:45','2024-10-22 10:28:45');
 /*!40000 ALTER TABLE `user_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -530,7 +530,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `school_id_number` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -548,7 +548,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'1','Test User','test@example.com','2024-10-08 00:30:06','$2y$12$fKyEl1ev0W3JCWW7XL6pfuyVhuS44Of06gof8dCRt1nX3.vpO1uB.','EjLgM8pwp4','2024-10-08 00:30:06','2024-10-08 00:30:06'),(3,'222','User','user@example.com','2024-10-08 00:31:05','$2y$12$59u1P5VbHHk59kChDmsFKOeGAMhNSre1OBStbcO1mlQFjcKobeH/a','XEkLxzoV2E','2024-10-08 00:31:06','2024-10-08 00:31:06'),(9,'123123',NULL,'aasdsd@gmail.com',NULL,'$2y$12$BLqnTULj3hbtJ4IlgxCMuu9XDfHf9M.WabbsoozmdHqxONaHZ.IIm',NULL,'2024-10-22 02:25:40','2024-10-22 02:25:40'),(10,'1234',NULL,'asdasd@gmail.com',NULL,'$2y$12$ANnGvQynEkXMvPl8hm4e/O9QrbHjNc8syCLn54c2KWBNR7KqLWMHm',NULL,'2024-10-22 02:28:45','2024-10-22 02:28:45');
+INSERT INTO `users` VALUES (1,'1','user','test@example.com','2024-10-08 00:30:06','$2y$12$fKyEl1ev0W3JCWW7XL6pfuyVhuS44Of06gof8dCRt1nX3.vpO1uB.','EjLgM8pwp4','2024-10-08 00:30:06','2024-10-08 00:30:06'),(3,'222','admin','user@example.com','2024-10-08 00:31:05','$2y$12$59u1P5VbHHk59kChDmsFKOeGAMhNSre1OBStbcO1mlQFjcKobeH/a','XEkLxzoV2E','2024-10-08 00:31:06','2024-10-08 00:31:06'),(9,'123123','user','aasdsd@gmail.com',NULL,'$2y$12$BLqnTULj3hbtJ4IlgxCMuu9XDfHf9M.WabbsoozmdHqxONaHZ.IIm',NULL,'2024-10-22 02:25:40','2024-10-22 02:25:40'),(10,'1234','user','asdasd@gmail.com',NULL,'$2y$12$ANnGvQynEkXMvPl8hm4e/O9QrbHjNc8syCLn54c2KWBNR7KqLWMHm',NULL,'2024-10-22 02:28:45','2024-10-22 02:28:45');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -561,4 +561,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-26 14:32:23
+-- Dump completed on 2024-10-26 17:42:15

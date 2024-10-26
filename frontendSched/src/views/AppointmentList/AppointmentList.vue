@@ -6,8 +6,8 @@ import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
 import { fetchDashboardDataAdmin } from '@/api/ApiAppointment';
 
-const values = ref();
-const patients = ref([
+const patients = ref();
+const a = ref([
     { id: '1', name: 'Doe, John Jr.', time: '8:00 am - 9:00 am', department: 'College of Agriculture' },
     { id: '2', name: 'Curtis, Anne', time: '9:00 am - 10:00 am', department: 'College of Information Sciences' },
     { id: '3', name: 'Reyes, Raul', time: '10:00 am - 11:00 am', department: 'Office of Student Affairs' }
@@ -30,7 +30,7 @@ const filters = ref({
 });
 
 onMounted(async () => {
-    values.value = await fetchDashboardDataAdmin(formattedDate.value);
+    patients.value = await fetchDashboardDataAdmin(formattedDate.value);
 });
 
 function dialogOpen(event) {
@@ -46,7 +46,9 @@ function dialogOpen(event) {
 
 watch(date, async (newValue, oldValue) => {
     console.log('Date changed from', oldValue, 'to', newValue);
-    values.value = await fetchDashboardDataAdmin(formattedDate.value);
+    patients.value = await fetchDashboardDataAdmin(formattedDate.value);
+    console.log("FETCHED APPTS: ", patients.value);
+    
 });
 
 </script>
@@ -75,9 +77,17 @@ watch(date, async (newValue, oldValue) => {
                             </IconField>
                         </div>
                     </template>
-                    <Column field="name" header="Patient Name"></Column>
-                    <Column field="time" header="Time"></Column>
-                    <Column field="department" header="Department"></Column>
+                    <Column field="name" header="Patient Name">
+                        <template #body="slotProps">
+                            <span>{{ slotProps.data.user_details?.lastname }}, {{ slotProps.data.user_details?.firstname }} {{ slotProps.data.user_details?.middlename }}</span>
+                        </template>
+                    </Column>
+                    <Column field="appointment_time" header="Time"></Column>
+                    <Column field="department" header="Department">
+                        <template #body="slotProps">
+                            <span>{{ slotProps.data.user_details?.department_program }}</span>
+                        </template>
+                    </Column>
                     <Column field="status" header="Status"></Column>
                 </DataTable>
             </div>

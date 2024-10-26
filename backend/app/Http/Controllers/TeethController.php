@@ -10,8 +10,6 @@ class TeethController extends Controller
 
     public function index(){}
 
-
-
     public function store(Request $request){
 
     }
