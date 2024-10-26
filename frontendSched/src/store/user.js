@@ -13,14 +13,31 @@ export const login = defineStore('login', () => {
 });
 
 export const user = defineStore('user', () => {
-    const userDetails = ref({
-        id: null, 
-        id_number:null, 
-        personal_details:null, 
-        status:null, 
-        created_at:null },
+    const user_details = ref({
+            id: null,
+            age:null,
+            user_id: null,
+            school_id_number: null,
+            firstname: null,
+            lastname: null,
+            middlename: null,
+            type: null,
+            employee_student_type: null,
+            office_level: null,
+            department_program: null,
+            sex: null,
+            email: null,
+            contact_no: null,
+            civil_status: null,
+            guardian: null,
+            guardian_no: null,
+            permanent_address: null,
+            bsu_address: null,
+            created_at: null,
+            updated_at: null,
+     },
     );
-    return { userDetails };
+    return { user_details };
 });
 
 
