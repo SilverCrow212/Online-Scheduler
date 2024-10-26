@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\TeethController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\HolidayController;
@@ -57,29 +58,37 @@ Route::middleware('auth:sanctum')->group (function (){
 
     // GET USER DETAILS
     Route::prefix('user')->group(function () {
-        Route::get('/user_details', [UserManagementController::class, 'user_details']);
-        Route::put('/user_details_update', [UserManagementController::class, 'user_details_update']);
+        Route::get('user_details', [UserManagementController::class, 'user_details']);
+        Route::put('user_details_update', [UserManagementController::class, 'user_details_update']);
     });
 
     // TEETH
     Route::prefix('teeth')->group(function () {
-        Route::post('/store', [TeethController::class, 'store']);
-        Route::post('/update/{patient_id}', [TeethController::class, 'update']);
-        Route::get('/fetch/{patient_id}', [TeethController::class, 'fetch']);
-        Route::get('/index', [TeethController::class, 'index']);
+        Route::post('store', [TeethController::class, 'store']);
+        Route::post('update/{patient_id}', [TeethController::class, 'update']);
+        Route::get('fetch/{patient_id}', [TeethController::class, 'fetch']);
+        Route::get('index', [TeethController::class, 'index']);
     });
 
     // HOLIDAYS
     Route::prefix('holiday')->group(function () {
-        Route::get('/show', [HolidayController::class, 'show']);
-        Route::post('/store', [HolidayController::class, 'store']);
-        Route::put('/update', [HolidayController::class, 'update']);
-        Route::delete('/delete', [HolidayController::class, 'delete']);
+        Route::get('show', [HolidayController::class, 'show']);
+        Route::post('store', [HolidayController::class, 'store']);
+        Route::put('update', [HolidayController::class, 'update']);
+        Route::delete('delete', [HolidayController::class, 'delete']);
+    });
+
+    // APPOINTMENT
+    Route::prefix('appointment')->group(function () {
+        Route::get('show', [AppointmentController::class, 'show']);
+        Route::post('store', [AppointmentController::class,'store']);
+        Route::put('update', [AppointmentController::class,'update']);
+        Route::delete('delete', [AppointmentController::class,'delete']);
     });
 
 });
 
 // USER ACCOUNT REGISTRATION
 Route::prefix('user')->group(function () {
-    Route::post('/register', [UserManagementController::class, 'register']);
+    Route::post('register', [UserManagementController::class, 'register']);
 });
