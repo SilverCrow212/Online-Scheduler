@@ -11,7 +11,7 @@ const multiselectValue = ref(null);
 const value = ref();
 </script>
 <template>
-    {{ otherInputsStore }}
+    <!-- {{ otherInputsStore }} -->
     <h5>Services Rendered</h5>
     <MultiSelect v-model="otherInput.services" :options="serviceChoices" optionLabel="name" placeholder="Select Services" :filter="true" class="w-full">
         <template #value="slotProps">
