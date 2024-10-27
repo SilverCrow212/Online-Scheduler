@@ -43,5 +43,10 @@ export const informedConsent = defineStore('informedConsent', () => {
             dentist:null
         }
     });
-    return { data };
+    const resetData = () => {
+        Object.keys(data).forEach(key => {
+            accDetails[key] = '';
+        });
+    };
+    return { data, resetData };
 });
