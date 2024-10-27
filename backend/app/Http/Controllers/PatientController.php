@@ -28,6 +28,6 @@ class PatientController extends Controller
     }
 
     public function all_patients(){
-        return User::where('user_type','user')->get();
+        return User::with('userDetails')->where('user_type','user')->get();
     }
 }
