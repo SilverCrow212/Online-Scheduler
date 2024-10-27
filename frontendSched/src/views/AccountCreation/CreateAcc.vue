@@ -13,10 +13,17 @@ const departmentChoice = departmentStore.department;
 
 const router = useRouter();
 const validationErrors = ref({});
-
+const userTypeChoice = ['user'];
 const goBack = () => {
     router.push({ name: 'login' }); // Adjust the route name as needed
 };
+
+if (localStorage.getItem('user_details')) {
+    const user_details = JSON.parse(localStorage.getItem('user_details'));
+    if (user_details.user_type === 'admin') {
+        userTypeChoice.push('admin');
+    }
+}
 
 const validateForm = async () => {
     validationErrors.value = {};
@@ -90,6 +97,12 @@ const validateForm = async () => {
                 <div class="field col-12 md:col-4">
                     <label>Sex</label>
                     <InputText v-model="createaccount.sex" type="text" />
+                </div>
+                <div class="field col-12 md:col-4">
+                    <label>User Type</label>
+                    <Dropdown v-model="createaccount.user_type" 
+                            :options="userTypeChoice" 
+                            placeholder="Select One"/>
                 </div>
                 <div class="field col-12 md:col-4">
                     <label>Type</label>

@@ -7,7 +7,8 @@ export const createacc = defineStore('createacc', () => {
         password: null, 
         firstname:null, 
         lastname:null, 
-        middlename:null, 
+        middlename:null,
+        user_type:'user',
         type:null, 
         employee_student_type:null, 
         office_level:null, 
@@ -21,7 +22,9 @@ export const createacc = defineStore('createacc', () => {
         permanent_address:null, 
         bsu_address:null, 
         updated_at:null, 
-        created_at:null },
+        created_at:null,
+        age:null
+     },
     );
     const resetAccDetails = () => {
         Object.keys(accDetails).forEach(key => {
