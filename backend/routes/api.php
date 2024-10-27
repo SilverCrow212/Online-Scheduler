@@ -74,9 +74,9 @@ Route::middleware('auth:sanctum')->group (function (){
     // TEETH
     Route::prefix('teeth')->group(function () {
         Route::post('store', [TeethController::class, 'store']);
-        Route::post('update/{patient_id}', [TeethController::class, 'update']);
-        Route::get('fetch/{patient_id}', [TeethController::class, 'fetch']);
-        Route::get('index', [TeethController::class, 'index']);
+        Route::post('update/{appointment_id}', [TeethController::class, 'update']);
+        Route::get('fetch/{appointment_id}', [TeethController::class, 'fetch']);
+        // Route::get('index', [TeethController::class, 'index']);
     });
 
     // HOLIDAYS
