@@ -3,24 +3,20 @@ import { ref, onMounted } from 'vue';
 import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
-import {fetchAllPatient} from '@/api/ApiPatientRecords';
-// import { ProductService } from '@/service/ProductService';
+import { fetchAllPatient } from '@/api/ApiPatientRecords';
 
-// onMounted(() => {
-//     ProductService.getProductsMini().then((data) => (products.value = data));
-// });
+
+onMounted(async () => {
+    const data = await fetchAllPatient(); // Fetch the patient records
+    patients.value = data;
+});
 
 const products = ref();
 const selectedPatient = ref();
 const metaKey = ref(true);
 
 const visible = ref(false);
-const patients = ref(
-    [{id:'1', name:'Doe, John Jr.', type:'Student', department:'College of Agriculture'},
-    {id:'2', name:'Curtis, Anne', type:'Faculty', department:'College of Information Sciences'},
-    {id:'3', name:'Reyes, Raul', type:'Staff', department:'Office of Student Affairs'}
-    ]
-);
+const patients = ref(null);
 
 function dialogOpen(){
     visible.value = true;

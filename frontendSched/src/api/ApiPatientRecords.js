@@ -3,7 +3,7 @@ import axios from 'axios';
 export async function fetchAllPatient() {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('/allrecords',  {
+    const response = await axios.get('/all_patients',  {
       headers: {
         Authorization: `Bearer ${token}`,
       },
