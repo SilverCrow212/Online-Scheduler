@@ -9,7 +9,8 @@ const model = ref([
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
         { label: 'Appointments', icon: 'pi pi-calendar-plus', to: '/appointment' },
         // { label: 'Create New Account', icon: 'pi pi-user-plus', to: '/create-account' },
-        { label: 'Patient Records', icon: 'pi pi-folder-open', to: '/patient-records' }
+        { label: 'Patient Records', icon: 'pi pi-folder-open', to: '/patient-records' },
+        { label: 'Create Account', icon: 'pi pi-folder-open', to: '/create-account' }
         ],
         
     },
