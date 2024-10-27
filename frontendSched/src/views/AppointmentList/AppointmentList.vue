@@ -4,7 +4,7 @@ import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue';
 import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
-import { fetchDashboardDataAdmin } from '@/api/ApiAppointment';
+import { fetchAppointment } from '@/api/ApiAppointment';
 
 const patients = ref();
 const a = ref([
@@ -30,7 +30,7 @@ const filters = ref({
 });
 
 onMounted(async () => {
-    patients.value = await fetchDashboardDataAdmin(formattedDate.value);
+    patients.value = await fetchAppointment(formattedDate.value);
 });
 
 function dialogOpen(event) {
@@ -46,7 +46,7 @@ function dialogOpen(event) {
 
 watch(date, async (newValue, oldValue) => {
     console.log('Date changed from', oldValue, 'to', newValue);
-    patients.value = await fetchDashboardDataAdmin(formattedDate.value);
+    patients.value = await fetchAppointment(formattedDate.value);
     console.log("FETCHED APPTS: ", patients.value);
     
 });
@@ -55,7 +55,6 @@ watch(date, async (newValue, oldValue) => {
 
 <template>
     <div class="grid">
-        {{ formattedDate }}
         <div class="col-12">
             <div class="card">
                 <div class="flex justify-content-between align-items-center">
