@@ -82,6 +82,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
                         v-model="others.firstPage.tmd"
                         name="category"
                         :value="category.id"
+                        :disabled="category.id===1"
                     />
                     <label :for="category.id">{{ category.name }}</label>
 
