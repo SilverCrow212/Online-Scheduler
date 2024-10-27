@@ -1,6 +1,33 @@
 <script setup>
+import { useRoute } from 'vue-router';
 import PageOne from '@/views/PatientDetails/PageOne.vue';
 import PageTwo from '@/views/PatientDetails/PageTwo.vue';
+import { statusChoices } from '@/store/choices';
+import { createacc } from '@/store/createacc';
+import { teeth } from '@/store/teeth';
+import { storeClinicalDetails } from '@/api/ApiStoreClinicalDetails';
+
+const route = useRoute();
+const appointmentId = route.params.id;
+const teethStore = teeth();
+const teethData = teethStore.teethData;
+const createaccStore = createacc();
+const createaccount  =createaccStore.accDetails;
+const statusStore = statusChoices();
+const statuschoices = statusStore.legend
+
+async function clickSave() {
+  try {
+    const patientData = {
+      teethData: teethData,
+      
+    };
+    const response = await storeClinicalDetails(appointmentId, patientData);
+    console.log('Data saved successfully:', response);
+  } catch (error) {
+    console.error('Error saving clinical details:', error);
+  }
+}
 </script>   
 <template>
    
@@ -28,10 +55,23 @@ import PageTwo from '@/views/PatientDetails/PageTwo.vue';
                 <template #content="{ prevCallback }">
                     <div class="flex flex-column h-12rem">
                         <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">Review before saving? Add Mark as done button here</div>
+                        <div class="field col-12 md:col-12">
+                            <label>Status</label>
+                            <Dropdown
+                            id="status"
+                            placeholder="Select One"
+                            v-model="createaccount.user_type"
+                            :options="statuschoices"
+                            optionLabel="name"
+                            optionValue="id"
+                            />
+                        </div>
+                        
+                
                     </div>
                     <div class="flex pt-4 justify-content-between">
                         <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="prevCallback" />
-                        <Button label="Save" icon="pi pi-save" iconPos="right" @click="nextCallback" />
+                        <Button label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" />
                     </div>
                 </template>
             </StepperPanel>
