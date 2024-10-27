@@ -35,7 +35,7 @@ const onLogout = async () => {
     } finally {
         // Remove the token from local storage
         localStorage.removeItem('token');
-        
+        localStorage.removeItem('user_details');
         // Redirect to the login page
         router.push({ name: 'login' });
         
