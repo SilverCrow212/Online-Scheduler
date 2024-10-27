@@ -3,7 +3,9 @@ import { ref,computed,watch,onMounted } from 'vue';
 import { fetchDashboardDataAdmin } from '@/api/ApiDashboard';
 import { fetchAppointment } from '@/api/ApiAppointment';
 import { FilterMatchMode } from 'primevue/api';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const today = new Date();
 const date = ref(today);
 const values = ref();
@@ -29,7 +31,18 @@ watch(date, async (newValue, oldValue) => {
     console.log("FETCHED APPTS: ", patients.value);
     
 });
-
+const metaKey = ref(true);
+const selectedPatient = ref(null);
+function dialogOpen(event) {
+    console.log('Row clicked', event.data);
+    if (event) {
+        selectedPatient.value = event.data;
+        router.push({ name: 'record', params: { id: selectedPatient.value.id } });
+        console.log('patid', selectedPatient.value.id);
+    } else {
+        console.warn('No patient selected');
+    }
+}
 </script>
 
 <template>
@@ -119,4 +132,3 @@ watch(date, async (newValue, oldValue) => {
     
 </div>
 </template>
-
