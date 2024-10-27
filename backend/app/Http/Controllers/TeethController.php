@@ -13,9 +13,8 @@ class TeethController extends Controller
 
     public function store(Request $request){
 
-        $appointmentId = $request->input('appointment_id');
+        $appointmentId = $request->appointment_id;
         $teethData = $request->input('teethData');
-
         $teethMapping = [
             'tbaby_rightteeth' => 'tbaby_rightteeth',
             'tadult_rightteeth' => 'tadult_rightteeth',

@@ -4,7 +4,7 @@ import { ref } from 'vue';
 export const teeth = defineStore('teeth', () => {
     const teethData = ref({
 
-        appointment_id: null, // KABILAM TO TI APPOINTMENT ID 
+        // appointment_id: null, // KABILAM TO TI APPOINTMENT ID 
 
         tbaby_rightteeth:[
             { id: 55, topBox: null, botBox: null, class: ["top:white", "left:white", "right:white", "center:white", "bottom:white" ] },
@@ -100,7 +100,35 @@ export const teeth = defineStore('teeth', () => {
         medicineprescribed:null,
         remarks:null
     });
-    return { teethData, firstPage, servicesRendered };
+
+    const resetTeethData = () => {
+        Object.keys(teethData.value).forEach(key => {
+            if (Array.isArray(teethData.value[key])) {
+                // Resetting arrays to their initial state
+                teethData.value[key] = teethData.value[key].map(item => ({
+                    ...item,
+                    topBox: null,
+                    botBox: null,
+                    class: ["top:white", "left:white", "right:white", "center:white", "bottom:white"]
+                }));
+            } else {
+                // Resetting other properties to null
+                teethData.value[key] = null; // Or '' if you prefer empty strings
+            }
+        });
+    };
+    const resetFirstPage = () => {
+        Object.keys(firstPage).forEach(key => {
+            firstPage[key] = null;
+        });
+    };
+
+    const resetServicesRendered = () => {
+        Object.keys(servicesRendered).forEach(key => {
+            servicesRendered[key] = null;
+        });
+    };
+    return { teethData, firstPage, servicesRendered, resetTeethData, resetFirstPage, resetServicesRendered };
 });
 
 

@@ -1,11 +1,12 @@
 <script setup>
+import { onMounted,ref } from 'vue';
 import { useRoute } from 'vue-router';
 import PageOne from '@/views/PatientDetails/PageOne.vue';
 import PageTwo from '@/views/PatientDetails/PageTwo.vue';
 import { statusChoices } from '@/store/choices';
 import { createacc } from '@/store/createacc';
 import { teeth } from '@/store/teeth';
-import { storeClinicalDetails } from '@/api/ApiStoreClinicalDetails';
+import { storeClinicalDetails, updateClinicalDetails, fetchClinicalDetails } from '@/api/ApiStoreClinicalDetails';
 
 const route = useRoute();
 const appointmentId = route.params.id;
@@ -15,6 +16,28 @@ const createaccStore = createacc();
 const createaccount  =createaccStore.accDetails;
 const statusStore = statusChoices();
 const statuschoices = statusStore.legend
+const loader = ref(false);
+onMounted(async () => {
+    teethStore.resetTeethData(); 
+    teethStore.resetFirstPage(); 
+    teethStore.resetServicesRendered(); 
+    try {
+        const fetchData = await fetchClinicalDetails(appointmentId);
+        
+        // Check if fetchData is valid
+        if (fetchData) {
+            Object.assign(teethData, fetchData);
+            console.log('teeth Data', teethData);
+            loader.value=true;
+        } else {
+            console.error('Fetched data is null or undefined');
+            loader.value=true;
+        }
+    } catch (error) {
+        console.error('Error fetching clinical details:', error);
+        loader.value=true;
+    }
+});
 
 async function clickSave() {
   try {
@@ -28,14 +51,27 @@ async function clickSave() {
     console.error('Error saving clinical details:', error);
   }
 }
+
+async function clickUpdate() {
+  try {
+    const patientData = {
+      teethData: teethData,
+      
+    };
+    const response = await updateClinicalDetails(appointmentId, patientData);
+    console.log('Data saved successfully:', response);
+  } catch (error) {
+    console.error('Error saving clinical details:', error);
+  }
+}
 </script>   
 <template>
    
-        <Stepper>
+        <Stepper v-if="loader">
             <StepperPanel header="Step I">
                 <template #content="{ nextCallback }">
-                    
-                        <PageOne/>
+                        <!-- {{ teethData }} -->
+                        <PageOne />
                     
                     <div class="flex pt-4 justify-content-end">
                         <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" />
@@ -66,11 +102,10 @@ async function clickSave() {
                             optionValue="id"
                             />
                         </div>
-                        
-                
                     </div>
                     <div class="flex pt-4 justify-content-between">
                         <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="prevCallback" />
+                        <Button label="Update" icon="pi pi-save" iconPos="right" @click="clickUpdate" />
                         <Button label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" />
                     </div>
                 </template>
