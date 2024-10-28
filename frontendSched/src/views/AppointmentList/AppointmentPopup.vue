@@ -42,7 +42,7 @@ const selectedCategory = ref(null);
 
 const sampleDates = ref(
   [
-    {date: '10/26/2024' , available_time: [
+    {date: '10/28/2024' , available_time: [
       '8:00 am - 9:00 am',
       '9:00 am - 10:00 am', 
       '10:00 am - 11:00 am',
@@ -52,7 +52,7 @@ const sampleDates = ref(
       '3:00 pm - 4:00 pm',
       ]
     },
-    {date: '10/27/2024' , available_time: [
+    {date: '10/29/2024' , available_time: [
       '9:00 am - 10:00 am', 
       '10:00 am - 11:00 am',
       '11:00 am - 12:00 pm',
@@ -141,7 +141,7 @@ watch(selectedDate, () => {
         <InformedConsent/>
         <div class="flex justify-content-end gap-2">
             <!-- <Button type="button" label="Cancel" severity="secondary" @click="visibleInformedConsent = false"></Button> -->
-            <Button type="button" label="Save" @click="visibleInformedConsent = false"></Button>
+            <Button type="button" label="Close" @click="visibleInformedConsent = false"></Button>
         </div>
     </Dialog>
     

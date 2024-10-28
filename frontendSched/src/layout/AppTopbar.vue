@@ -22,13 +22,16 @@ const logoUrl = computed(() => {
 });
 
 const onTopBarMenuButton = () => {
-    router.push({ name: 'editprofile', params: { id: 1 } });
-    topbarMenuActive.value = !topbarMenuActive.value;
+    if (localStorage.getItem('user_details')) {
+        const user_details = JSON.parse(localStorage.getItem('user_details'));
+        router.push({ name: 'editprofile', params: { id: user_details.user_details.id } });
+        topbarMenuActive.value = !topbarMenuActive.value;
+    }
 };
 const onLogout = async () => {
     try {
         // Optionally send a logout request to the server
-        await axios.post('http://192.168.7.69:8001/api/logout', login.value);
+        await axios.post('logout', login.value);
         console.log('Logged out successfully');
     } catch (err) {
         console.error('Error during logout:', err);
