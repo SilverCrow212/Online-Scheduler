@@ -2,11 +2,13 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { createacc } from '@/store/createacc';
-import { departmentChoices } from '@/store/choices';
+import { departmentChoices, sexChoices } from '@/store/choices';
 import { CreateAcc } from '@/api/ApiLogin';
 
 const departmentStore = departmentChoices();
 const createAccStore = createacc();
+const sexStore = sexChoices();
+const sexchoices = sexStore.legend;
 const createaccount = createAccStore.accDetails;
 const typeChoice = departmentStore.type;
 const departmentChoice = departmentStore.department;
@@ -132,7 +134,11 @@ const validateForm = async () => {
                 </div>
                 <div class="field col-12 md:col-4">
                     <label>Sex</label>
-                    <InputText v-model="createaccount.sex" type="text" :class="{'p-invalid': validationErrors.sex}" />
+                    <!-- <InputText v-model="createaccount.sex" type="text" :class="{'p-invalid': validationErrors.sex}" /> -->
+                    <Dropdown v-model="createaccount.sex" 
+                              :options="sexchoices" 
+                              placeholder="Select One"
+                              :class="{'p-invalid': validationErrors.user_type}" />
                     <small v-if="validationErrors.sex" class="p-error">{{ validationErrors.sex }}</small>
                 </div>
                 <div class="field col-12 md:col-4">

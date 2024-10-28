@@ -8,3 +8,11 @@ export async function CreateAccount(request) {
         console.error('error', err);
     }
 }
+
+export async function EditAccount(request) {
+    try {
+        const receive = await axios.put('user_details_update', request);
+    } catch (err) {
+        console.error('error', err);
+    }
+}

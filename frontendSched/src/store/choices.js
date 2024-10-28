@@ -258,3 +258,11 @@ export const statusChoices = defineStore('statusChoices', () => {
     ]);
     return { legend };
 });
+
+export const sexChoices = defineStore('sexChoices', () => {
+    const legend = ref([
+        'Male',
+        'Female',
+    ]);
+    return { legend };
+});
