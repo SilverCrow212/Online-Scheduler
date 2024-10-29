@@ -14,7 +14,7 @@ if (localStorage.getItem('user_details')) {
                 // { label: 'Create New Account', icon: 'pi pi-user-plus', to: '/create-account' },
                 { label: 'Patient Records', icon: 'pi pi-folder-open', to: '/patient-records' },
                 { label: 'Create Account', icon: 'pi pi-user-plus', to: '/create-account' },
-                { label: 'Set Holiday', icon: 'pi pi-bookmark', to: '/create-account' }
+                { label: 'Set Holiday', icon: 'pi pi-bookmark', to: '/holiday' }
                 ],
                 
             },

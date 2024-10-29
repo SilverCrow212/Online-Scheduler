@@ -42,6 +42,11 @@ const routes = [
                 name: 'record',
                 component: () => import('@/views/PatientDetails/Record.vue')
             },
+            {
+                path: 'holiday',
+                name: 'holiday',
+                component: () => import('@/views/Holidays/Holiday.vue')
+            },
         ]
     },
     {
