@@ -54,7 +54,7 @@ class TeethController extends Controller
 
     }
 
-    public function update(Request $request, $appointment_id){
+    public function update(Request $request, $appointment_id) {
 
         $teethMapping = [
             'tbaby_rightteeth' => 'tbaby_rightteeth',
@@ -67,12 +67,12 @@ class TeethController extends Controller
             'badult_leftteeth' => 'badult_leftteeth',
         ];
 
+        $patientTeethData = $request->input('teethData');
+
         foreach ($teethMapping as $key => $table) {
+            $teethData = $patientTeethData[$key] ?? null;
 
-            $teethData = $request->input($key);
-
-            if ($teethData) {
-
+            if (!is_null($teethData)) {
                 $updateData = ['appointment_id' => $appointment_id];
 
                 foreach ($teethData as $toothData) {
@@ -90,8 +90,8 @@ class TeethController extends Controller
         }
 
         return response()->json([
-            'status'  => 'success',
-            'message' => 'Teeth data updated successfully'
+            'message' => 'Teeth data updated successfully',
+            'teethData' => $patientTeethData,
         ]);
     }
     public function fetch($appointment_id){
