@@ -4,8 +4,6 @@ import { ref } from 'vue';
 export const teeth = defineStore('teeth', () => {
     const teethData = ref({
 
-        // appointment_id: null, // KABILAM TO TI APPOINTMENT ID 
-
         tbaby_rightteeth:[
             { id: 55, topBox: null, botBox: null, class: ["top:white", "left:white", "right:white", "center:white", "bottom:white" ] },
             { id: 54, topBox: null, botBox: null, class: ["top:white", "left:white", "right:white", "center:white", "bottom:white" ] },

@@ -253,8 +253,9 @@ export const departmentChoices = defineStore('departmentChoices', () => {
 export const statusChoices = defineStore('statusChoices', () => {
     const legend = ref([
         {id:1, name: 'Complete'},
-        {id:2, name: 'No show'},
-        {id:3, name: 'Cancelled Appointment'},
+        {id:2, name: 'Ongoing'},
+        {id:3, name: 'No show'},
+        {id:4, name: 'Cancelled Appointment'},
     ]);
     return { legend };
 });

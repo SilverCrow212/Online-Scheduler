@@ -27,3 +27,6 @@
 - make logic for calendars (either make a table for holidays)
 
 - add query for user upon logging in 
+
+////////
+- request api for getting the appointments of the whole month

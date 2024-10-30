@@ -4,7 +4,7 @@ import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue';
 import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
-import { fetchAppointment } from '@/api/ApiAppointment';
+import { fetchAppointment, storeAppointment } from '@/api/ApiAppointment';
 
 const patients = ref();
 const a = ref([
@@ -51,6 +51,10 @@ watch(date, async (newValue, oldValue) => {
     
 });
 
+
+async function setAppointment(){
+    await storeAppoinment();
+}
 </script>
 
 <template>

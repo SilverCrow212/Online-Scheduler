@@ -1,7 +1,28 @@
 <script setup>
-import { ref,computed,watch } from 'vue';
+import { ref,computed,watch,onMounted } from 'vue';
 import axios from 'axios';
 import InformedConsent from '@/views/InformedConsent/InformedConsent.vue';
+import { appointment } from '@/store/appointmentenc';
+import { informedConsent } from '@/store/informedconsent';
+/////////////////
+import { fetchAllPatient } from '@/api/ApiPatientRecords';
+
+const patients = ref(null);
+
+onMounted(async () => {
+    const data = await fetchAllPatient(); // Fetch the patient records
+    patients.value = data;
+    console.log('patients data', patients.value)
+});
+
+// compute the school_id_number into the id number input below 
+
+
+/////////////
+const informedConsentStore= informedConsent();
+const consentform= informedConsentStore.data;
+const appointmentStore = appointment();
+const useAppoinment =  appointmentStore.appointmentDetails;
 
 const filledSlots = ref(['2024-05-28', '2024-05-30']);
 
@@ -11,13 +32,8 @@ const visibleInformedConsent = ref(false);
 
 const selectedDate = ref(null);
 
-import { informedConsent } from '@/store/informedconsent';
 
-const informedConsentStore= informedConsent();
-
-const test= informedConsentStore.data;
-
-console.log('testing',test)
+// console.log('testing',test)
 const checkboxOptions = ref([
   '8:00 am - 9:00 am',
   '9:00 am - 10:00 am', 
@@ -38,7 +54,6 @@ const formatDate = (date) => {
   return `${month}/${day}/${year}`;
 };
 
-const selectedCategory = ref(null);
 
 const sampleDates = ref(
   [
@@ -91,20 +106,30 @@ const isCategoryDisabled = (category) => {
 };
 
 watch(selectedDate, () => {
-  selectedCategory.value = null;
+  useAppoinment.appointment_time = null;
+  useAppoinment.appointment_date = formatDate(selectedDate.value);
 });
 
+
+function clickSave(){
+  // appointment_date 
+  // appointment_time
+  useAppoinment.consent_form = consentform;
+  useAppoinment.status = 2;
+  visibleInformedConsent.value = false;
+}
 </script>
 
 <template>
       <div class="grid p-fluid">
         <!-- {{ formattedSelectedDate }} -->
+        <!-- {{test.data}} -->
         <div class="col-12 md:col-12">
-          <!-- {{selectedCategory}} -->
+          {{useAppoinment.appointment_date}}
               <Button label="Informed Consent" @click="visibleInformedConsent=true"/>
               <div class="field col-12 md:col-12">
                   <label>ID number</label>
-                  <InputText id="firstname2" type="text" />
+                  <InputText v-model="useAppoinment.user_details_id" type="text"  />
               </div>
 
               <div class="field col-12 md:col-12">
@@ -123,7 +148,7 @@ watch(selectedDate, () => {
                 <label>Choose Time</label>
                 <div v-for="category in checkboxOptions" class="flex align-items-center" :key="category">
                   <RadioButton 
-                    v-model="selectedCategory" 
+                    v-model="useAppoinment.appointment_time" 
                     name="dynamic" 
                     :value="category" 
                     :disabled="isCategoryDisabled(category)" 
@@ -131,9 +156,6 @@ watch(selectedDate, () => {
                   <label :for="category" class="ml-2">{{ category }}</label>
                 </div>
               </div>
-            
-              <!-- <p v-if="selectedDate!=null">Selected Date: {{ formatDate(selectedDate) }}</p> -->
-              <!-- {{ selectedCategories }} -->
         </div>
     </div>
 
@@ -141,7 +163,7 @@ watch(selectedDate, () => {
         <InformedConsent/>
         <div class="flex justify-content-end gap-2">
             <!-- <Button type="button" label="Cancel" severity="secondary" @click="visibleInformedConsent = false"></Button> -->
-            <Button type="button" label="Close" @click="visibleInformedConsent = false"></Button>
+            <Button type="button" label="Close" @click="clickSave()"></Button>
         </div>
     </Dialog>
     

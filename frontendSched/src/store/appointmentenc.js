@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { Fragment, ref } from 'vue';
 
 export const appointment = defineStore('appointment', () => {
-    const userDetails = ref([
+    const appointmentDetails = ref([
         {
             id: null, 
             user_details_id:null,
@@ -29,5 +29,5 @@ export const appointment = defineStore('appointment', () => {
             updated_at:null,
         },
     ]);
-    return { userDetails, clinicalDetails };
+    return { appointmentDetails, clinicalDetails };
 });

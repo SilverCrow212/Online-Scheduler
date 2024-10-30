@@ -13,6 +13,23 @@ export async function fetchAppointment(date) {
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching all patient data:', error);
+    console.error('Error fetching appointment:', error);
   }
 }
+
+export async function storeAppointment(data) {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await axios.post('/appointment/store',...data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error storing appointment:', error);
+  }
+}
+
