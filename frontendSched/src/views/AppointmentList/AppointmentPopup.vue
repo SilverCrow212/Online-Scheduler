@@ -1,39 +1,47 @@
 <script setup>
-import { ref,computed,watch,onMounted } from 'vue';
-import axios from 'axios';
+import { ref, computed, watch, onMounted } from 'vue';
 import InformedConsent from '@/views/InformedConsent/InformedConsent.vue';
 import { appointment } from '@/store/appointmentenc';
 import { informedConsent } from '@/store/informedconsent';
-/////////////////
 import { fetchAllPatient } from '@/api/ApiPatientRecords';
 
-const patients = ref(null);
+// State management
+const patients = ref([]);
+const selectedPatientId = ref(null);
+const visibleInformedConsent = ref(false);
+const selectedDate = ref(null);
+const useAppoinment = appointment().appointmentDetails;
 
+// Fetch patients on component mount
 onMounted(async () => {
-    const data = await fetchAllPatient(); // Fetch the patient records
-    patients.value = data;
-    console.log('patients data', patients.value)
+  const data = await fetchAllPatient(); // Fetch the patient records
+  patients.value = data;
+  console.log('patients data', patients.value);
 });
 
-// compute the school_id_number into the id number input below 
+// Computed properties
+const filteredUsers = computed(() => {
+  if (!selectedPatientId.value) return []; // Return empty if no ID selected
 
+  return patients.value
+    .filter(patient => patient.user_details && 
+      patient.user_details.school_id_number.toString().includes(selectedPatientId.value.toString()))
+    .map(patient => ({
+      school_id_number: patient.user_details.school_id_number, // Show school ID
+      id: patient.user_details.id // Keep track of patient ID
+    }));
+});
 
-/////////////
-const informedConsentStore= informedConsent();
-const consentform= informedConsentStore.data;
-const appointmentStore = appointment();
-const useAppoinment =  appointmentStore.appointmentDetails;
+const searchUsers = (event) => {
+  // This function is triggered when the user types in the AutoComplete
+  console.log('Searching for users with input:', event.query);
+};
 
-const filledSlots = ref(['2024-05-28', '2024-05-30']);
+const onUserSelect = (event) => {
+  selectedPatientId.value = event.id; // Set the selected patient's ID only
+};
 
-const minDate = new Date();
-
-const visibleInformedConsent = ref(false);
-
-const selectedDate = ref(null);
-
-
-// console.log('testing',test)
+// Sample dates and times for appointment
 const checkboxOptions = ref([
   '8:00 am - 9:00 am',
   '9:00 am - 10:00 am', 
@@ -43,17 +51,6 @@ const checkboxOptions = ref([
   '2:00 pm - 3:00 pm', 
   '3:00 pm - 4:00 pm',
 ]);
-// { label: '4:00 pm - 5:00 pm', value: 8, checked: false },
-
-
-
-const formatDate = (date) => {
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const day = String(date.getDate()).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${month}/${day}/${year}`;
-};
-
 
 const sampleDates = ref(
   [
@@ -80,44 +77,33 @@ const sampleDates = ref(
 );
 
 
-const stringToDate = (dateString) => {
-  const [month, day, year] = dateString.split('/').map(Number);
-  return new Date(year, month - 1, day);
+const minDate = new Date();
+const formatDate = (date) => {
+  const month = String(date.getMonth() + 1).padStart(2, '0'); 
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}/${day}/${year}`;
 };
 
-// Computed property to determine disabled dates
 const disabledDates = computed(() => {
   return sampleDates.value
     .filter(dateObj => dateObj.available_time.length >= 7)
-    .map(dateObj => stringToDate(dateObj.date));
+    .map(dateObj => new Date(dateObj.date));
 });
 
-const isCategoryDisabled = (category) => {
-  // Check if a date is selected
-  if (!selectedDate.value) return false;
-
-  const formattedSelectedDate = formatDate(selectedDate.value);
-
-  // Find the selected date in sampleDates
-  const dateInfo = sampleDates.value.find(dateObj => dateObj.date === formattedSelectedDate);
-  
-  // If the date exists, check if the category (time slot) is included in available_time
-  return dateInfo ? dateInfo.available_time.includes(category) : false;
-};
-
+// Handle appointment date selection
 watch(selectedDate, () => {
   useAppoinment.appointment_time = null;
   useAppoinment.appointment_date = formatDate(selectedDate.value);
 });
 
-
-function clickSave(){
-  // appointment_date 
-  // appointment_time
-  useAppoinment.consent_form = consentform;
+// Save function
+const clickSave = () => {
+  useAppoinment.consent_form = informedConsent().data;
   useAppoinment.status = 2;
+  useAppoinment.user_details_id = selectedPatientId.value; // Set the user ID in the appointment details
   visibleInformedConsent.value = false;
-}
+};
 </script>
 
 <template>
@@ -158,7 +144,17 @@ function clickSave(){
               </div>
         </div>
     </div>
-
+    <div>
+      {{ selectedPatientId }}
+      <AutoComplete
+        v-model="selectedPatientId"
+        :suggestions="filteredUsers"
+        @complete="searchUsers"
+        placeholder="Enter School ID Number"
+        field="school_id_number"
+        @select="onUserSelect"
+      />
+    </div>
     <Dialog v-model:visible="visibleInformedConsent" modal header="Dental Health Record - Informed Consent" :style="{ width: '75%' }" :dismissableMask="true">
         <InformedConsent/>
         <div class="flex justify-content-end gap-2">

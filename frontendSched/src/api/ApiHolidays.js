@@ -20,7 +20,7 @@ export async function storeHoliday() {
   try {
     const token = localStorage.getItem('token');
 
-    const response = await axios.get('/holiday/store', {
+    const response = await axios.post('/holiday/store', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
