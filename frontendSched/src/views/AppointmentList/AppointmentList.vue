@@ -6,8 +6,13 @@ import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
 import { fetchAppointment, storeAppointment } from '@/api/ApiAppointment';
 import { appointment } from '@/store/appointmentenc';
+import { departmentChoices, statusChoices } from '@/store/choices'
+const departmentStore = departmentChoices();
+const statusStore = statusChoices();
 const appointmentStore = appointment();
 const useAppoinment =  appointmentStore.appointmentDetails;
+const useDepartment = departmentStore.type;
+const useStatus = statusStore.legend;
 const patients = ref();
 const a = ref([
     { id: '1', name: 'Doe, John Jr.', time: '8:00 am - 9:00 am', department: 'College of Agriculture' },
@@ -30,7 +35,8 @@ const visibleSetAppointment = ref(false);
 async function clickSave(){
     console.log('sent to backend', useAppoinment)
     await storeAppointment(useAppoinment);
-    // visibleSetAppointment.value = false
+    patients.value = await fetchAppointment(formattedDate.value);
+    visibleSetAppointment.value = false
 }
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -59,6 +65,12 @@ watch(date, async (newValue, oldValue) => {
     
 });
 
+const getStatusName = (statusId) => {
+    console.log('Looking for status name for ID:', statusId);
+    const status = useStatus.find(item => item.id == statusId);
+    console.log('Found status:', status); // Log the found status
+    return status ? status.name : 'Unknown';
+};
 </script>
 
 <template>
@@ -95,7 +107,13 @@ watch(date, async (newValue, oldValue) => {
                             <span>{{ slotProps.data.user_details?.department_program }}</span>
                         </template>
                     </Column>
-                    <Column field="status" header="Status"></Column>
+                    <Column field="status" header="Status">
+                        <template #body="slotProps">
+                            <!-- {{ slotProps.data.status }} -->
+                            <span>{{ getStatusName(slotProps.data.status) }}</span>
+                        </template>
+                        
+                    </Column>
                 </DataTable>
             </div>
         </div>

@@ -17,6 +17,23 @@ export async function fetchAppointment(date) {
   }
 }
 
+export async function fetchAppointmentPatient(user_details_id) {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await axios.get('/appointment/show_all', {
+      params: { user_details_id },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching appointment:', error);
+  }
+}
+
 export async function storeAppointment(data) {
   try {
     const token = localStorage.getItem('token');
