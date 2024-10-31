@@ -21,7 +21,7 @@ export async function storeAppointment(data) {
   try {
     const token = localStorage.getItem('token');
 
-    const response = await axios.post('/appointment/store',...data, {
+    const response = await axios.post('/appointment/store',data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

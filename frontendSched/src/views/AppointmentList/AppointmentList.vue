@@ -27,9 +27,10 @@ const formattedDate = computed(() => {
 });
 const visibleSetAppointment = ref(false);
 
-function clickSave(){
+async function clickSave(){
     console.log('sent to backend', useAppoinment)
-    visibleSetAppointment.value = false
+    await storeAppointment(useAppoinment);
+    // visibleSetAppointment.value = false
 }
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -58,10 +59,6 @@ watch(date, async (newValue, oldValue) => {
     
 });
 
-
-async function setAppointment(){
-    await storeAppoinment();
-}
 </script>
 
 <template>

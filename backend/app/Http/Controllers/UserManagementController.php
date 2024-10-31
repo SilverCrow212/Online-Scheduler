@@ -40,7 +40,7 @@ class UserManagementController extends Controller
                     'guardian_no' => $r->guardian_no,
                     'permanent_address' => $r->permanent_address,
                     'bsu_address' => $r->bsu_address,
-                    'age'
+                    'age' => $r->age,
                 ]);
             DB::commit(); // IF ABOVE QUERIES ARE EXECUTED SUCCESSFULLY, ALL QUERIES WILL BE COMITTED AND THE DATABASE WILL BE AFFECTED
 

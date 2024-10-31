@@ -55,7 +55,8 @@ const formatDate = (date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
   const day = String(date.getDate()).padStart(2, '0');
   const year = date.getFullYear();
-  return `${month}/${day}/${year}`;
+  // return `${month}/${day}/${year}`;
+  return `${year}-${month}-${day}`;
 };
 const sampleDates = ref(
   [
@@ -104,21 +105,32 @@ watch(selectedDate, () => {
   useAppoinment.appointment_time = null;
   useAppoinment.appointment_date = formatDate(selectedDate.value);
 });
-const clickSave = () => {
-  useAppoinment.user_details_id = selectedPatientId.value.user_details.id; // Set the user ID in the appointment details
-  useAppoinment.consent_form = consentform.data;
-  useAppoinment.status = 2;
+////
+watch(selectedPatientId, () => {
+  useAppoinment.user_details_id = selectedPatientId.value?.user_details?.user_id; // Set the user ID in the appointment details
+});
+
+
+
+
+// useAppoinment.status = 2;
+////
+const clickClose = () => {
+  useAppoinment.consent_form = consentform;
   visibleInformedConsent.value = false;
-  console.log('sent to backend', useAppoinment)
+  console.log('consent form',consentform)
+
 };
 </script>
 
 <template>
       <div class="grid p-fluid">
-        <!-- {{ formattedSelectedDate }} -->
         <!-- {{test.data}} -->
         <div class="col-12 md:col-12">
+          <!-- {{ formattedSelectedDate }} -->
           {{selectedPatientId}}
+           asdasd<br/>
+          {{ useAppoinment.user_details_id }}
               <Button label="Informed Consent" @click="visibleInformedConsent=true"/>
               <div class="field col-12 md:col-12">
                   <label>ID number</label>
@@ -165,7 +177,7 @@ const clickSave = () => {
         <InformedConsent/>
         <div class="flex justify-content-end gap-2">
             <!-- <Button type="button" label="Cancel" severity="secondary" @click="visibleInformedConsent = false"></Button> -->
-            <Button type="button" label="Close" @click="clickSave()"></Button>
+            <Button type="button" label="Close" @click="clickClose()"></Button>
         </div>
     </Dialog>
 

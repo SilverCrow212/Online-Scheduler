@@ -14,9 +14,10 @@ class AppointmentController extends Controller
      */
     public function store(Request $r)
     {
+        $consentform = json_encode($r->consent_form);
         $appointment = Appointment::create([
             'user_details_id' => $r->user_details_id,
-            'consent_form' => $r->consent_form,
+            'consent_form' => $consentform,
             'enccode' => $r->enccode,
             'appointment_date' => $r->appointment_date,
             'appointment_time' => $r->appointment_time,
