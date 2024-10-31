@@ -84,10 +84,12 @@ async function clickUpdate() {
                     <div class="flex pt-4 justify-content-between">
                         <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="prevCallback" />
                         <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" />
+                        <Button label="Update" icon="pi pi-save" iconPos="right" @click="clickUpdate" />
+                        <Button label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" />
                     </div>
                 </template>
             </StepperPanel>
-            <StepperPanel header="Step III">
+            <!-- <StepperPanel header="Step III">
                 <template #content="{ prevCallback }">
                     <div class="flex flex-column h-12rem">
                         <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">Review before saving? Add Mark as done button here</div>
@@ -109,7 +111,7 @@ async function clickUpdate() {
                         <Button label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" />
                     </div>
                 </template>
-            </StepperPanel>
+            </StepperPanel> -->
         </Stepper>
 </template>
 

@@ -5,7 +5,12 @@ import {otherInputs} from '@/store/teethothers';
 const serviceRenderedStore = serviceRendered();
 const serviceChoices = serviceRenderedStore.legend;
 const otherInputsStore = otherInputs();
-
+import { createacc } from '@/store/createacc';
+import { statusChoices } from '@/store/choices';
+const createaccStore = createacc();
+const createaccount  =createaccStore.accDetails;
+const statusStore = statusChoices();
+const statuschoices = statusStore.legend
 const otherInput = otherInputsStore.servicesRendered;
 const multiselectValue = ref(null);
 const value = ref();
@@ -45,6 +50,17 @@ const value = ref();
         <div class="field col-12 md:col-12">
             <label >Remarks</label>
             <Textarea v-model="otherInput.remarks" rows="5" cols="30" />
+        </div>
+        <div class="field col-12 md:col-12">
+            <label>Status</label>
+            <Dropdown
+            id="status"
+            placeholder="Select One"
+            v-model="createaccount.user_type"
+            :options="statuschoices"
+            optionLabel="name"
+            optionValue="id"
+            />
         </div>
     </div>
 </template>
