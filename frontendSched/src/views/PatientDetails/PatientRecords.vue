@@ -18,7 +18,14 @@ const metaKey = ref(true);
 const visible = ref(false);
 const patients = ref(null);
 
-function dialogOpen(){
+function dialogOpen(event){
+    console.log('Row clicked:', event.data); // Log the clicked row's data
+    if (event) {
+        selectedPatient.value = event.data; // Set the selected patient data
+        console.log('Selected Patient:', selectedPatient.value); // Log for confirmation
+    } else {
+        console.warn('No patient selected');
+    }
     visible.value = true;
 }
 
@@ -51,7 +58,7 @@ window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['name']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" paginator :rows="10" @row-click="dialogOpen()">
+                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['name']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" paginator :rows="10" @row-click="dialogOpen">
                     <template #header>
                         <div class="flex justify-content-end">
                             <IconField iconPosition="left">
@@ -62,9 +69,23 @@ window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top
                             </IconField>
                         </div>
                     </template>
-                    <Column field="name" header="Patient Name"></Column>
-                    <Column field="type" header="Type"></Column>
-                    <Column field="department" header="Department"></Column>
+                    <Column field="name" header="Patient Name">
+                        <template #body="slotProps">
+                            <span>{{ slotProps.data?.user_details?.lastname}}, {{ slotProps.data?.user_details?.firstname}} {{ slotProps.data?.user_details?.middlename}}</span>
+                        </template>
+                    </Column>
+                    <Column field="type" header="Type">
+                        <template #body="slotProps">
+                            {{ slotProps.data?.user_details?.type}}
+                            <!-- {{ slotProps.data }} -->
+                        </template>
+                        
+                    </Column>
+                    <Column field="department" header="Department">
+                        <template #body="slotProps">
+                            {{ slotProps.data?.user_details?.department_program}}
+                        </template>
+                    </Column>
                 </DataTable>
             </div>
         </div>
@@ -80,7 +101,7 @@ window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top
                 <Button type="button" label="Print Record" icon="pi pi-profile" size="small" @click="openProfileWindow()" />
             </span>
         </div>
-            <PatientRecordTable/>
+            <PatientRecordTable :patient="selectedPatient"/>
         </Dialog>
 </template>
 
