@@ -5,7 +5,9 @@ import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
 import { fetchAppointment, storeAppointment } from '@/api/ApiAppointment';
-
+import { appointment } from '@/store/appointmentenc';
+const appointmentStore = appointment();
+const useAppoinment =  appointmentStore.appointmentDetails;
 const patients = ref();
 const a = ref([
     { id: '1', name: 'Doe, John Jr.', time: '8:00 am - 9:00 am', department: 'College of Agriculture' },
@@ -24,6 +26,11 @@ const formattedDate = computed(() => {
     return `${inputDate.getMonth() + 1}/${inputDate.getDate()}/${inputDate.getFullYear()}`;
 });
 const visibleSetAppointment = ref(false);
+
+function clickSave(){
+    console.log('sent to backend', useAppoinment)
+    visibleSetAppointment.value = false
+}
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -102,7 +109,7 @@ async function setAppointment(){
         <AppointmentPopup/>
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Cancel" severity="secondary" @click="visibleSetAppointment = false"></Button>
-            <Button type="button" label="Save" @click="visibleSetAppointment = false"></Button>
+            <Button type="button" label="Save" @click="clickSave()"></Button>
         </div>
     </Dialog>
 </template>
