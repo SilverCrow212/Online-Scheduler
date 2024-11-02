@@ -1,13 +1,18 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
-import AppointmentPopup from '@/views/AppointmentList/AppointmentPopup.vue';
+import HolidayAddPopup from '@/views/Holidays/HolidayPopup.vue';
+import HolidayUpdatePopup from '@/views/Holidays/HolidayUpdatePopup.vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
-import { fetchHoliday } from '@/api/ApiHolidays';
+import { fetchHoliday, storeHoliday, updateHoliday, deleteHoliday } from '@/api/ApiHolidays';
+import { holidayInput } from '@/store/holiday';
+
+const holidayStore = holidayInput();
+const useHoliday = holidayStore.setHoliday;
 
 const holiday = ref();
 
-const selectedPatient = ref(null);
+const selectedHoliday = ref(null);
 const metaKey = ref(true);
 const router = useRouter();
 const today = new Date();
@@ -17,7 +22,8 @@ const formattedDate = computed(() => {
     const inputDate = new Date(date.value);
     return `${inputDate.getMonth() + 1}/${inputDate.getDate()}/${inputDate.getFullYear()}`;
 });
-const visibleSetAppointment = ref(false);
+const visibleSetHoliday = ref(false);
+const visibleUpdateHoliday = ref(false);
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -28,16 +34,35 @@ onMounted(async () => {
 });
 
 function dialogOpen(event) {
-    console.log('Row clicked', event.data);
     if (event) {
-        selectedPatient.value = event.data;
-        router.push({ name: 'record', params: { id: selectedPatient.value.id } });
-        console.log('patid', selectedPatient.value.id);
+        useHoliday.id = event.data.id;
+        useHoliday.date = event.data.date; // assuming event.data has a date property
+        useHoliday.description = event.data.description; // assuming it has a description property
+        visibleUpdateHoliday.value = true;
     } else {
         console.warn('No patient selected');
     }
 }
 
+async function clickSave(){
+    await storeHoliday(useHoliday);
+    console.log('holiday', useHoliday)
+    holiday.value = await fetchHoliday();
+    visibleSetHoliday.value = false;
+}
+
+async function clickUpdate(){
+    await updateHoliday(useHoliday);
+    console.log('holiday', useHoliday)
+    holiday.value = await fetchHoliday();
+    visibleUpdateHoliday.value = false;
+}
+
+async function clickDelete(){
+    await deleteHoliday(useHoliday);
+    holiday.value = await fetchHoliday();
+    visibleUpdateHoliday.value = false;
+}
 </script>
 
 <template>
@@ -46,11 +71,11 @@ function dialogOpen(event) {
             <div class="card">
                 <div class="flex justify-content-between align-items-center">
                     <div>
-                        <Button label="Add Holiday" @click="visibleSetAppointment = true" />
+                        <Button label="Add Holiday" @click="visibleSetHoliday = true" />
                     </div>
                 </div>
-                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['name']" :value="holiday" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
-                    <template #header>
+                <DataTable v-model:selection="selectedHoliday" v-model:filters="filters"  :globalFilterFields="['name']" :value="holiday" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
+                    <!-- <template #header>
                         <div class="flex justify-content-end">
                             <IconField iconPosition="left">
                                 <InputIcon>
@@ -59,8 +84,8 @@ function dialogOpen(event) {
                                 <InputText v-model="filters['global'].value" placeholder="Name Search" />
                             </IconField>
                         </div>
-                    </template>
-                    <Column field="name" header="Patient Name">
+                    </template> -->
+                    <Column header="Date">
                         <template #body="slotProps">
                             <span>{{ slotProps.data.date }}</span>
                         </template>
@@ -72,11 +97,21 @@ function dialogOpen(event) {
     </div>
 
 
-    <Dialog v-model:visible="visibleSetAppointment" modal header="Set Appointment" :style="{ width: '35rem' }" :dismissableMask="true">
-        <AppointmentPopup/>
+    <Dialog v-model:visible="visibleSetHoliday" modal header="Set Holiday" :style="{ width: '35rem' }" :dismissableMask="true">
+        <HolidayAddPopup/>
         <div class="flex justify-content-end gap-2">
-            <Button type="button" label="Cancel" severity="secondary" @click="visibleSetAppointment = false"></Button>
-            <Button type="button" label="Save" @click="visibleSetAppointment = false"></Button>
+            <Button type="button" label="Cancel" severity="secondary" @click="visibleSetHoliday = false"></Button>
+            <Button type="button" label="Save" @click="clickSave"></Button>
+        </div>
+    </Dialog>
+
+    <Dialog v-model:visible="visibleUpdateHoliday" modal header="Set Holiday" :style="{ width: '35rem' }" :dismissableMask="true">
+        <HolidayUpdatePopup/>
+        <div class="flex justify-content-end gap-2">
+            <!-- {{ useHoliday }} -->
+            <Button type="button" label="Cancel" severity="secondary" @click="visibleUpdateHoliday = false"></Button>
+            <Button type="button" label="Delete" severity="danger" @click="clickDelete"></Button>
+            <Button type="button" label="Update" @click="clickUpdate"></Button>
         </div>
     </Dialog>
 </template>
