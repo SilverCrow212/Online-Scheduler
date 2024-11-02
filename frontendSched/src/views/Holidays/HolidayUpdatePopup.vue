@@ -6,7 +6,7 @@ const holidayStore = holidayInput();
 const useHoliday = holidayStore.setHoliday;
 
 
-const selectedDate = ref(null);
+const selectedDate = ref(useHoliday.date);
 
 const formatDate = (date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
@@ -14,6 +14,8 @@ const formatDate = (date) => {
   const year = date.getFullYear();
   return `${year}-${month}-${day}`;
 };
+
+
 
 watch(selectedDate, () => {
   useHoliday.date = formatDate(selectedDate.value);

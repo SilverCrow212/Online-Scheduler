@@ -14,6 +14,7 @@ class HolidayController extends Controller
      */
     public function store(Request $r)
     {
+        // return $r->holiday['date'];
         return Holidays::create([
             'date' => $r->date,
             'description'  => $r->description,
