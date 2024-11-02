@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 
 use DB;
 use Illuminate\Http\Request;
@@ -12,8 +13,12 @@ class TeethController extends Controller
     public function index(){}
 
     public function store(Request $request){
-
+        // return $request;
         $appointmentId = $request->appointment_id;
+        $firstPage = $request->firstPageData;
+        // return $firstPage;
+        $secondPage = $request->secondPageData;
+        // return $secondPage['toothnumber'];
         $teethData = $request->input('teethData');
         $teethMapping = [
             'tbaby_rightteeth' => 'tbaby_rightteeth',
@@ -46,6 +51,18 @@ class TeethController extends Controller
                 DB::table($table)->insert($data);
             }
         }
+        $services_rendered = json_encode($secondPage['services_rendered']);
+        $firstPage = json_encode($firstPage);
+        DB::table('clinical_details')->insert([
+            'appointment_id' => $appointmentId,
+            'firstPage' => $firstPage,
+            'services_rendered' => $services_rendered,
+            'tooth_number' => $secondPage['tooth_number'],
+            'medicine_prescribed' => $secondPage['medicine_prescribed'],
+            'remarks' => $secondPage['remarks'],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
 
         return response()->json([
             'status'  => 'success',
@@ -129,8 +146,22 @@ class TeethController extends Controller
                 }
             }
         }
+        $clinicalRecord = DB::table('clinical_details')->where('appointment_id', $appointment_id)->first();
 
-        return response()->json($teethData);
+        // return response()->json($clinicalRecord);
+        $otherRecords =[
+            'id' => $clinicalRecord->id,
+            'appointment_id' => $clinicalRecord->appointment_id,
+            'firstPage' => json_decode($clinicalRecord->firstPage),
+            'services_rendered' => json_decode($clinicalRecord->services_rendered),
+            'tooth_number' => $clinicalRecord->tooth_number,
+            'medicine_prescribed' => $clinicalRecord->medicine_prescribed,
+            'remarks' => $clinicalRecord->remarks,
+        ];
+        return response()->json([
+            'teethData' => $teethData,
+            'clinicalRecord' => $otherRecords
+        ]);
     }
 
 }

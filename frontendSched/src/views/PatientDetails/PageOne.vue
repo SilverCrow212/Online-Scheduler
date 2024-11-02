@@ -9,7 +9,8 @@ const occlusionStore = occlusionChoices();
 const appliancesStore = appliancesChoices();
 const tmdStore = tmdChoices();
 const oralHygieneStore = oralHygieneChoices();
-const others = otherInputs();
+const otherStore = otherInputs();
+const useOthers = otherStore.firstPage
 
 
 const periodicalScreeningChoice = periodicalScreeningStore.legend;
@@ -32,11 +33,11 @@ const oralHygieneChoice = oralHygieneStore.legend;
 <div class="p-fluid formgrid grid mt-3">
         <div class="field col-12 md:col-6">
             <h5>Periodical Screening</h5>
-            <!-- {{ others.firstPage.periodicalScreening }} -->
+            <!-- {{ useOthers.periodicalScreening }} -->
             <div class="grid formgrid col-12 p-0 m-0">
                 <div v-for="category in periodicalScreeningChoice" :key="category.id" class="col-4 mb-1">
                     <Checkbox
-                        v-model="others.firstPage.periodicalScreening"
+                        v-model="useOthers.periodicalScreening"
                         name="category"
                         :value="category.id"
                     />
@@ -49,7 +50,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
             <div class="grid formgrid col-12 p-0 m-0">
                 <div v-for="category in occlusionChoice" :key="category.id" class="col-4 mb-1">
                     <Checkbox
-                        v-model="others.firstPage.occlusion"
+                        v-model="useOthers.occlusion"
                         name="category"
                         :value="category.id"
                     />
@@ -62,14 +63,14 @@ const oralHygieneChoice = oralHygieneStore.legend;
             <div class="grid formgrid col-12 p-0 m-0">
                 <div v-for="category in appliancesChoice" :key="category.id" class="col-4 mb-1">
                     <Checkbox
-                        v-model="others.firstPage.appliances"
+                        v-model="useOthers.appliances"
                         name="category"
                         :value="category.id"
                     />
                     <label :for="category.id">{{ category.name }}</label>
 
-                    <div v-if="category.id === 8 && others.firstPage.appliances.includes(category.id)">
-                        <InputText type="text" v-model="others.firstPage.rpd" />
+                    <div v-if="category.id === 8 && useOthers.appliances.includes(category.id)">
+                        <InputText type="text" v-model="useOthers.rpd" />
                     </div>
                 </div>
             </div>
@@ -79,15 +80,15 @@ const oralHygieneChoice = oralHygieneStore.legend;
             <div class="grid formgrid col-12 p-0 m-0">
                 <div v-for="category in tmdChoice" :key="category.id" class="col-4 mb-1">
                     <Checkbox
-                        v-model="others.firstPage.tmd"
+                        v-model="useOthers.tmd"
                         name="category"
                         :value="category.id"
                         :disabled="category.id===1"
                     />
                     <label :for="category.id">{{ category.name }}</label>
 
-                    <div v-if="category.id === 7 && others.firstPage.tmd.includes(category.id)">
-                        <InputText type="text" v-model="others.firstPage.tmdOthers" />
+                    <div v-if="category.id === 7 && useOthers.tmd.includes(category.id)">
+                        <InputText type="text" v-model="useOthers.tmdOthers" />
                     </div>
                 </div>
             </div>
@@ -96,17 +97,17 @@ const oralHygieneChoice = oralHygieneStore.legend;
             <h5>Others</h5>
             <div class="col-12 p-0 m-0">
                 <div class="field col-12 md:col-12">
-                    <InputText v-model="others.firstPage.others" type="text" class="w-full"/>
+                    <InputText v-model="useOthers.others" type="text" class="w-full"/>
                 </div>
             </div>
         </div>
         <div class="field col-12 md:col-3">
             <label for="dateOfExamination1">Date of Examination</label>
-            <InputText id="dateOfExamination1" v-model="others.firstPage.dateOfExamination1" placeholder="Date of Examination" />
+            <InputText id="dateOfExamination1" v-model="useOthers.dateOfExamination1" placeholder="Date of Examination" />
             <div class="oral-hygiene-status">
                 <div v-for="category in oralHygieneChoice" :key="category.id" class="mb-1">
                     <RadioButton 
-                        v-model="others.firstPage.oralHygieneStatus1"
+                        v-model="useOthers.oralHygieneStatus1"
                         :inputId="`oralHygieneStatus1-${category.id}`"
                         name="oralHygieneStatus1"
                         :value="category.id"
@@ -119,11 +120,11 @@ const oralHygieneChoice = oralHygieneStore.legend;
 
         <div class="field col-12 md:col-3">
             <label for="dateOfExamination2">Date of Examination</label>
-            <InputText id="dateOfExamination2" v-model="others.firstPage.dateOfExamination2" placeholder="Date of Examination" />
+            <InputText id="dateOfExamination2" v-model="useOthers.dateOfExamination2" placeholder="Date of Examination" />
             <div class="oral-hygiene-status">
                 <div v-for="category in oralHygieneChoice" :key="category.id" class="mb-1">
                     <RadioButton 
-                        v-model="others.firstPage.oralHygieneStatus2"
+                        v-model="useOthers.oralHygieneStatus2"
                         :inputId="`oralHygieneStatus2-${category.id}`"
                         name="oralHygieneStatus2"
                         :value="category.id"
@@ -136,11 +137,11 @@ const oralHygieneChoice = oralHygieneStore.legend;
 
         <div class="field col-12 md:col-3">
             <label for="dateOfExamination3">Date of Examination</label>
-            <InputText id="dateOfExamination3" v-model="others.firstPage.dateOfExamination3" placeholder="Date of Examination" />
+            <InputText id="dateOfExamination3" v-model="useOthers.dateOfExamination3" placeholder="Date of Examination" />
             <div class="oral-hygiene-status">
                 <div v-for="category in oralHygieneChoice" :key="category.id" class="mb-1">
                     <RadioButton 
-                        v-model="others.firstPage.oralHygieneStatus3"
+                        v-model="useOthers.oralHygieneStatus3"
                         :inputId="`oralHygieneStatus3-${category.id}`"
                         name="oralHygieneStatus3"
                         :value="category.id"
@@ -153,11 +154,11 @@ const oralHygieneChoice = oralHygieneStore.legend;
 
         <div class="field col-12 md:col-3">
             <label for="dateOfExamination4">Date of Examination</label>
-            <InputText id="dateOfExamination4" v-model="others.firstPage.dateOfExamination4" placeholder="Date of Examination" />
+            <InputText id="dateOfExamination4" v-model="useOthers.dateOfExamination4" placeholder="Date of Examination" />
             <div class="oral-hygiene-status">
                 <div v-for="category in oralHygieneChoice" :key="category.id" class="mb-1">
                     <RadioButton 
-                        v-model="others.firstPage.oralHygieneStatus4"
+                        v-model="useOthers.oralHygieneStatus4"
                         :inputId="`oralHygieneStatus4-${category.id}`"
                         name="oralHygieneStatus4"
                         :value="category.id"

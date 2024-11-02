@@ -6,16 +6,18 @@ import PageTwo from '@/views/PatientDetails/PageTwo.vue';
 import { statusChoices } from '@/store/choices';
 import { createacc } from '@/store/createacc';
 import { teeth } from '@/store/teeth';
+import { otherInputs } from '@/store/teethothers';
 import { storeClinicalDetails, updateClinicalDetails, fetchClinicalDetails } from '@/api/ApiStoreClinicalDetails';
 
 const route = useRoute();
 const appointmentId = route.params.id;
 const teethStore = teeth();
+const otherInputsStore = otherInputs();
 const teethData = teethStore.teethData;
 const createaccStore = createacc();
-const createaccount  =createaccStore.accDetails;
+// const createaccount  =createaccStore.accDetails;
 const statusStore = statusChoices();
-const statuschoices = statusStore.legend
+// const statuschoices = statusStore.legend
 const loader = ref(false);
 onMounted(async () => {
     teethStore.resetTeethData(); 
@@ -26,7 +28,9 @@ onMounted(async () => {
         
         // Check if fetchData is valid
         if (fetchData) {
-            Object.assign(teethData, fetchData);
+            Object.assign(teethData, fetchData.teethData);
+            Object.assign(otherInputsStore.firstPage, fetchData.clinicalRecord);
+            Object.assign(otherInputsStore.servicesRendered, fetchData.clinicalRecord);
             console.log('teeth Data', teethData);
             loader.value=true;
         } else {
@@ -43,7 +47,8 @@ async function clickSave() {
   try {
     const patientData = {
       teethData: teethData,
-      
+      firstPageData: otherInputsStore.firstPage,
+      secondPageData: otherInputsStore.servicesRendered,
     };
     const response = await storeClinicalDetails(appointmentId, patientData);
     console.log('Data saved successfully:', response);

@@ -21,9 +21,9 @@ export const otherInputs = defineStore('otherInputs', () => {
     });
 
     const servicesRendered = ref({
-        services:[],
-        toothnumber:null,
-        medicineprescribed:null,
+        services_rendered:[],
+        tooth_number:null,
+        medicine_prescribed:null,
         remarks:null
     });
     return { firstPage, servicesRendered };
