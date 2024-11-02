@@ -19,6 +19,7 @@ class UserManagementController extends Controller
                 $createUser = User::create([
                     'school_id_number' => $r->school_id_number,
                     'email' => $r->email,
+                    'user_type' => $r->user_type,
                     'password' => Hash::make($r->password),
                 ]);
                 // THIS WILL CREATE A USER DETAILS RELATED TO THE USER RECORD
@@ -86,7 +87,7 @@ class UserManagementController extends Controller
                     'guardian_no' => $r->guardian_no,
                     'permanent_address' => $r->permanent_address,
                     'bsu_address' => $r->bsu_address,
-                    'age'
+                    'age' => $r->age
                 ]);
             DB::commit();
         } catch (\Throwable $th) {
