@@ -4,6 +4,7 @@ import { fetchDashboardDataAdmin } from '@/api/ApiDashboard';
 import { fetchAppointment } from '@/api/ApiAppointment';
 import { FilterMatchMode } from 'primevue/api';
 import { useRouter } from 'vue-router';
+import PatientDashboard from '@/views/PatientOnlyView/PatientDashboard.vue'
 
 const router = useRouter();
 const today = new Date();
@@ -43,10 +44,12 @@ function dialogOpen(event) {
         console.warn('No patient selected');
     }
 }
+const user_details = JSON.parse(localStorage.getItem('user_details'));
+    // if (user_details.user_type === 'admin') 
 </script>
 
 <template>
-<div class="grid">
+<div class="grid" v-if="user_details.user_type=='admin'">
     <div class="col-12 lg:col-6 xl:col-4">
         <div class="card mb-0">
             <div class="flex justify-content-between mb-3">
@@ -128,7 +131,9 @@ function dialogOpen(event) {
                     <Column field="status" header="Status"></Column>
                 </DataTable>
         </div>
-    </div>
-    
+    </div>  
+</div>
+<div class="grid" v-else>
+    <PatientDashboard/>
 </div>
 </template>

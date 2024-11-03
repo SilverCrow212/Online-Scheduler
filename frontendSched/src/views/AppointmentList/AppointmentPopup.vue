@@ -128,9 +128,9 @@ const clickClose = () => {
         <!-- {{test.data}} -->
         <div class="col-12 md:col-12">
           <!-- {{ formattedSelectedDate }} -->
-          {{selectedPatientId}}
+          <!-- {{selectedPatientId}}
            asdasd<br/>
-          {{ useAppoinment.user_details_id }}
+          {{ useAppoinment.user_details_id }} -->
               <Button label="Informed Consent" @click="visibleInformedConsent=true"/>
               <div class="field col-12 md:col-12">
                   <label>ID number</label>

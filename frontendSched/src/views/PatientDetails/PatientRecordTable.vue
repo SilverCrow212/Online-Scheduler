@@ -18,11 +18,7 @@ onMounted(async () => {
     console.log('patients value popup',records.value)
 });
 
-const records = ref([
-    { id: '1', appointmentdate: '09/23/2024', appointmenttime: '8:00 am - 9:00 am', servicerendered: 'Tooth Cleaning', toothno: 'R35 and L36', medicine: 'Doe, John Jr.', remark: 'Student' },
-    { id: '2', appointmentdate: '09/26/2024', appointmenttime: '11:00 am - 12:00 pm', servicerendered: 'Tooth Extracting', toothno: 'R35 and L36', medicine: 'Doe, John Jr.', remark: 'Student' },
-    { id: '3', appointmentdate: '09/27/2024', appointmenttime: '1:00 pm - 2:00 pm', servicerendered: 'Yes', toothno: 'R35 and L36', medicine: 'Doe, John Jr.', remark: 'Student' },
-]);
+const records = ref([]);
 
 function dialogOpen(event) {
     const selectedPatient = event.data;

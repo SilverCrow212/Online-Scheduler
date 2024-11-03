@@ -109,7 +109,6 @@ const getStatusName = (statusId) => {
                     </Column>
                     <Column field="status" header="Status">
                         <template #body="slotProps">
-                            <!-- {{ slotProps.data.status }} -->
                             <span>{{ getStatusName(slotProps.data.status) }}</span>
                         </template>
                         
