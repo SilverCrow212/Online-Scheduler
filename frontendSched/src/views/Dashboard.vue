@@ -5,6 +5,9 @@ import { fetchAppointment } from '@/api/ApiAppointment';
 import { FilterMatchMode } from 'primevue/api';
 import { useRouter } from 'vue-router';
 import PatientDashboard from '@/views/PatientOnlyView/PatientDashboard.vue'
+import { statusChoices } from '@/store/choices'
+const statusStore = statusChoices();
+const useStatus = statusStore.legend;
 
 const router = useRouter();
 const today = new Date();
@@ -46,6 +49,12 @@ function dialogOpen(event) {
 }
 const user_details = JSON.parse(localStorage.getItem('user_details'));
     // if (user_details.user_type === 'admin') 
+const getStatusName = (statusId) => {
+    console.log('Looking for status name for ID:', statusId);
+    const status = useStatus.find(item => item.id == statusId);
+    console.log('Found status:', status); // Log the found status
+    return status ? status.name : 'Unknown';
+};
 </script>
 
 <template>
@@ -125,10 +134,14 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                     <Column field="appointment_time" header="Time"></Column>
                     <Column field="department" header="Department">
                         <template #body="slotProps">
-                            <span>{{ slotProps.data.user_details?.department_program }}</span>
+                            <span>{{ slotProps.data.user_details?.department_program}}</span>
                         </template>
                     </Column>
-                    <Column field="status" header="Status"></Column>
+                    <Column field="status" header="Status">
+                        <template #body="slotProps">
+                            <span>{{ getStatusName(slotProps.data.status)}}</span>
+                        </template>
+                    </Column>
                 </DataTable>
         </div>
     </div>  

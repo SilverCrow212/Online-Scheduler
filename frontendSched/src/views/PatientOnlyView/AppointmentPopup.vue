@@ -1,9 +1,9 @@
 <script setup>
 import { ref,computed,watch,onMounted } from 'vue';
-import axios from 'axios';
 import InformedConsent from '@/views/InformedConsent/InformedConsent.vue';
 import { appointment } from '@/store/appointmentenc';
 import { informedConsent } from '@/store/informedconsent';
+import {fetchAppointmentOngoing} from '@/api/ApiAppointment';
 /////////////////
 import { fetchAllPatient } from '@/api/ApiPatientRecords';
 const patients = ref(null);
@@ -12,6 +12,8 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
 const selectedPatientId = ref(user_details);
 onMounted(async () => {
     const data = await fetchAllPatient(); // Fetch the patient records
+    const disabled = await fetchAppointmentOngoing(selectedDate.value);
+    // sampleDates.value= disabled;
     patients.value = data;
     console.log('patients data', patients.value)
 });
@@ -144,7 +146,7 @@ const clickClose = () => {
                     disabled
                     />
               </div>
-
+              {{ disabledDates }}
               <div class="field col-12 md:col-12">
                 <label>Choose Appointment Date</label>
                 <Calendar
