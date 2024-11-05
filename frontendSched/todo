@@ -1,4 +1,4 @@
--change
+<!-- -change
     <MultiSelect v-model="otherInput.services" :options="serviceChoices" optionLabel="name" placeholder="Select Services" :filter="true" class="w-full">
             <template #value="slotProps">
                 <div class="inline-flex align-items-center py-1 px-2 bg-primary text-primary border-round mr-2" v-for="option in slotProps.value" :key="option.id">
@@ -14,19 +14,42 @@
                 </div>
             </template>
         </MultiSelect>
-    from pagetwo.vue input id
+    from pagetwo.vue input id -->
 
 
 
-- add api.js for all api calls needed
+<!-- - add api.js for all api calls needed -->
 
-- fix dashboard
+- fix dashboard of patient
 
 - add some details in records for easy viewing
 
-- make logic for calendars (either make a table for holidays)
+<!-- - make logic for calendars (either make a table for holidays) -->
 
-- add query for user upon logging in 
+<!-- - add query for user upon logging in  -->
 
-////////
-- request api for getting the appointments of the whole month
+- update of appointment status
+
+- inserting of other clinical_details
+
+- resetting of data
+
+- editing of profile
+
+- setting of holiday disabling
+
+- remaking logic for disabling dates
+
+- add no entries if table is empty
+
+- add notifications Swal like
+
+- saving and editing of holiday section **//
+
+--- use try catch for each api calls ---
+
+-- double check for build in case there is a warnings for production
+
+(exporting of records basing on pic use )
+
+-alert for holiday

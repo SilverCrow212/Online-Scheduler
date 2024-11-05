@@ -51,7 +51,7 @@ export async function fetchAppointmentPatient(user_details_id) {
   }
 }
 
-export async function storeAppointment(data) {
+export async function storeAppointment(data, toast) {
   try {
     const token = localStorage.getItem('token');
 
@@ -60,10 +60,16 @@ export async function storeAppointment(data) {
         Authorization: `Bearer ${token}`,
       },
     });
-
+    toast.add({ 
+      severity: 'success', 
+      summary: 'Successful', 
+      detail: 'You have set an appointment successfully.', 
+      life: 3000 
+    });
     return response.data;
   } catch (error) {
     console.error('Error storing appointment:', error);
+    toast.add({ severity: 'error', summary: error.response.data.message, detail: 'Message Detail', life: 3000 });
   }
 }
 

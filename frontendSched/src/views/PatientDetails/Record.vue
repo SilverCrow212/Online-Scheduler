@@ -8,6 +8,12 @@ import { createacc } from '@/store/createacc';
 import { teeth } from '@/store/teeth';
 import { otherInputs } from '@/store/teethothers';
 import { storeClinicalDetails, updateClinicalDetails, fetchClinicalDetails } from '@/api/ApiStoreClinicalDetails';
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
+
+const user_details = JSON.parse(localStorage.getItem('user_details'));
 
 const route = useRoute();
 const appointmentId = route.params.id;
@@ -17,6 +23,7 @@ const teethData = teethStore.teethData;
 const createaccStore = createacc();
 // const createaccount  =createaccStore.accDetails;
 const statusStore = statusChoices();
+const buttonSelecter = ref(false);
 // const statuschoices = statusStore.legend
 const loader = ref(false);
 onMounted(async () => {
@@ -32,6 +39,7 @@ onMounted(async () => {
             Object.assign(otherInputsStore.firstPage, fetchData.clinicalRecord);
             Object.assign(otherInputsStore.servicesRendered, fetchData.clinicalRecord);
             console.log('teeth Data', teethData);
+            buttonSelecter.value=true;
             loader.value=true;
         } else {
             console.error('Fetched data is null or undefined');
@@ -50,7 +58,7 @@ async function clickSave() {
       firstPageData: otherInputsStore.firstPage,
       secondPageData: otherInputsStore.servicesRendered,
     };
-    const response = await storeClinicalDetails(appointmentId, patientData);
+    const response = await storeClinicalDetails(appointmentId, patientData, toast);
     console.log('Data saved successfully:', response);
   } catch (error) {
     console.error('Error saving clinical details:', error);
@@ -61,9 +69,10 @@ async function clickUpdate() {
   try {
     const patientData = {
       teethData: teethData,
-      
+      firstPageData: otherInputsStore.firstPage,
+      secondPageData: otherInputsStore.servicesRendered,
     };
-    const response = await updateClinicalDetails(appointmentId, patientData);
+    const response = await updateClinicalDetails(appointmentId, patientData, toast);
     console.log('Data saved successfully:', response);
   } catch (error) {
     console.error('Error saving clinical details:', error);
@@ -71,7 +80,7 @@ async function clickUpdate() {
 }
 </script>   
 <template>
-   
+    <Toast/>
         <Stepper v-if="loader">
             <StepperPanel header="Step I">
                 <template #content="{ nextCallback }">
@@ -89,34 +98,11 @@ async function clickUpdate() {
                     <div class="flex pt-4 justify-content-between">
                         <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="prevCallback" />
                         <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" />
-                        <Button label="Update" icon="pi pi-save" iconPos="right" @click="clickUpdate" />
-                        <Button label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" />
+                        <Button v-if="buttonSelecter" label="Update" icon="pi pi-save" iconPos="right" @click="clickUpdate" :disabled="user_details.user_type === 'user'"/>
+                        <Button v-else label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" :disabled="user_details.user_type === 'user'"/>
                     </div>
                 </template>
             </StepperPanel>
-            <!-- <StepperPanel header="Step III">
-                <template #content="{ prevCallback }">
-                    <div class="flex flex-column h-12rem">
-                        <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">Review before saving? Add Mark as done button here</div>
-                        <div class="field col-12 md:col-12">
-                            <label>Status</label>
-                            <Dropdown
-                            id="status"
-                            placeholder="Select One"
-                            v-model="createaccount.user_type"
-                            :options="statuschoices"
-                            optionLabel="name"
-                            optionValue="id"
-                            />
-                        </div>
-                    </div>
-                    <div class="flex pt-4 justify-content-between">
-                        <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="prevCallback" />
-                        <Button label="Update" icon="pi pi-save" iconPos="right" @click="clickUpdate" />
-                        <Button label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" />
-                    </div>
-                </template>
-            </StepperPanel> -->
         </Stepper>
 </template>
 

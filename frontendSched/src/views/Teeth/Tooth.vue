@@ -81,23 +81,24 @@ watch([arcColors, centerColor], () => {
 
 const treatmentDialog = ref(false)
 const conditionDialog = ref(false)
+const user_details = JSON.parse(localStorage.getItem('user_details'));
 </script>
 
 <template>
   <!-- {{ conditionChoices }} -->
   <div>
     <div class="input-container">
-      <Button @click="treatmentDialog=true" severity="secondary" :label="conditionChoices.find(choice => choice.id === tooth.topBox)?.key" class="small-input" />
-        <Button @click="conditionDialog=true" severity="secondary" :label="conditionChoices.find(choice => choice.id === tooth.botBox)?.key" class="small-input" />
+      <Button @click="treatmentDialog=true" severity="secondary" :label="conditionChoices.find(choice => choice.id === tooth.topBox)?.key" class="small-input" :disabled="user_details.user_type === 'user'"/>
+      <Button @click="conditionDialog=true" severity="secondary" :label="conditionChoices.find(choice => choice.id === tooth.botBox)?.key" class="small-input" :disabled="user_details.user_type === 'user'"/>
 
     </div>
     <div class="px-1 py-1" color="indigo lighten-4">
       <div class="circle" role="button">
-        <div :class="['double_arc', 'arc_top', arcColors.top]" @click="() => toggleArcColor('top')"></div>
-        <div :class="['double_arc', 'arc_right', arcColors.right]" @click="() => toggleArcColor('right')"></div>
-        <div :class="['double_arc', 'arc_bot', arcColors.bottom]" @click="() => toggleArcColor('bottom')"></div>
-        <div :class="['double_arc', 'arc_left', arcColors.left]" @click="() => toggleArcColor('left')"></div>
-        <div :class="['double_arc', 'center', centerColor]" @click="toggleCenterColor"></div>
+        <div :class="['double_arc', 'arc_top', arcColors.top]" @click="user_details.user_type !== 'user' ? toggleArcColor('top') : null"></div>
+        <div :class="['double_arc', 'arc_right', arcColors.right]" @click="user_details.user_type !== 'user' ? toggleArcColor('right') : null"></div>
+        <div :class="['double_arc', 'arc_bot', arcColors.bottom]" @click="user_details.user_type !== 'user' ? toggleArcColor('bottom') : null"></div>
+        <div :class="['double_arc', 'arc_left', arcColors.left]" @click="user_details.user_type !== 'user' ? toggleArcColor('left') : null"></div>
+        <div :class="['double_arc', 'center', centerColor]"  @click="user_details.user_type !== 'user' ? toggleCenterColor() : null"></div>
       </div>
     </div>
     <span class="input-container font-bold border-1">{{ tooth.id }}</span>

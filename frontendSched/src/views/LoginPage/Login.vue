@@ -6,6 +6,10 @@ import { useRouter } from 'vue-router';
 import { Login } from '@/api/ApiLogin';
 import { fetchUserData } from '@/api/ApiUser';
 import { login, user } from '@/store/user';
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
 
 const loginStore = login();
 const loginDetails = loginStore.loginDetails;
@@ -20,7 +24,7 @@ function createAccount() {
 async function handleLogin() {
     console.log('Login details:', loginDetails);
     try {
-        const result = await Login(loginDetails);
+        const result = await Login(loginDetails,toast);
 
         if (result) {
             localStorage.setItem('token', result);
@@ -54,6 +58,7 @@ async function handleLogin() {
 
 
 <template>
+     <Toast />
     <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
         <div class="flex flex-column align-items-center justify-content-center">
             <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">

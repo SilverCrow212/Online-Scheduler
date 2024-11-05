@@ -7,6 +7,10 @@ import { FilterMatchMode } from 'primevue/api';
 import { fetchAppointment, storeAppointment } from '@/api/ApiAppointment';
 import { appointment } from '@/store/appointmentenc';
 import { departmentChoices, statusChoices } from '@/store/choices'
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
 const departmentStore = departmentChoices();
 const statusStore = statusChoices();
 const appointmentStore = appointment();
@@ -34,7 +38,7 @@ const visibleSetAppointment = ref(false);
 
 async function clickSave(){
     console.log('sent to backend', useAppoinment)
-    await storeAppointment(useAppoinment);
+    await storeAppointment(useAppoinment,toast);
     patients.value = await fetchAppointment(formattedDate.value);
     visibleSetAppointment.value = false
 }
@@ -74,6 +78,7 @@ const getStatusName = (statusId) => {
 </script>
 
 <template>
+    <Toast/>
     <div class="grid">
         <div class="col-12">
             <div class="card">

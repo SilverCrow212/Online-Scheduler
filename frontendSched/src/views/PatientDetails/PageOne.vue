@@ -18,7 +18,7 @@ const occlusionChoice = occlusionStore.legend;
 const appliancesChoice = appliancesStore.legend;
 const tmdChoice = tmdStore.legend;
 const oralHygieneChoice = oralHygieneStore.legend;
-
+const user_details = JSON.parse(localStorage.getItem('user_details'));
 </script>
 
 <template>
@@ -40,6 +40,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
                         v-model="useOthers.periodicalScreening"
                         name="category"
                         :value="category.id"
+                        :disabled="user_details.user_type === 'user'"
                     />
                     <label :for="category.id">{{ category.name }}</label>
                 </div>
@@ -53,6 +54,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
                         v-model="useOthers.occlusion"
                         name="category"
                         :value="category.id"
+                        :disabled="user_details.user_type === 'user'"
                     />
                     <label :for="category.id">{{ category.name }}</label>
                 </div>
@@ -66,6 +68,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
                         v-model="useOthers.appliances"
                         name="category"
                         :value="category.id"
+                        :disabled="user_details.user_type === 'user'"
                     />
                     <label :for="category.id">{{ category.name }}</label>
 
@@ -83,12 +86,12 @@ const oralHygieneChoice = oralHygieneStore.legend;
                         v-model="useOthers.tmd"
                         name="category"
                         :value="category.id"
-                        :disabled="category.id===1"
+                        :disabled="category.id===1 || user_details.user_type === 'user'"
                     />
                     <label :for="category.id">{{ category.name }}</label>
 
                     <div v-if="category.id === 7 && useOthers.tmd.includes(category.id)">
-                        <InputText type="text" v-model="useOthers.tmdOthers" />
+                        <InputText type="text" v-model="useOthers.tmdOthers" :disabled="user_details.user_type === 'user'"/>
                     </div>
                 </div>
             </div>
@@ -97,13 +100,13 @@ const oralHygieneChoice = oralHygieneStore.legend;
             <h5>Others</h5>
             <div class="col-12 p-0 m-0">
                 <div class="field col-12 md:col-12">
-                    <InputText v-model="useOthers.others" type="text" class="w-full"/>
+                    <InputText v-model="useOthers.others" type="text" class="w-full" :disabled="user_details.user_type === 'user'"/>
                 </div>
             </div>
         </div>
         <div class="field col-12 md:col-3">
             <label for="dateOfExamination1">Date of Examination</label>
-            <InputText id="dateOfExamination1" v-model="useOthers.dateOfExamination1" placeholder="Date of Examination" />
+            <InputText id="dateOfExamination1" v-model="useOthers.dateOfExamination1" placeholder="Date of Examination" :disabled="user_details.user_type === 'user'"/>
             <div class="oral-hygiene-status">
                 <div v-for="category in oralHygieneChoice" :key="category.id" class="mb-1">
                     <RadioButton 
@@ -111,6 +114,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
                         :inputId="`oralHygieneStatus1-${category.id}`"
                         name="oralHygieneStatus1"
                         :value="category.id"
+                        :disabled="user_details.user_type === 'user'"
                     />
                     <label :for="`oralHygieneStatus1-${category.id}`">{{ category.name }}</label>
                 </div>
@@ -120,7 +124,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
 
         <div class="field col-12 md:col-3">
             <label for="dateOfExamination2">Date of Examination</label>
-            <InputText id="dateOfExamination2" v-model="useOthers.dateOfExamination2" placeholder="Date of Examination" />
+            <InputText id="dateOfExamination2" v-model="useOthers.dateOfExamination2" placeholder="Date of Examination" :disabled="user_details.user_type === 'user'"/>
             <div class="oral-hygiene-status">
                 <div v-for="category in oralHygieneChoice" :key="category.id" class="mb-1">
                     <RadioButton 
@@ -128,6 +132,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
                         :inputId="`oralHygieneStatus2-${category.id}`"
                         name="oralHygieneStatus2"
                         :value="category.id"
+                        :disabled="user_details.user_type === 'user'"
                     />
                     <label :for="`oralHygieneStatus2-${category.id}`">{{ category.name }}</label>
                 </div>
@@ -137,7 +142,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
 
         <div class="field col-12 md:col-3">
             <label for="dateOfExamination3">Date of Examination</label>
-            <InputText id="dateOfExamination3" v-model="useOthers.dateOfExamination3" placeholder="Date of Examination" />
+            <InputText id="dateOfExamination3" v-model="useOthers.dateOfExamination3" placeholder="Date of Examination" :disabled="user_details.user_type === 'user'"/>
             <div class="oral-hygiene-status">
                 <div v-for="category in oralHygieneChoice" :key="category.id" class="mb-1">
                     <RadioButton 
@@ -145,6 +150,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
                         :inputId="`oralHygieneStatus3-${category.id}`"
                         name="oralHygieneStatus3"
                         :value="category.id"
+                        :disabled="user_details.user_type === 'user'"
                     />
                     <label :for="`oralHygieneStatus3-${category.id}`">{{ category.name }}</label>
                 </div>
@@ -154,7 +160,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
 
         <div class="field col-12 md:col-3">
             <label for="dateOfExamination4">Date of Examination</label>
-            <InputText id="dateOfExamination4" v-model="useOthers.dateOfExamination4" placeholder="Date of Examination" />
+            <InputText id="dateOfExamination4" v-model="useOthers.dateOfExamination4" placeholder="Date of Examination" :disabled="user_details.user_type === 'user'"/>
             <div class="oral-hygiene-status">
                 <div v-for="category in oralHygieneChoice" :key="category.id" class="mb-1">
                     <RadioButton 
@@ -162,6 +168,7 @@ const oralHygieneChoice = oralHygieneStore.legend;
                         :inputId="`oralHygieneStatus4-${category.id}`"
                         name="oralHygieneStatus4"
                         :value="category.id"
+                        :disabled="user_details.user_type === 'user'"
                     />
                     <label :for="`oralHygieneStatus4-${category.id}`">{{ category.name }}</label>
                 </div>

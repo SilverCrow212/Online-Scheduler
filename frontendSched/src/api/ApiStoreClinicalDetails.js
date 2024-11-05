@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export async function storeClinicalDetails(appointmentId,patientData) {
+export async function storeClinicalDetails(appointmentId,patientData,toast) {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post('/teeth/store',{appointment_id:appointmentId,...patientData},  {
@@ -8,13 +8,20 @@ export async function storeClinicalDetails(appointmentId,patientData) {
           Authorization: `Bearer ${token}`,
         },
       });
+      toast.add({ 
+        severity: 'success', 
+        summary: 'Saving Successful', 
+        detail: 'You saved successfully.', 
+        life: 3000 
+      });
       return response.data;
     } catch (error) {
       console.error('Error fetching all patient data:', error);
+      toast.add({ severity: 'error', summary: error.response.data.message, detail: 'Message Detail', life: 3000 });
     }
   };
   
-  export async function updateClinicalDetails(appointmentId, patientData) {
+  export async function updateClinicalDetails(appointmentId, patientData, toast) {
     try {
       const token = localStorage.getItem('token');
       
@@ -26,10 +33,16 @@ export async function storeClinicalDetails(appointmentId,patientData) {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+      toast.add({ 
+        severity: 'success', 
+        summary: 'Update Successful', 
+        detail: 'You updated successfully.', 
+        life: 3000 
+      });
       return response.data;
     } catch (error) {
       console.error('Error updating clinical details:', error);
+      toast.add({ severity: 'error', summary: error.response.data.message, detail: 'Message Detail', life: 3000 });
     }
   }
 

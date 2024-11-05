@@ -17,6 +17,11 @@ const visibleSetAppointment = ref(false);
 const appointmentStore = appointment();
 const useAppoinment =  appointmentStore.appointmentDetails;
 
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
+
 onMounted(async () => {
     const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
     records.value = data;
@@ -37,7 +42,7 @@ function dialogOpen(event) {
 
 async function clickSave(){
     console.log('sent to backend', useAppoinment)
-    await storeAppointment(useAppoinment);
+    await storeAppointment(useAppoinment,toast);
     const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
     records.value = data;
     visibleSetAppointment.value = false
@@ -50,6 +55,7 @@ const getStatusName = (statusId) => {
 };
 </script>
 <template>
+    <Toast/>
 <DataTable v-model:selection="selectedPatients" :value="records" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
     <template #header>
         <div class="flex flex-wrap align-items-center justify-content-between gap-2">
