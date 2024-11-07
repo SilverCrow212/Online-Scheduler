@@ -4,6 +4,15 @@ import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
 import { fetchAllPatient } from '@/api/ApiPatientRecords';
+import { departmentChoices } from '@/store/choices';
+
+const { type } = departmentChoices();  // Get the type options from the store
+
+// Function to get the corresponding type name based on type.id
+const getTypeName = (typeId) => {
+  const typeItem = type.find(t => t.id == typeId);
+  return typeItem ? typeItem.name : 'Unknown';  // Return 'Unknown' if no match
+};
 
 
 onMounted(async () => {
@@ -76,7 +85,8 @@ window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top
                     </Column>
                     <Column field="type" header="Type">
                         <template #body="slotProps">
-                            {{ slotProps.data?.user_details?.type}}
+                            <!-- {{ slotProps.data?.user_details?.type}} -->
+                            {{ getTypeName(slotProps.data?.user_details?.type) }}
                             <!-- {{ slotProps.data }} -->
                         </template>
                         

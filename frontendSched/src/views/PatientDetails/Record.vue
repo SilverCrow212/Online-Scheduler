@@ -10,11 +10,12 @@ import { otherInputs } from '@/store/teethothers';
 import { storeClinicalDetails, updateClinicalDetails, fetchClinicalDetails } from '@/api/ApiStoreClinicalDetails';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import { appointment } from '@/store/appointmentenc'
 
 const toast = useToast();
 
 const user_details = JSON.parse(localStorage.getItem('user_details'));
-
+const appointmentStore =appointment();
 const route = useRoute();
 const appointmentId = route.params.id;
 const teethStore = teeth();
@@ -27,7 +28,11 @@ const buttonSelecter = ref(false);
 // const statuschoices = statusStore.legend
 const loader = ref(false);
 onMounted(async () => {
-    teethStore.resetTeethData(); 
+    await fetchingDetails();
+});
+
+async function fetchingDetails() {
+  teethStore.resetTeethData(); 
     teethStore.resetFirstPage(); 
     teethStore.resetServicesRendered(); 
     try {
@@ -36,8 +41,10 @@ onMounted(async () => {
         // Check if fetchData is valid
         if (fetchData) {
             Object.assign(teethData, fetchData.teethData);
-            Object.assign(otherInputsStore.firstPage, fetchData.clinicalRecord);
+            Object.assign(otherInputsStore.firstPage, fetchData.clinicalRecord.firstPage);
             Object.assign(otherInputsStore.servicesRendered, fetchData.clinicalRecord);
+            Object.assign(appointmentStore.appointmentDetails, fetchData.appointment);
+            
             console.log('teeth Data', teethData);
             buttonSelecter.value=true;
             loader.value=true;
@@ -49,7 +56,7 @@ onMounted(async () => {
         console.error('Error fetching clinical details:', error);
         loader.value=true;
     }
-});
+}
 
 async function clickSave() {
   try {
@@ -57,6 +64,7 @@ async function clickSave() {
       teethData: teethData,
       firstPageData: otherInputsStore.firstPage,
       secondPageData: otherInputsStore.servicesRendered,
+      appointment: appointmentStore.appointmentDetails.status
     };
     const response = await storeClinicalDetails(appointmentId, patientData, toast);
     console.log('Data saved successfully:', response);
@@ -71,6 +79,7 @@ async function clickUpdate() {
       teethData: teethData,
       firstPageData: otherInputsStore.firstPage,
       secondPageData: otherInputsStore.servicesRendered,
+      appointment: appointmentStore.appointmentDetails.status
     };
     const response = await updateClinicalDetails(appointmentId, patientData, toast);
     console.log('Data saved successfully:', response);
