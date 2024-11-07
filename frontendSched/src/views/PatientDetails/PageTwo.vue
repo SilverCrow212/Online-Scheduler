@@ -2,6 +2,8 @@
 import {ref} from 'vue'
 import {serviceRendered} from '@/store/choices'
 import {otherInputs} from '@/store/teethothers';
+import { appointment } from '@/store/appointmentenc';
+const appointmentStore = appointment();
 const serviceRenderedStore = serviceRendered();
 const serviceChoices = serviceRenderedStore.legend;
 const otherInputsStore = otherInputs();
@@ -18,6 +20,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
 </script>
 <template>
     <!-- {{ otherInputsStore }} -->
+      <!-- {{ appointmentStore }} -->
     <h5>Services Rendered</h5>
     <MultiSelect v-model="otherInput.services_rendered" :options="serviceChoices" optionLabel="name" placeholder="Select Services" :filter="true" class="w-full" :disabled="user_details.user_type === 'user'">
         <template #value="slotProps">
@@ -52,7 +55,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
             <Dropdown
             id="status"
             placeholder="Select One"
-            v-model="createaccount.user_type"
+            v-model="appointmentStore.appointmentDetails.status"
             :options="statuschoices"
             optionLabel="name"
             optionValue="id"
