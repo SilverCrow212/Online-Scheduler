@@ -70,10 +70,10 @@ async function handleLogin() {
 
                     <div>
                         <label class="block text-900 text-xl font-medium mb-2">ID number</label>
-                        <InputText v-model="loginDetails.school_id_number"  type="text" placeholder="ID number" class="w-full md:w-30rem mb-5" style="padding: 1rem"/>
+                        <InputText v-model="loginDetails.school_id_number"  type="text" placeholder="ID number" class="w-full md:w-30rem mb-5" style="padding: 1rem"  @keyup.enter="handleLogin"/>
 
                         <label class="block text-900 font-medium text-xl mb-2">Password</label>
-                        <Password v-model="loginDetails.password" placeholder="Password" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }" :feedback="false" toggleMask/>
+                        <Password v-model="loginDetails.password" placeholder="Password" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }" :feedback="false" toggleMask  @keyup.enter="handleLogin"/>
 
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">
