@@ -4,16 +4,39 @@ import InformedConsent from '@/views/InformedConsent/InformedConsent.vue';
 import { appointment } from '@/store/appointmentenc';
 import { informedConsent } from '@/store/informedconsent';
 import {fetchAppointmentOngoing} from '@/api/ApiAppointment';
+import { fetchHoliday } from '@/api/ApiHolidays';
 /////////////////
 import { fetchAllPatient } from '@/api/ApiPatientRecords';
 const patients = ref(null);
 const filteredPatient = ref();
 const user_details = JSON.parse(localStorage.getItem('user_details'));
 const selectedPatientId = ref(user_details);
+const holiday = ref([]);
 onMounted(async () => {
     const data = await fetchAllPatient(); // Fetch the patient records
-    const disabled = await fetchAppointmentOngoing(selectedDate.value);
-    // sampleDates.value= disabled;
+    const disabled = await fetchAppointmentOngoing(minDate.value);
+    const holidays = await fetchHoliday();
+    
+    sampleDates.value = disabled.map(dateObj => ({
+      ...dateObj,
+      date: formatDatefromApi(dateObj.date)  // Modify the date format directly here
+    }));
+    
+    holidays.forEach(holidayItem => {
+    const formattedDate = formatDatefromApi(holidayItem.date);  // Format the holiday date
+    sampleDates.value.push({
+      date: formattedDate,
+      available_time: [
+        '8:00 am - 9:00 am',
+        '9:00 am - 10:00 am', 
+        '10:00 am - 11:00 am',
+        '11:00 am - 12:00 pm',
+        '1:00 pm - 2:00 pm', 
+        '2:00 pm - 3:00 pm', 
+        '3:00 pm - 4:00 pm',] 
+    });
+  });
+    console.log('Updated sampleDates:', sampleDates.value);
     patients.value = data;
     console.log('patients data', patients.value)
 });
@@ -54,6 +77,21 @@ const checkboxOptions = ref([
   '3:00 pm - 4:00 pm',
 ]);
 // { label: '4:00 pm - 5:00 pm', value: 8, checked: false },
+const formatDatefromApi = (dateString) => {
+  // Ensure the dateString is converted into a Date object, if it isn't already
+  const date = new Date(dateString);
+
+  // Check if the date is valid
+  if (isNaN(date)) {
+    console.error('Invalid date:', dateString);
+    return dateString;  // Return the original string if invalid
+  }
+
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}/${day}/${year}`;
+};
 const formatDate = (date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
   const day = String(date.getDate()).padStart(2, '0');
@@ -61,27 +99,10 @@ const formatDate = (date) => {
   // return `${month}/${day}/${year}`;
   return `${year}-${month}-${day}`;
 };
+// const sampleDates = ref([]);
 const sampleDates = ref(
   [
-    {date: '10/28/2024' , available_time: [
-      '8:00 am - 9:00 am',
-      '9:00 am - 10:00 am', 
-      '10:00 am - 11:00 am',
-      '11:00 am - 12:00 pm',
-      '1:00 pm - 2:00 pm', 
-      '2:00 pm - 3:00 pm', 
-      '3:00 pm - 4:00 pm',
-      ]
-    },
-    {date: '10/29/2024' , available_time: [
-      '9:00 am - 10:00 am', 
-      '10:00 am - 11:00 am',
-      '11:00 am - 12:00 pm',
-      '1:00 pm - 2:00 pm', 
-      '2:00 pm - 3:00 pm', 
-      '3:00 pm - 4:00 pm',
-      ]
-    },
+
   ]
 );
 const stringToDate = (dateString) => {
@@ -97,7 +118,7 @@ const disabledDates = computed(() => {
 const isCategoryDisabled = (category) => {
   // Check if a date is selected
   if (!selectedDate.value) return false;
-  const formattedSelectedDate = formatDate(selectedDate.value);
+  const formattedSelectedDate = formatDatefromApi(selectedDate.value);
   // Find the selected date in sampleDates
   const dateInfo = sampleDates.value.find(dateObj => dateObj.date === formattedSelectedDate);
   
@@ -131,6 +152,7 @@ const clickClose = () => {
           <!-- {{selectedPatientId}}
            asdasd<br/>
           {{ useAppoinment.user_details_id }} -->
+              {{ sampleDates }}
               <Button label="Informed Consent" @click="visibleInformedConsent=true"/>
               <div class="field col-12 md:col-12">
                   <label>ID number</label>
@@ -142,11 +164,10 @@ const clickClose = () => {
                     optionLabel="school_id_number" 
                     :suggestions="filteredPatient" 
                     @complete="search"
-                    @item-select="onItemSelect"
                     disabled
                     />
               </div>
-              {{ disabledDates }}
+              <!-- {{ sampleDates }} -->
               <div class="field col-12 md:col-12">
                 <label>Choose Appointment Date</label>
                 <Calendar
