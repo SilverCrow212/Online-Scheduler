@@ -106,6 +106,11 @@ const getStatusName = (statusId) => {
                             <span>{{ slotProps.data.user_details?.lastname }}, {{ slotProps.data.user_details?.firstname }} {{ slotProps.data.user_details?.middlename }}</span>
                         </template>
                     </Column>
+                    <Column header="Contact Number">
+                        <template #body="slotProps">
+                            <span>{{ slotProps.data.user_details?.contact_no}}</span>
+                        </template>
+                    </Column>
                     <Column field="appointment_time" header="Time"></Column>
                     <Column field="department" header="Department">
                         <template #body="slotProps">
