@@ -245,6 +245,7 @@ export const departmentChoices = defineStore('departmentChoices', () => {
     const type = ref([
         { name: 'Student', id:1 },
         { name: 'Faculty', id:2 },
+        { name: 'Dependent', id:3 },
     ]);
     return { department, type };
 });
@@ -252,10 +253,10 @@ export const departmentChoices = defineStore('departmentChoices', () => {
 
 export const statusChoices = defineStore('statusChoices', () => {
     const legend = ref([
-        {id:1, name: 'Complete'},
-        {id:2, name: 'Ongoing'},
-        {id:3, name: 'No show'},
-        {id:4, name: 'Cancelled Appointment'},
+        {id:1, name: 'Complete - Done'},
+        {id:2, name: 'Ongoing - Appointment or Treatment is Still Ongoing'},
+        {id:3, name: 'No show - Student Did not Show Up'},
+        {id:4, name: 'Cancelled Appointment - Dentist not Available or Student Cancelled'},
     ]);
     return { legend };
 });

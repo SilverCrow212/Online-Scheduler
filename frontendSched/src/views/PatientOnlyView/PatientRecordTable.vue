@@ -12,7 +12,7 @@ const selectedPatients = ref(null);
 const metaKey = ref(true);
 const patients = ref(null);
 const user_details = JSON.parse(localStorage.getItem('user_details'));
-console.log('user_details',user_details);
+// console.log('user_details',user_details);
 const visibleSetAppointment = ref(false);
 const appointmentStore = appointment();
 const useAppoinment =  appointmentStore.appointmentDetails;
@@ -25,7 +25,7 @@ const toast = useToast();
 onMounted(async () => {
     const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
     records.value = data;
-    console.log('patients value popup',records.value)
+    // console.log('patients value popup',records.value)
 });
 
 const records = ref([]);
@@ -48,9 +48,9 @@ async function clickSave(){
     visibleSetAppointment.value = false
 }
 const getStatusName = (statusId) => {
-    console.log('Looking for status name for ID:', statusId);
+    // console.log('Looking for status name for ID:', statusId);
     const status = useStatus.find(item => item.id == statusId);
-    console.log('Found status:', status); // Log the found status
+    // console.log('Found status:', status); // Log the found status
     return status ? status.name : 'Unknown';
 };
 </script>
