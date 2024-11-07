@@ -152,7 +152,7 @@ const clickClose = () => {
           <!-- {{selectedPatientId}}
            asdasd<br/>
           {{ useAppoinment.user_details_id }} -->
-              {{ sampleDates }}
+              <!-- {{ sampleDates }} -->
               <Button label="Informed Consent" @click="visibleInformedConsent=true"/>
               <div class="field col-12 md:col-12">
                   <label>ID number</label>
