@@ -21,7 +21,7 @@ export async function fetchAppointmentOngoing(date) {
   try {
     const token = localStorage.getItem('token');
 
-    const response = await axios.get('/appointment/show_all_by_date_ongoing', {
+    const response = await axios.get('/appointment/show_all_by_date_disabled', {
       params: { date },
       headers: {
         Authorization: `Bearer ${token}`,

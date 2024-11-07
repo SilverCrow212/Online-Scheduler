@@ -64,6 +64,13 @@ class TeethController extends Controller
             'updated_at' => Carbon::now(),
         ]);
 
+        DB::table('appointment')
+        ->where('id', $appointmentId)
+        ->update([
+            'status' => $request->appointment['status'],
+            'updated_at' => Carbon::now(),
+        ]);
+
         return response()->json([
             'status'  => 'success',
             'message' => 'Teeth data stored successfully'
@@ -72,7 +79,6 @@ class TeethController extends Controller
     }
 
     public function update(Request $request, $appointment_id) {
-
         $teethMapping = [
             'tbaby_rightteeth' => 'tbaby_rightteeth',
             'tadult_rightteeth' => 'tadult_rightteeth',
@@ -105,6 +111,26 @@ class TeethController extends Controller
                 );
             }
         }
+        // return $request->secondPageData['medicine_prescribed'];
+        $firstPage = json_encode($request->firstPageData);
+
+        DB::table('clinical_details')
+            ->where('appointment_id', $appointment_id)
+            ->update([
+                'firstPage' => $firstPage,
+                'services_rendered'=> $request->secondPageData['services_rendered'],
+                'tooth_number' => $request->secondPageData['tooth_number'],
+                'medicine_prescribed'=> $request->secondPageData['medicine_prescribed'],
+                'remarks'=>$request->secondPageData['remarks'],
+                'updated_at' => Carbon::now(),
+            ]);
+            // return $request->appointment;
+        DB::table('appointment')
+            ->where('id', $appointment_id)
+            ->update([
+                'status' => $request->appointment,
+                'updated_at' => Carbon::now(),
+            ]);
 
         return response()->json([
             'message' => 'Teeth data updated successfully',
@@ -158,9 +184,12 @@ class TeethController extends Controller
             'medicine_prescribed' => $clinicalRecord->medicine_prescribed,
             'remarks' => $clinicalRecord->remarks,
         ];
+
+        $appointment = DB::table('appointment')->where('id', $appointment_id)->first();
         return response()->json([
             'teethData' => $teethData,
-            'clinicalRecord' => $otherRecords
+            'clinicalRecord' => $otherRecords,
+            'appointment' => $appointment
         ]);
     }
 

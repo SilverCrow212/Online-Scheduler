@@ -6,6 +6,7 @@ use App\Models\Appointment;
 use App\Models\InformedConsent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
 {
@@ -57,6 +58,45 @@ class AppointmentController extends Controller
             'appointment_date' => Carbon::parse($r->date)->format('Y-m-d')
         ])->get();
     }
+
+    public function show_all_by_date_disabled(Request $r)
+    {
+        $bymonth = $r->date;
+        $parsedDate = Carbon::parse($bymonth);
+        $year = $parsedDate->year;
+        $month = $parsedDate->month;
+
+        // Fetch disabled times for the given month and year
+        $disabled_times = DB::table('appointment')
+            ->where('status', 2)
+            ->whereYear('appointment_date', $year)
+            ->whereMonth('appointment_date', $month)
+            ->get();
+
+        // Initialize an array to hold the result
+        $disabled = [];
+
+        // Loop through the fetched data and group by date
+        foreach ($disabled_times as $disabled_time) {
+            $date = $disabled_time->appointment_date; // Ensure it's a date string
+
+            // Check if the date already exists in the array
+            if (!isset($disabled[$date])) {
+                $disabled[$date] = [
+                    'date' => $date,
+                    'available_time' => []
+                ];
+            }
+
+            // Add the available time to the respective date
+            $availableTime = $disabled_time->appointment_time;
+            $disabled[$date]['available_time'][] = $availableTime;
+        }
+
+        // Return the result as an indexed array (not associative with date as key)
+        return array_values($disabled); // Convert associative array to indexed array
+    }
+
 
     /**
      * Update the specified resource in storage.

@@ -99,7 +99,7 @@ Route::middleware('auth:sanctum')->group (function (){
         Route::post('get_informed_consent/{id}', [AppointmentController::class,'get_informed_consent']);
         // ALL APPOINTMENTS WITHIN A SPECIFIC DATE
         Route::get('show_all_by_date', [AppointmentController::class, 'show_all_by_date']);
-        Route::get('show_all_by_date_ongoing', [AppointmentController::class, 'show_all_by_date_ongoing']);
+        Route::get('show_all_by_date_disabled', [AppointmentController::class, 'show_all_by_date_disabled']);
     });
 
     // Dashboard
