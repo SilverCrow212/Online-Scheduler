@@ -20,7 +20,7 @@
 
 <!-- - add api.js for all api calls needed -->
 
-- fix dashboard of patient
+<!-- - fix dashboard of patient -->
 
 - add some details in records for easy viewing
 
@@ -28,28 +28,28 @@
 
 <!-- - add query for user upon logging in  -->
 
-- update of appointment status
+<!-- - update of appointment status -->
 
-- inserting of other clinical_details
+<!-- - inserting of other clinical_details -->
 
 - resetting of data
 
 - editing of profile
 
-- setting of holiday disabling
+<!-- - setting of holiday disabling -->
 
-- remaking logic for disabling dates
+<!-- - remaking logic for disabling dates -->
 
 - add no entries if table is empty
 
-- add notifications Swal like
+<!-- - add notifications Swal like -->
 
-- saving and editing of holiday section **//
+<!-- - saving and editing of holiday section **// -->
 
---- use try catch for each api calls ---
+<!-- --- use try catch for each api calls --- -->
 
 -- double check for build in case there is a warnings for production
 
 (exporting of records basing on pic use )
 
--alert for holiday
+<!-- -alert for holiday -->
