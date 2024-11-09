@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { createacc } from '@/store/createacc';
 import { departmentChoices, sexChoices } from '@/store/choices';
-import { CreateAcc } from '@/api/ApiLogin';
+import { EditAcc } from '@/api/ApiLogin';
+import { fetchUserData } from '@/api/ApiUser';
 
 const departmentStore = departmentChoices();
 const createAccStore = createacc();
@@ -13,7 +14,37 @@ const sexchoices = sexStore.legend;
 const createaccount = createAccStore.accDetails;
 const typeChoice = departmentStore.type;
 const departmentChoice = departmentStore.department;
-
+onMounted(async () => {
+    try {
+            // Fetch the user data from the API (you can modify this if necessary)
+        const  data  = await fetchUserData();  // Assuming `user_details.id` is the user's ID
+        console.log('asd',data)
+        if (data) {
+            // Populate the form fields with the fetched data
+            createaccount.school_id_number = data[0].user_details.school_id_number;
+            createaccount.firstname = data[0].user_details.firstname;
+            createaccount.middlename = data[0].user_details.middlename;
+            createaccount.lastname = data[0].user_details.lastname;
+            createaccount.email = data[0].user_details.email;
+            // createaccount.password = data[0].password;  // You might not want to populate password for security reasons
+            createaccount.age = data[0].user_details.age;
+            createaccount.sex = data[0].user_details.sex;
+            createaccount.user_type = data[0].user_type;
+            createaccount.type = data[0].type;
+            createaccount.employee_student_type = data[0].user_details.employee_student_type;
+            createaccount.office_level = data[0].user_details.office_level;
+            createaccount.department_program = data[0].user_details.department_program;
+            createaccount.contact_no = data[0].user_details.contact_no;
+            createaccount.civil_status = data[0].user_details.civil_status;
+            createaccount.guardian = data[0].user_details.guardian;
+            createaccount.guardian_no = data[0].user_details.guardian_no;
+            createaccount.permanent_address = data[0].user_details.permanent_address;
+            createaccount.bsu_address = data[0].user_details.bsu_address;
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+    }
+});
 const validationErrors = ref({});
 const userTypeChoice = ['user'];
 // const goBack = () => {
@@ -40,7 +71,7 @@ const type = ref([
     { name: 'Student', id:1 },
     { name: 'Faculty', id:2 },
 ]);
-
+const confirmPassword = ref('');
 console.log('create account', createaccount)
 const typeInput = ref(null);
 const dropdownItem = ref(null);
@@ -77,9 +108,9 @@ const validateForm = async () => {
     if (!createaccount.user_type) {
         validationErrors.value.user_type = 'User type is required.';
     }
-    if (!createaccount.type) {
-        validationErrors.value.type = 'Type is required.';
-    }
+    // if (!createaccount.type) {
+    //     validationErrors.value.type = 'Type is required.';
+    // }
     if (!createaccount.employee_student_type) {
         validationErrors.value.employee_student_type = 'Employee/Student type is required.';
     }
@@ -101,11 +132,14 @@ const validateForm = async () => {
     if (!createaccount.guardian_no) {
         validationErrors.value.guardian_no = 'Guardian contact number is required.';
     }
+    if (createaccount.password !== confirmPassword.value) {
+        validationErrors.value.confirmPassword = 'Passwords do not match.';
+    }
 
     // Check if there are any validation errors
     if (Object.keys(validationErrors.value).length === 0) {
         // Submit the form if there are no validation errors
-        await CreateAcc(createaccount);
+        await EditAcc(createaccount);
         createAccStore.resetAccDetails();
         console.log('Form submitted:', createaccount);
         // goBack(); // You can replace this with your form submission logic
@@ -119,15 +153,20 @@ const validateForm = async () => {
             <div class="card">
                 <h5>Edit Profile</h5>
                 <div class="p-fluid formgrid grid" >
-                    <div class="field col-12 md:col-6">
+                    <div class="field col-12 md:col-4">
                         <label>ID number</label>
                         <InputText v-model="createaccount.school_id_number" type="text" :class="{'p-invalid': validationErrors.school_id_number}" disabled/>
                         <small v-if="validationErrors.school_id_number" class="p-error">{{ validationErrors.school_id_number }}</small>
                     </div>
-                    <div class="field col-12 md:col-6">
+                    <div class="field col-12 md:col-4">
                         <label>Password</label>
                         <Password v-model="createaccount.password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.password}" />
                         <small v-if="validationErrors.password" class="p-error">{{ validationErrors.password }}</small>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label>Confirm Password</label>
+                        <Password v-model="confirmPassword" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.confirmPassword}" />
+                        <small v-if="validationErrors.confirmPassword" class="p-error">{{ validationErrors.confirmPassword }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
                         <label>Firstname</label>
@@ -177,40 +216,53 @@ const validateForm = async () => {
                         <small v-if="validationErrors.type" class="p-error">{{ validationErrors.type }}</small>
                     </div>
                     <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
-                        <label>Student Type</label>
-                        <InputText v-model="createaccount.employee_student_type" type="text" :class="{'p-invalid': validationErrors.employee_student_type}" />
-                        <small v-if="validationErrors.employee_student_type" class="p-error">{{ validationErrors.employee_student_type }}</small>
-                    </div>
-                    <div v-else class="field col-12 md:col-4">
-                        <label>Employment Type</label>
-                        <InputText v-model="createaccount.employee_student_type" type="text" :class="{'p-invalid': validationErrors.employee_student_type}" />
-                        <small v-if="validationErrors.employee_student_type" class="p-error">{{ validationErrors.employee_student_type }}</small>
-                    </div>
-                    <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
-                        <label>Level</label>
-                        <InputText v-model="createaccount.office_level" type="text" :class="{'p-invalid': validationErrors.office_level}" />
-                        <small v-if="validationErrors.office_level" class="p-error">{{ validationErrors.office_level }}</small>
-                    </div>
-                    <div v-else class="field col-12 md:col-4">
-                        <label>Office / College</label>
-                        <Dropdown v-model="createaccount.office_level" 
-                                :options="departmentChoice" 
-                                optionLabel="name" 
-                                optionValue="id" 
-                                placeholder="Select One"
-                                :class="{'p-invalid': validationErrors.office_level}" />
-                        <small v-if="validationErrors.office_level" class="p-error">{{ validationErrors.office_level }}</small>
-                    </div>
-                    <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
-                        <label>Program</label>
-                        <InputText v-model="createaccount.department_program" type="text" :class="{'p-invalid': validationErrors.department_program}" />
-                        <small v-if="validationErrors.department_program" class="p-error">{{ validationErrors.department_program }}</small>
-                    </div>
-                    <div v-else class="field col-12 md:col-4">
-                        <label>Department</label>
-                        <InputText v-model="createaccount.department_program" type="text" :class="{'p-invalid': validationErrors.department_program}" />
-                        <small v-if="validationErrors.department_program" class="p-error">{{ validationErrors.department_program }}</small>
-                    </div>
+                    <label>Student Type</label>
+                    <!-- <InputText v-model="createaccount.employee_student_type" type="text" :class="{'p-invalid': validationErrors.employee_student_type}" /> -->
+                    <Dropdown v-model="createaccount.employee_student_type" 
+                              :options="studentTypeChoice" 
+                              optionLabel="name" 
+                              optionValue="id" 
+                              placeholder="Select One"
+                              :class="{'p-invalid': validationErrors.employee_student_type}" />
+                    
+                    <small v-if="validationErrors.employee_student_type" class="p-error">{{ validationErrors.employee_student_type }}</small>
+                </div>
+                <div v-if="createaccount.type === 2" class="field col-12 md:col-4">
+                    <label>Employment Type</label>
+                    <!-- <InputText v-model="createaccount.employee_student_type" type="text" :class="{'p-invalid': validationErrors.employee_student_type}" /> -->
+                    <Dropdown v-model="createaccount.employee_student_type" 
+                              :options="employmentTypeChoice" 
+                              optionLabel="name" 
+                              optionValue="id" 
+                              placeholder="Select One"
+                              :class="{'p-invalid': validationErrors.employee_student_type}" />
+                    <small v-if="validationErrors.employee_student_type" class="p-error">{{ validationErrors.employee_student_type }}</small>
+                </div>
+                <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
+                    <label>Level</label>
+                    <InputText v-model="createaccount.office_level" type="text" :class="{'p-invalid': validationErrors.office_level}" />
+                    <small v-if="validationErrors.office_level" class="p-error">{{ validationErrors.office_level }}</small>
+                </div>
+                <div v-if="createaccount.type === 2" class="field col-12 md:col-4">
+                    <label>Office / College</label>
+                    <Dropdown v-model="createaccount.office_level" 
+                              :options="departmentChoice" 
+                              optionLabel="name" 
+                              optionValue="id" 
+                              placeholder="Select One"
+                              :class="{'p-invalid': validationErrors.office_level}" />
+                    <small v-if="validationErrors.office_level" class="p-error">{{ validationErrors.office_level }}</small>
+                </div>
+                <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
+                    <label>Program</label>
+                    <InputText v-model="createaccount.department_program" type="text" :class="{'p-invalid': validationErrors.department_program}" />
+                    <small v-if="validationErrors.department_program" class="p-error">{{ validationErrors.department_program }}</small>
+                </div>
+                <div v-if="createaccount.type === 2" class="field col-12 md:col-4">
+                    <label>Department</label>
+                    <InputText v-model="createaccount.department_program" type="text" :class="{'p-invalid': validationErrors.department_program}" />
+                    <small v-if="validationErrors.department_program" class="p-error">{{ validationErrors.department_program }}</small>
+                </div>
                     <div class="field col-12 md:col-4">
                         <label>Email</label>
                         <InputText v-model="createaccount.email" type="text" :class="{'p-invalid': validationErrors.email}" />

@@ -68,6 +68,7 @@ class UserManagementController extends Controller
 
     // UPDATE USER DETAILS
     public function user_details_update(Request $r){
+        // return $r;
         try {
             DB::beginTransaction();
                 UserDetails::where('school_id_number', $r->school_id_number)
