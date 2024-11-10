@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\LogsController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\TeethController;
 use App\Http\Controllers\UserManagementController;
@@ -119,5 +120,8 @@ Route::middleware('auth:sanctum')->group (function (){
 
     // SHOW ALL PATIENTS
     Route::get('all_patients', [PatientController::class,'all_patients']);
+
+    // LOGS {pass 'date' parameter if needed | Default date = current date}
+    Route::get('logs', [LogsController::class,'showLogs']);
 
 });

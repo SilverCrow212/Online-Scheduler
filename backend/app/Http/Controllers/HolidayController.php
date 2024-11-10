@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Holidays;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
 class HolidayController extends Controller
 {
 
@@ -14,12 +13,14 @@ class HolidayController extends Controller
      */
     public function store(Request $r)
     {
-        // return $r->holiday['date'];
-        return Holidays::create([
+        $holiday = Holidays::create([
             'date' => $r->date,
             'description'  => $r->description,
             'created_at'   => Carbon::now(),
         ]);
+
+        $logsController = new LogsController();
+        $logsController->logAction('created holiday: '.$holiday->id);
     }
 
     /**
@@ -35,11 +36,14 @@ class HolidayController extends Controller
      */
     public function update(Request $r, Holidays $holidays)
     {
-        return Holidays::where('id', $r->id)->update([
+        Holidays::where('id', $r->id)->update([
             'date'=> $r->date,
             'description'=> $r->description,
             'updated_at' => Carbon::now(),
         ]);
+
+        $logsController = new LogsController();
+        $logsController->logAction('updated holiday: '.$r->id);
     }
 
     /**
@@ -47,6 +51,9 @@ class HolidayController extends Controller
      */
     public function delete(Request $r)
     {
-        return Holidays::where('id', $r->id)->delete();
+        Holidays::where('id', $r->id)->delete();
+
+        $logsController = new LogsController();
+        $logsController->logAction('deleted holiday: '.$r->id);
     }
 }

@@ -7,6 +7,7 @@ use App\Models\InformedConsent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\LogsController;
 
 class AppointmentController extends Controller
 {
@@ -33,6 +34,9 @@ class AppointmentController extends Controller
             $status = 'failed';
             $message = 'Failed to create appointment!';
         }
+
+        $logsController = new LogsController();
+        $logsController->logAction('created appointment: '.$appointment->id);
 
         return json_encode([
             'status'=> $status,
@@ -121,6 +125,10 @@ class AppointmentController extends Controller
             $message = 'Failed to update appointment!';
         }
 
+
+        $logsController = new LogsController();
+        $logsController->logAction('updated appointment: '.$r->id);
+
         return json_encode([
             'status'=> $status,
             'message'=> $message
@@ -132,7 +140,11 @@ class AppointmentController extends Controller
      */
     public function delete(Request $r)
     {
-        return Appointment::where('id', $r->id)->delete();
+        Appointment::where('id', $r->id)->delete();
+
+        $logsController = new LogsController();
+        $logsController->logAction('deleted appointment: '.$r->id);
+
     }
 
     public function store_informed_consent(Request $r)
@@ -154,6 +166,10 @@ class AppointmentController extends Controller
             $status = 'failed';
             $message = 'Failed to create consent!';
         }
+
+
+        $logsController = new LogsController();
+        $logsController->logAction('created consent: '.$informedConsent->id);
 
         return json_encode([
             'status'=> $status,

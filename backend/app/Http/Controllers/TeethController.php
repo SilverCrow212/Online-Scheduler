@@ -71,6 +71,10 @@ class TeethController extends Controller
             'updated_at' => Carbon::now(),
         ]);
 
+
+        $logsController = new LogsController();
+        $logsController->logAction('created teeth data for apptID: '.$request->appointment_id);
+
         return response()->json([
             'status'  => 'success',
             'message' => 'Teeth data stored successfully'
@@ -131,6 +135,10 @@ class TeethController extends Controller
                 'status' => $request->appointment,
                 'updated_at' => Carbon::now(),
             ]);
+
+
+        $logsController = new LogsController();
+        $logsController->logAction('updated teeth data for apptID: '.$request->appointment_id);
 
         return response()->json([
             'message' => 'Teeth data updated successfully',

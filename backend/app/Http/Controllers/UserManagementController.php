@@ -43,6 +43,10 @@ class UserManagementController extends Controller
                     'bsu_address' => $r->bsu_address,
                     'age' => $r->age,
                 ]);
+
+                $logsController = new LogsController();
+                $logsController->logAction('created user account: '.$createUser->id);
+
             DB::commit(); // IF ABOVE QUERIES ARE EXECUTED SUCCESSFULLY, ALL QUERIES WILL BE COMITTED AND THE DATABASE WILL BE AFFECTED
 
             return response()->json([
@@ -90,6 +94,10 @@ class UserManagementController extends Controller
                     'bsu_address' => $r->bsu_address,
                     'age' => $r->age
                 ]);
+
+                $logsController = new LogsController();
+                $logsController->logAction('updated user details of school#: '.$r->school_id_number);
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -104,6 +112,10 @@ class UserManagementController extends Controller
                 ->update([
                     'password'=> Hash::make($r->password)
                 ]);
+
+                $logsController = new LogsController();
+                $logsController->logAction('changed the password of school#: '.$r->school_id_number);
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -123,6 +135,11 @@ class UserManagementController extends Controller
                 ->update([
                     'email' => $r->email
                 ]);
+
+
+                $logsController = new LogsController();
+                $logsController->logAction('changed the email of school#: '.$r->school_id_number);
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
