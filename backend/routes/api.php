@@ -65,10 +65,19 @@ Route::middleware('auth:sanctum')->group (function (){
         return response()->json(['message' => 'User not authenticated'], 401);
     });
 
-    // GET USER DETAILS
+    // GET/UPDATE USER DETAILS
     Route::prefix('user')->group(function () {
+        // FETCH DETAILS
         Route::get('user_details', [UserManagementController::class, 'user_details']);
+
+        // UPDATE DETAILS
         Route::put('user_details_update', [UserManagementController::class, 'user_details_update']);
+
+        // UPDATE PASSWORD
+        Route::post('change_password', [UserManagementController::class,'change_password']);
+
+        // UPDATE EMAIL
+        Route::post('change_email', [UserManagementController::class,'change_email']);
     });
 
     // TEETH

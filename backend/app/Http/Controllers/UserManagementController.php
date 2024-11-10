@@ -96,4 +96,37 @@ class UserManagementController extends Controller
             throw $th;
         }
     }
+
+    public function change_password(Request $r){
+        try {
+            DB::beginTransaction();
+                User::where('school_id_number', $r->school_id_number)
+                ->update([
+                    'password'=> Hash::make($r->password)
+                ]);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+    public function change_email(Request $r){
+        try {
+            DB::beginTransaction();
+                // UPDATE USER TABLE
+                User::where('school_id_number', $r->school_id_number)
+                ->update([
+                    'email'=> $r->email
+                ]);
+                // UPDATE USER_DETAILS TABLE
+                UserDetails::where('school_id_number', $r->school_id_number)
+                ->update([
+                    'email' => $r->email
+                ]);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
 }
