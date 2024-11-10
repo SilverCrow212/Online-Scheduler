@@ -46,7 +46,9 @@ function openProfile(){
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'user_details.lastname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'user_details.firstname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'user_details.middlename': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
 });
 
 const openProfileWindow = () => {
@@ -67,7 +69,7 @@ window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['name']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" paginator :rows="10" @row-click="dialogOpen">
+                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['user_details.lastname','user_details.firstname','user_details.middlename']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" paginator :rows="10" @row-click="dialogOpen">
                     <template #header>
                         <div class="flex justify-content-end">
                             <IconField iconPosition="left">
@@ -78,7 +80,7 @@ window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top
                             </IconField>
                         </div>
                     </template>
-                    <Column field="name" header="Patient Name">
+                    <Column header="Patient Name">
                         <template #body="slotProps">
                             <span>{{ slotProps.data?.user_details?.lastname}}, {{ slotProps.data?.user_details?.firstname}} {{ slotProps.data?.user_details?.middlename}}</span>
                         </template>
