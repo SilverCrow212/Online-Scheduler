@@ -6,7 +6,9 @@ import { createacc } from '@/store/createacc';
 import { departmentChoices, sexChoices } from '@/store/choices';
 import { EditAcc, EditEmail, EditPassword } from '@/api/ApiLogin';
 import { fetchUserData } from '@/api/ApiUser';
+import { useToast } from 'primevue/usetoast';
 
+const toast = useToast();
 const departmentStore = departmentChoices();
 const createAccStore = createacc();
 const sexStore = sexChoices();
@@ -25,7 +27,7 @@ onMounted(async () => {
             createaccount.firstname = data[0].user_details.firstname;
             createaccount.middlename = data[0].user_details.middlename;
             createaccount.lastname = data[0].user_details.lastname;
-            createaccount.email = data[0].user_details.email;
+            createaccount.email = data[0].email;
             // createaccount.password = data[0].password;
             createaccount.age = data[0].user_details.age;
             createaccount.sex = data[0].user_details.sex;
@@ -71,7 +73,7 @@ const type = ref([
     { name: 'Student', id:1 },
     { name: 'Faculty', id:2 },
 ]);
-const confirmPassword = ref('');
+
 console.log('create account', createaccount)
 const typeInput = ref(null);
 const dropdownItem = ref(null);
@@ -90,14 +92,6 @@ const validateForm = async () => {
     }
     if (!createaccount.lastname) {
         validationErrors.value.lastname = 'Last name is required.';
-    }
-    if (!createaccount.email) {
-        validationErrors.value.email = 'Email is required.';
-    } else if (!/\S+@\S+\.\S+/.test(createaccount.email)) {
-        validationErrors.value.email = 'Email is not valid.';
-    }
-    if (!createaccount.password) {
-        validationErrors.value.password = 'Password is required.';
     }
     if (!createaccount.age) {
         validationErrors.value.age = 'Age is required.';
@@ -132,14 +126,12 @@ const validateForm = async () => {
     if (!createaccount.guardian_no) {
         validationErrors.value.guardian_no = 'Guardian contact number is required.';
     }
-    if (createaccount.password !== confirmPassword.value) {
-        validationErrors.value.confirmPassword = 'Passwords do not match.';
-    }
+    
 
     // Check if there are any validation errors
     if (Object.keys(validationErrors.value).length === 0) {
         // Submit the form if there are no validation errors
-        await EditAcc(createaccount);
+        await EditAcc(createaccount, toast);
         createAccStore.resetAccDetails();
         console.log('Form submitted:', createaccount);
         // goBack(); // You can replace this with your form submission logic
@@ -149,57 +141,58 @@ const validateForm = async () => {
 
 
 /// password and email
-
-const validateEmail = (email) => {
-  const emailPattern = /\S+@\S+\.\S+/;
-  return emailPattern.test(email);
-};
-
-const validatePassword = (password) => {
-  const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  return passwordPattern.test(password); // at least 8 characters, 1 uppercase, 1 number, 1 special char
-};
+// const email = ref(null);
+const validationErrorsEmail = ref({});
 
 const validateEmailForm = async () => {
-  validationErrors.value = {};
+    validationErrorsEmail.value = {};
 
   if (!createaccount.email) {
-    validationErrors.value.email = 'Email is required.';
-  } else if (!validateEmail(createaccount.email)) {
-    validationErrors.value.email = 'Email is not valid.';
-  }
+        validationErrorsEmail.value.email = 'Email is required.';
+    } else if (!/\S+@\S+\.\S+/.test(createaccount.email)) {
+        validationErrorsEmail.value.email = 'Email is not valid.';
+    }
 
-  if (Object.keys(validationErrors.value).length === 0) {
+  if (Object.keys(validationErrorsEmail.value).length === 0) {
     // Call EditEmail API to update email
     try {
-      await EditEmail(createaccount.email);
-      console.log('Email updated:', createaccount.email);
+        const data = {
+            email:createaccount.email,
+            school_id_number:createaccount.school_id_number
+        }
+        await EditEmail(data, toast);
+        console.log('Email updated:', email.value);
     } catch (error) {
-      console.error('Error updating email:', error);
+        console.error('Error updating email:', error);
     }
   }
 };
 
+
+const validationErrorsPassword = ref({});
+const confirmPassword = ref('');
+const password = ref(null);
 const validatePasswordForm = async () => {
-  validationErrors.value = {};
+  validationErrorsPassword.value = {};
 
-  if (!createaccount.password) {
-    validationErrors.value.password = 'Password is required.';
-  } else if (!validatePassword(createaccount.password)) {
-    validationErrors.value.password = 'Password must be at least 8 characters long, include at least one uppercase letter, one number, and one special character.';
+  if (!password.value) {
+    validationErrorsPassword.value.password = 'Password is required.';
+  } 
+
+  if (password.value !== confirmPassword.value) {
+    validationErrorsPassword.value.confirmPassword = 'Passwords do not match.';
   }
 
-  if (createaccount.password !== confirmPassword.value) {
-    validationErrors.value.confirmPassword = 'Passwords do not match.';
-  }
-
-  if (Object.keys(validationErrors.value).length === 0) {
-    // Call EditPassword API to update password
+  if (Object.keys(validationErrorsPassword.value).length === 0) {
     try {
-      await EditPassword(createaccount.password);
-      console.log('Password updated.');
+        const data = {
+            password:password.value,
+            school_id_number:createaccount.school_id_number
+        }
+        await EditPassword(data, toast);
+        console.log('Password updated.');
     } catch (error) {
-      console.error('Error updating password:', error);
+        console.error('Error updating password:', error);
     }
   }
 };
@@ -215,16 +208,6 @@ const validatePasswordForm = async () => {
                         <label>ID number</label>
                         <InputText v-model="createaccount.school_id_number" type="text" :class="{'p-invalid': validationErrors.school_id_number}" disabled/>
                         <small v-if="validationErrors.school_id_number" class="p-error">{{ validationErrors.school_id_number }}</small>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <label>Password</label>
-                        <Password v-model="createaccount.password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.password}" />
-                        <small v-if="validationErrors.password" class="p-error">{{ validationErrors.password }}</small>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <label>Confirm Password</label>
-                        <Password v-model="confirmPassword" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.confirmPassword}" />
-                        <small v-if="validationErrors.confirmPassword" class="p-error">{{ validationErrors.confirmPassword }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
                         <label>Firstname</label>
@@ -274,57 +257,52 @@ const validatePasswordForm = async () => {
                         <small v-if="validationErrors.type" class="p-error">{{ validationErrors.type }}</small>
                     </div>
                     <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
-                    <label>Student Type</label>
-                    <!-- <InputText v-model="createaccount.employee_student_type" type="text" :class="{'p-invalid': validationErrors.employee_student_type}" /> -->
-                    <Dropdown v-model="createaccount.employee_student_type" 
-                              :options="studentTypeChoice" 
-                              optionLabel="name" 
-                              optionValue="id" 
-                              placeholder="Select One"
-                              :class="{'p-invalid': validationErrors.employee_student_type}" />
-                    
-                    <small v-if="validationErrors.employee_student_type" class="p-error">{{ validationErrors.employee_student_type }}</small>
-                </div>
-                <div v-if="createaccount.type === 2" class="field col-12 md:col-4">
-                    <label>Employment Type</label>
-                    <!-- <InputText v-model="createaccount.employee_student_type" type="text" :class="{'p-invalid': validationErrors.employee_student_type}" /> -->
-                    <Dropdown v-model="createaccount.employee_student_type" 
-                              :options="employmentTypeChoice" 
-                              optionLabel="name" 
-                              optionValue="id" 
-                              placeholder="Select One"
-                              :class="{'p-invalid': validationErrors.employee_student_type}" />
-                    <small v-if="validationErrors.employee_student_type" class="p-error">{{ validationErrors.employee_student_type }}</small>
-                </div>
-                <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
-                    <label>Level</label>
-                    <InputText v-model="createaccount.office_level" type="text" :class="{'p-invalid': validationErrors.office_level}" />
-                    <small v-if="validationErrors.office_level" class="p-error">{{ validationErrors.office_level }}</small>
-                </div>
-                <div v-if="createaccount.type === 2" class="field col-12 md:col-4">
-                    <label>Office / College</label>
-                    <Dropdown v-model="createaccount.office_level" 
-                              :options="departmentChoice" 
-                              optionLabel="name" 
-                              optionValue="id" 
-                              placeholder="Select One"
-                              :class="{'p-invalid': validationErrors.office_level}" />
-                    <small v-if="validationErrors.office_level" class="p-error">{{ validationErrors.office_level }}</small>
-                </div>
-                <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
-                    <label>Program</label>
-                    <InputText v-model="createaccount.department_program" type="text" :class="{'p-invalid': validationErrors.department_program}" />
-                    <small v-if="validationErrors.department_program" class="p-error">{{ validationErrors.department_program }}</small>
-                </div>
-                <div v-if="createaccount.type === 2" class="field col-12 md:col-4">
-                    <label>Department</label>
-                    <InputText v-model="createaccount.department_program" type="text" :class="{'p-invalid': validationErrors.department_program}" />
-                    <small v-if="validationErrors.department_program" class="p-error">{{ validationErrors.department_program }}</small>
-                </div>
-                    <div class="field col-12 md:col-4">
-                        <label>Email</label>
-                        <InputText v-model="createaccount.email" type="text" :class="{'p-invalid': validationErrors.email}" />
-                        <small v-if="validationErrors.email" class="p-error">{{ validationErrors.email }}</small>
+                        <label>Student Type</label>
+                        <!-- <InputText v-model="createaccount.employee_student_type" type="text" :class="{'p-invalid': validationErrors.employee_student_type}" /> -->
+                        <Dropdown v-model="createaccount.employee_student_type" 
+                                :options="studentTypeChoice" 
+                                optionLabel="name" 
+                                optionValue="id" 
+                                placeholder="Select One"
+                                :class="{'p-invalid': validationErrors.employee_student_type}" />
+                        
+                        <small v-if="validationErrors.employee_student_type" class="p-error">{{ validationErrors.employee_student_type }}</small>
+                    </div>
+                    <div v-if="createaccount.type === 2" class="field col-12 md:col-4">
+                        <label>Employment Type</label>
+                        <!-- <InputText v-model="createaccount.employee_student_type" type="text" :class="{'p-invalid': validationErrors.employee_student_type}" /> -->
+                        <Dropdown v-model="createaccount.employee_student_type" 
+                                :options="employmentTypeChoice" 
+                                optionLabel="name" 
+                                optionValue="id" 
+                                placeholder="Select One"
+                                :class="{'p-invalid': validationErrors.employee_student_type}" />
+                        <small v-if="validationErrors.employee_student_type" class="p-error">{{ validationErrors.employee_student_type }}</small>
+                    </div>
+                    <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
+                        <label>Level</label>
+                        <InputText v-model="createaccount.office_level" type="text" :class="{'p-invalid': validationErrors.office_level}" />
+                        <small v-if="validationErrors.office_level" class="p-error">{{ validationErrors.office_level }}</small>
+                    </div>
+                    <div v-if="createaccount.type === 2" class="field col-12 md:col-4">
+                        <label>Office / College</label>
+                        <Dropdown v-model="createaccount.office_level" 
+                                :options="departmentChoice" 
+                                optionLabel="name" 
+                                optionValue="id" 
+                                placeholder="Select One"
+                                :class="{'p-invalid': validationErrors.office_level}" />
+                        <small v-if="validationErrors.office_level" class="p-error">{{ validationErrors.office_level }}</small>
+                    </div>
+                    <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
+                        <label>Program</label>
+                        <InputText v-model="createaccount.department_program" type="text" :class="{'p-invalid': validationErrors.department_program}" />
+                        <small v-if="validationErrors.department_program" class="p-error">{{ validationErrors.department_program }}</small>
+                    </div>
+                    <div v-if="createaccount.type === 2" class="field col-12 md:col-4">
+                        <label>Department</label>
+                        <InputText v-model="createaccount.department_program" type="text" :class="{'p-invalid': validationErrors.department_program}" />
+                        <small v-if="validationErrors.department_program" class="p-error">{{ validationErrors.department_program }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
                         <label>Contact Number</label>
@@ -367,13 +345,13 @@ const validatePasswordForm = async () => {
                 <div class="p-fluid formgrid grid" >
                     <div class="field col-12 md:col-6">
                         <label>Password</label>
-                        <Password v-model="createaccount.password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.password}" />
-                        <small v-if="validationErrors.password" class="p-error">{{ validationErrors.password }}</small>
+                        <Password v-model="password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrorsPassword.password}" />
+                        <small v-if="validationErrorsPassword.password" class="p-error">{{ validationErrorsPassword.password }}</small>
                     </div>
                     <div class="field col-12 md:col-6">
                         <label>Confirm Password</label>
-                        <Password v-model="confirmPassword" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.confirmPassword}" />
-                        <small v-if="validationErrors.confirmPassword" class="p-error">{{ validationErrors.confirmPassword }}</small>
+                        <Password v-model="confirmPassword" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrorsPassword.confirmPassword}" />
+                        <small v-if="validationErrorsPassword.confirmPassword" class="p-error">{{ validationErrorsPassword.confirmPassword }}</small>
                     </div>
                     <div class="field col-12 flex justify-content-end gap-2">
                         <Button label="Update Password" @click="validatePasswordForm" />
@@ -388,8 +366,8 @@ const validatePasswordForm = async () => {
                 <div class="p-fluid formgrid grid" >
                     <div class="field col-12 md:col-12">
                         <label>Email</label>
-                        <InputText v-model="createaccount.email" type="text" :class="{'p-invalid': validationErrors.email}" />
-                        <small v-if="validationErrors.email" class="p-error">{{ validationErrors.email }}</small>
+                        <InputText v-model="createaccount.email" type="text" :class="{'p-invalid': validationErrorsEmail.email}" />
+                        <small v-if="validationErrorsEmail.email" class="p-error">{{ validationErrorsEmail.email }}</small>
                     </div>
                     <div class="field col-12 flex justify-content-end gap-2">
                         <Button label="Update Email" @click="validateEmailForm" />

@@ -61,7 +61,7 @@ export async function EditPassword(password, toast) {
     const token = localStorage.getItem('token');
     try {
         // const receive = await axios.put('user/user_password_update', password);
-        const response = await axios.put('user/change_password', {...password}, {
+        const response = await axios.post('user/change_password', password, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -84,7 +84,7 @@ export async function EditEmail(email, toast) {
     const token = localStorage.getItem('token');
     try {
         // const receive = await axios.put('user/user_email_update', email);
-        const response = await axios.put('user/change_email', {...email}, {
+        const response = await axios.post('user/change_email', {...email}, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
