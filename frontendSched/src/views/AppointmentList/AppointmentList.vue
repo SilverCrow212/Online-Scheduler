@@ -37,10 +37,12 @@ const formattedDate = computed(() => {
 const visibleSetAppointment = ref(false);
 
 async function clickSave(){
-    console.log('sent to backend', useAppoinment)
-    await storeAppointment(useAppoinment,toast);
-    patients.value = await fetchAppointment(formattedDate.value);
-    visibleSetAppointment.value = false
+    if(useAppoinment.user_details_id!== null&& useAppoinment.appointment_date!==null && useAppoinment.appointment_time!==null && useAppoinment.consent_form!== null){
+        console.log('sent to backend', useAppoinment);
+        await storeAppointment(useAppoinment,toast);
+        patients.value = await fetchAppointment(formattedDate.value);
+        visibleSetAppointment.value = false
+    }
 }
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },

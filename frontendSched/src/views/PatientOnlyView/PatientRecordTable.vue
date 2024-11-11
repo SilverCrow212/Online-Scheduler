@@ -25,6 +25,7 @@ const toast = useToast();
 onMounted(async () => {
     const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
     records.value = data;
+    
     // console.log('patients value popup',records.value)
 });
 
@@ -41,11 +42,16 @@ function dialogOpen(event) {
 }
 
 async function clickSave(){
-    console.log('sent to backend', useAppoinment)
-    await storeAppointment(useAppoinment,toast);
-    const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
-    records.value = data;
-    visibleSetAppointment.value = false
+    // console.log('sent to backend', useAppoinment)
+    if(useAppoinment.user_details_id!== null&& useAppoinment.appointment_date!==null && useAppoinment.appointment_time!==null && useAppoinment.consent_form!== null){
+        console.log('sent to backend', useAppoinment);
+        await storeAppointment(useAppoinment,toast);
+        // patients.value = await fetchAppointment(formattedDate.value);
+        const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
+        records.value = data;
+        visibleSetAppointment.value = false
+    }
+    // visibleSetAppointment.value = false
 }
 const getStatusName = (statusId) => {
     // console.log('Looking for status name for ID:', statusId);
