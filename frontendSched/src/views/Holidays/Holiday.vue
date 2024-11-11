@@ -85,6 +85,7 @@ async function clickDelete(){
                             </IconField>
                         </div>
                     </template> -->
+                    <template #empty> No holidays found. </template>
                     <Column header="Date">
                         <template #body="slotProps">
                             <span>{{ slotProps.data.date }}</span>

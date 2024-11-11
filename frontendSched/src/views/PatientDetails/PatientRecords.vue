@@ -80,6 +80,7 @@ window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top
                             </IconField>
                         </div>
                     </template>
+                    <template #empty> No patients found. </template>
                     <Column header="Patient Name">
                         <template #body="slotProps">
                             <span>{{ slotProps.data?.user_details?.lastname}}, {{ slotProps.data?.user_details?.firstname}} {{ slotProps.data?.user_details?.middlename}}</span>

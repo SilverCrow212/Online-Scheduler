@@ -26,7 +26,9 @@ const formattedDate = computed(() => {
 });
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'user_details.lastname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'user_details.firstname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'user_details.middlename': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
 });
 
 watch(date, async (newValue, oldValue) => {
@@ -115,7 +117,7 @@ const getStatusName = (statusId) => {
                 <span class="block text-500 font-medium mb-3">Appointments</span>
                 <!-- <div class="text-900 font-medium text-xl">Total? or table of patients?</div> -->
             </div>
-            <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['name']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
+            <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['user_details.lastname','user_details.firstname','user_details.middlename']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
                     <template #header>
                         <div class="flex justify-content-end">
                             <IconField iconPosition="left">
@@ -126,6 +128,7 @@ const getStatusName = (statusId) => {
                             </IconField>
                         </div>
                     </template>
+                    <template #empty> No patients found. </template>
                     <Column field="name" header="Patient Name">
                         <template #body="slotProps">
                             <span>{{ slotProps.data.user_details?.lastname }}, {{ slotProps.data.user_details?.firstname }} {{ slotProps.data.user_details?.middlename }}</span>
