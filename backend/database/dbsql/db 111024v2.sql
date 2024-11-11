@@ -186,7 +186,7 @@ CREATE TABLE `logs` (
   `id` bigint(20) NOT NULL,
   `action` text DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
