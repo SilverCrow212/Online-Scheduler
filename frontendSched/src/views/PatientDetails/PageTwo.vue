@@ -59,6 +59,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
             :options="statuschoices"
             optionLabel="name"
             optionValue="id"
+            :disabled="user_details.user_type === 'user'"
             />
         </div>
     </div>

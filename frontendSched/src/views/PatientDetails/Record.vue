@@ -87,6 +87,22 @@ async function clickUpdate() {
     console.error('Error saving clinical details:', error);
   }
 }
+
+async function clickSaveUser() {
+  try {
+    appointmentStore.appointmentDetails.status= 4;
+    const patientData = {
+      teethData: teethData,
+      firstPageData: otherInputsStore.firstPage,
+      secondPageData: otherInputsStore.servicesRendered,
+      appointment: appointmentStore.appointmentDetails.status
+    };
+    const response = await storeClinicalDetails(appointmentId, patientData, toast);
+    console.log('Data saved successfully:', response);
+  } catch (error) {
+    console.error('Error saving clinical details:', error);
+  }
+}
 </script>   
 <template>
     <Toast/>
@@ -103,12 +119,15 @@ async function clickUpdate() {
             </StepperPanel>
             <StepperPanel header="Step II">
                 <template #content="{ prevCallback, nextCallback }">
-                    <PageTwo/>
+                    <!-- <PageTwo/> -->
+                    {{ appointmentStore.appointmentDetails }}
                     <div class="flex pt-4 justify-content-between">
                         <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="prevCallback" />
-                        <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" />
-                        <Button v-if="buttonSelecter" label="Update" icon="pi pi-save" iconPos="right" @click="clickUpdate" :disabled="user_details.user_type === 'user'"/>
-                        <Button v-else label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" :disabled="user_details.user_type === 'user'"/>
+                        <!-- <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" /> -->
+                        <Button v-if="buttonSelecter && user_details.user_type !== 'user'" label="Update" icon="pi pi-save" iconPos="right" @click="clickUpdate" :disabled="user_details.user_type === 'user'"/>
+                        <Button v-else-if="!buttonSelecter && user_details.user_type !== 'user'" label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" :disabled="user_details.user_type === 'user'"/>
+                        <Button v-else-if="!buttonSelecter && user_details.user_type === 'user'" label="Cancel Apppointment" icon="pi pi-save" iconPos="right" @click="clickSaveUser"/>
+
                     </div>
                 </template>
             </StepperPanel>

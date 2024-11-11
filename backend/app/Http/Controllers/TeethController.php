@@ -67,7 +67,7 @@ class TeethController extends Controller
         DB::table('appointment')
         ->where('id', $appointmentId)
         ->update([
-            'status' => $request->appointment['status'],
+            'status' => $request->appointment,
             'updated_at' => Carbon::now(),
         ]);
 
