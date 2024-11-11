@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { createacc } from '@/store/createacc';
 import { departmentChoices, sexChoices } from '@/store/choices';
-import { EditAcc } from '@/api/ApiLogin';
+import { EditAcc, EditEmail, EditPassword } from '@/api/ApiLogin';
 import { fetchUserData } from '@/api/ApiUser';
 
 const departmentStore = departmentChoices();
@@ -26,7 +26,7 @@ onMounted(async () => {
             createaccount.middlename = data[0].user_details.middlename;
             createaccount.lastname = data[0].user_details.lastname;
             createaccount.email = data[0].user_details.email;
-            // createaccount.password = data[0].password;  // You might not want to populate password for security reasons
+            // createaccount.password = data[0].password;
             createaccount.age = data[0].user_details.age;
             createaccount.sex = data[0].user_details.sex;
             createaccount.user_type = data[0].user_type;
@@ -144,6 +144,64 @@ const validateForm = async () => {
         console.log('Form submitted:', createaccount);
         // goBack(); // You can replace this with your form submission logic
     }
+};
+
+
+
+/// password and email
+
+const validateEmail = (email) => {
+  const emailPattern = /\S+@\S+\.\S+/;
+  return emailPattern.test(email);
+};
+
+const validatePassword = (password) => {
+  const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return passwordPattern.test(password); // at least 8 characters, 1 uppercase, 1 number, 1 special char
+};
+
+const validateEmailForm = async () => {
+  validationErrors.value = {};
+
+  if (!createaccount.email) {
+    validationErrors.value.email = 'Email is required.';
+  } else if (!validateEmail(createaccount.email)) {
+    validationErrors.value.email = 'Email is not valid.';
+  }
+
+  if (Object.keys(validationErrors.value).length === 0) {
+    // Call EditEmail API to update email
+    try {
+      await EditEmail(createaccount.email);
+      console.log('Email updated:', createaccount.email);
+    } catch (error) {
+      console.error('Error updating email:', error);
+    }
+  }
+};
+
+const validatePasswordForm = async () => {
+  validationErrors.value = {};
+
+  if (!createaccount.password) {
+    validationErrors.value.password = 'Password is required.';
+  } else if (!validatePassword(createaccount.password)) {
+    validationErrors.value.password = 'Password must be at least 8 characters long, include at least one uppercase letter, one number, and one special character.';
+  }
+
+  if (createaccount.password !== confirmPassword.value) {
+    validationErrors.value.confirmPassword = 'Passwords do not match.';
+  }
+
+  if (Object.keys(validationErrors.value).length === 0) {
+    // Call EditPassword API to update password
+    try {
+      await EditPassword(createaccount.password);
+      console.log('Password updated.');
+    } catch (error) {
+      console.error('Error updating password:', error);
+    }
+  }
 };
 </script>
 
@@ -299,6 +357,42 @@ const validateForm = async () => {
                     <div class="field col-12 flex justify-content-end gap-2">
                         <!-- <Button label="Back" @click="goBack" /> -->
                         <Button label="Update" @click="validateForm" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <h5>Edit Password</h5>
+                <div class="p-fluid formgrid grid" >
+                    <div class="field col-12 md:col-6">
+                        <label>Password</label>
+                        <Password v-model="createaccount.password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.password}" />
+                        <small v-if="validationErrors.password" class="p-error">{{ validationErrors.password }}</small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label>Confirm Password</label>
+                        <Password v-model="confirmPassword" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.confirmPassword}" />
+                        <small v-if="validationErrors.confirmPassword" class="p-error">{{ validationErrors.confirmPassword }}</small>
+                    </div>
+                    <div class="field col-12 flex justify-content-end gap-2">
+                        <Button label="Update Password" @click="validatePasswordForm" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <h5>Edit Email</h5>
+                <div class="p-fluid formgrid grid" >
+                    <div class="field col-12 md:col-12">
+                        <label>Email</label>
+                        <InputText v-model="createaccount.email" type="text" :class="{'p-invalid': validationErrors.email}" />
+                        <small v-if="validationErrors.email" class="p-error">{{ validationErrors.email }}</small>
+                    </div>
+                    <div class="field col-12 flex justify-content-end gap-2">
+                        <Button label="Update Email" @click="validateEmailForm" />
                     </div>
                 </div>
             </div>
