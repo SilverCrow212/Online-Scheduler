@@ -119,8 +119,8 @@ async function clickSaveUser() {
             </StepperPanel>
             <StepperPanel header="Step II">
                 <template #content="{ prevCallback, nextCallback }">
-                    <!-- <PageTwo/> -->
-                    {{ appointmentStore.appointmentDetails }}
+                    <PageTwo/>
+                    <!-- {{ appointmentStore.appointmentDetails }} -->
                     <div class="flex pt-4 justify-content-between">
                         <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="prevCallback" />
                         <!-- <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" /> -->

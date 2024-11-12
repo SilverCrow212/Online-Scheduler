@@ -106,14 +106,14 @@ window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top
 
 
     <Dialog v-model:visible="visible" modal :header="selectedPatient?.name" :style="{ width: '70rem' }" :dismissableMask="true">
-        <div class="flex justify-content-end">
+        <!-- <div class="flex justify-content-end">
             <span class="p-text-secondary mr-2">
                 <Button type="button" label="View Profile" icon="pi pi-profile" size="small" @click="openProfile()" />
             </span>
             <span class="p-text-secondary">
                 <Button type="button" label="Print Record" icon="pi pi-profile" size="small" @click="openProfileWindow()" />
             </span>
-        </div>
+        </div> -->
             <PatientRecordTable :patient="selectedPatient"/>
         </Dialog>
 </template>
