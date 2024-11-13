@@ -1,16 +1,23 @@
 <template>
-  <div>
-    <button @click="downloadDocx">Download DOCX</button>
-  </div>
+  <div class="card">
+    Select Date(Based on Month)
+    <div class="mb-4">
+      <Calendar v-model="date" dateFormat="mm/dd/yy" />
+    </div>
+    <div>
+      <button @click="downloadDocx">Download DOCX</button>
+    </div>
+</div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { axios } from 'axios';
+import axios from 'axios';
 import Docxtemplater from 'docxtemplater';
 import PizZip from 'pizzip';
 import { saveAs } from 'file-saver';
 
+const date =ref();
 // Sample data to replace in the template
 const templateData = {
   name: 'John Doe',
