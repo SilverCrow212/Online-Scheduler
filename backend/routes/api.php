@@ -6,6 +6,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\TeethController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\PrintablesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -124,4 +125,6 @@ Route::middleware('auth:sanctum')->group (function (){
     // LOGS {pass 'date' parameter if needed | Default date = current date}
     Route::get('logs', [LogsController::class,'showLogs']);
 
+    // Print Records
+    Route::get('print_records', [PrintablesController::class,'show']);
 });

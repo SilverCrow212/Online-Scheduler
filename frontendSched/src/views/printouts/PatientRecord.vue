@@ -1,15 +1,49 @@
 <script setup>
-import {ref} from 'vue';
-const records = ref([
-    { id: '1', appointmentdate: '09/23/2024', servicerendered: 'Tooth Cleaning', toothno: 'R35 and L36', medicine: 'Rx', remark: 'Toothbrush 3x a day' },
-    { id: '2', appointmentdate: '09/26/2024', servicerendered: 'Tooth Extracting', toothno: 'R35 and L36', medicine: 'Xtrajoss', remark: 'Toothbrush 3x a day' },
-    { id: '3', appointmentdate: '09/27/2024', servicerendered: 'Yes', toothno: 'R35 and L36', medicine: 'Lola Remedios', remark: 'Toothbrush 3x a day' },
-    { id: '4', appointmentdate: '09/28/2024', servicerendered: 'Yes', toothno: 'R35 and L36', medicine: 'Too Big', remark: 'Toothbrush 3x a day' },
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+// Use the URLSearchParams to extract query parameters
+const urlParams = new URLSearchParams(window.location.search);
+const patientId = urlParams.get('id'); // This gets the 'id' from the URL
 
-]);
+async function fetchRecords(id) {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await axios.get('/print_records', {
+      params: { id },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching records:', error);
+  }
+}
+
+// You can now use this patientId to fetch the related records or data
+const records = ref([]);
+
+// Optionally filter records based on the received patientId
+// const patientRecords = ref(records.value.filter(record => record.id === patientId));
+
+onMounted(async () => {
+  if (patientId) {
+    const fetchedRecords = await fetchRecords(patientId);
+    // Ensure `services_rendered` is parsed before using it
+    fetchedRecords.data.forEach(record => {
+      record.services_rendered = JSON.parse(record.services_rendered);  // Parse the stringified JSON
+    });
+    records.value = fetchedRecords.data;  // Set the fetched records to the `records` ref
+  } else {
+    console.warn('No patient ID found in URL');
+  }
+});
 </script>
+
 <template>
-    
+    Name: {{records[0]?.lastname}}, {{records[0]?.firstname}}
     <table class="styled-table">
         <thead>
             <tr>
@@ -21,12 +55,16 @@ const records = ref([
             </tr>
         </thead>
         <tbody>
-            <tr v-for="record in records" :key="record.id">
-                <td>{{ record.appointmentdate }}</td>
-                <td>{{ record.servicerendered }}</td>
-                <td>{{ record.toothno }}</td>
-                <td>{{ record.medicine }}</td>
-                <td>{{ record.remark }}</td>
+           <tr v-for="record in records" :key="record.appointment_id">
+                <td>{{ record.appointment_date }}</td>
+                <td>
+                    <span v-for="service in record.services_rendered" :key="service.id">
+                        {{ service.name }}, 
+                    </span>
+                </td>
+                <td>{{ record.tooth_number }}</td>
+                <td>{{ record.medicine_prescribed }}</td>
+                <td>{{ record.remarks }}</td>
             </tr>
         </tbody>
     </table>

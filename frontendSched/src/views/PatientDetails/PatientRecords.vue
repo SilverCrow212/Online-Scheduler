@@ -51,14 +51,14 @@ const filters = ref({
     'user_details.middlename': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
 });
 
-const openProfileWindow = () => {
+const openProfileWindow = (patient) => {
     const width = 800;  // Desired width
     const height = 600; // Desired height
     const left = (window.screen.width / 2) - (width / 2);  // Center horizontally
     const top = (window.screen.height / 2) - (height / 2); // Center vertically
 
      // Construct the URL for the route
-     const url = `${window.location.origin}/print/record`;
+     const url = `${window.location.origin}/print/record?id=${patient.id}`;
 
 // Open the new window/tab with the specified dimensions
 window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top},left=${left}`);
@@ -106,14 +106,15 @@ window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top
 
 
     <Dialog v-model:visible="visible" modal :header="selectedPatient?.name" :style="{ width: '70rem' }" :dismissableMask="true">
-        <!-- <div class="flex justify-content-end">
-            <span class="p-text-secondary mr-2">
+        <div class="flex justify-content-end">
+            <!-- {{selectedPatient.id}} -->
+            <!-- <span class="p-text-secondary mr-2">
                 <Button type="button" label="View Profile" icon="pi pi-profile" size="small" @click="openProfile()" />
-            </span>
+            </span> -->
             <span class="p-text-secondary">
-                <Button type="button" label="Print Record" icon="pi pi-profile" size="small" @click="openProfileWindow()" />
+                <Button type="button" label="Print Record" icon="pi pi-profile" size="small" @click="openProfileWindow(selectedPatient)" />
             </span>
-        </div> -->
+        </div>
             <PatientRecordTable :patient="selectedPatient"/>
         </Dialog>
 </template>
