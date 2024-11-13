@@ -31,10 +31,10 @@ CREATE TABLE `appointment` (
   `id` int(11) NOT NULL,
   `user_details_id` int(11) DEFAULT NULL,
   `consent_form` longtext DEFAULT NULL,
-  `enccode` varchar(45) DEFAULT NULL,
+  `enccode` longtext DEFAULT NULL,
   `appointment_date` date DEFAULT NULL,
-  `appointment_time` varchar(100) DEFAULT NULL,
-  `status` varchar(45) DEFAULT NULL,
+  `appointment_time` longtext DEFAULT NULL,
+  `status` longtext DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
