@@ -64,3 +64,22 @@ export async function storeClinicalDetails(appointmentId,patientData,toast) {
       console.error('Error updating clinical details:', error);
     }
   }
+
+  export async function fetchClinicalDetailsUser(appointmentId) {
+    try {
+      const token = localStorage.getItem('token');
+      
+      // Construct the URL using a template literal
+      const url = `/teeth/fetchuser/${appointmentId}`;
+      
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      return response.data;
+    } catch (error) {
+      console.error('Error updating clinical details:', error);
+    }
+  }

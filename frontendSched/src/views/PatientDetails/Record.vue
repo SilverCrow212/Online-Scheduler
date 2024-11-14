@@ -7,7 +7,7 @@ import { statusChoices } from '@/store/choices';
 import { createacc } from '@/store/createacc';
 import { teeth } from '@/store/teeth';
 import { otherInputs } from '@/store/teethothers';
-import { storeClinicalDetails, updateClinicalDetails, fetchClinicalDetails } from '@/api/ApiStoreClinicalDetails';
+import { storeClinicalDetails, updateClinicalDetails, fetchClinicalDetails, fetchClinicalDetailsUser } from '@/api/ApiStoreClinicalDetails';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import { appointment } from '@/store/appointmentenc'
@@ -30,14 +30,15 @@ const loader = ref(false);
 onMounted(async () => {
     await fetchingDetails();
 });
-
+const userData = ref();
 async function fetchingDetails() {
   teethStore.resetTeethData(); 
     teethStore.resetFirstPage(); 
     teethStore.resetServicesRendered(); 
     try {
         const fetchData = await fetchClinicalDetails(appointmentId);
-        
+        const fetchUser = await fetchClinicalDetailsUser(appointmentId);
+        userData.value = fetchUser[0];
         // Check if fetchData is valid
         if (fetchData) {
             Object.assign(teethData, fetchData.teethData);
@@ -105,37 +106,63 @@ async function clickSaveUser() {
 }
 </script>   
 <template>
-    <Toast/>
-        <Stepper v-if="loader">
-            <StepperPanel header="Step I">
-                <template #content="{ nextCallback }">
-                        <!-- {{ teethData }} -->
-                        <PageOne />
-                    
-                    <div class="flex pt-4 justify-content-end">
-                        <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" />
-                    </div>
-                </template>
-            </StepperPanel>
-            <StepperPanel header="Step II">
-                <template #content="{ prevCallback, nextCallback }">
-                    <PageTwo/>
-                    <!-- {{ appointmentStore.appointmentDetails }} -->
-                    <div class="flex pt-4 justify-content-between">
-                        <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="prevCallback" />
-                        <!-- <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" /> -->
-                        <Button v-if="buttonSelecter && user_details.user_type !== 'user'" label="Update" icon="pi pi-save" iconPos="right" @click="clickUpdate" :disabled="user_details.user_type === 'user'"/>
-                        <Button v-else-if="!buttonSelecter && user_details.user_type !== 'user'" label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" :disabled="user_details.user_type === 'user'"/>
-                        <Button v-else-if="!buttonSelecter && user_details.user_type === 'user'" label="Cancel Apppointment" icon="pi pi-save" iconPos="right" @click="clickSaveUser"/>
+  <Toast />
+  <div class="content-wrapper">
+    <div class="sticky-card card">
+      <span class="font-bold">Patient Name:</span>
+      {{ userData?.lastname }}, {{ userData?.firstname }}
+    </div>
 
-                    </div>
-                </template>
-            </StepperPanel>
-        </Stepper>
+    <Stepper v-if="loader">
+        <StepperPanel header="Step I">
+            <template #content="{ nextCallback }">
+                <!-- {{ teethData }} -->
+                <PageOne />
+                
+                <div class="flex pt-4 justify-content-end">
+                    <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" />
+                </div>
+            </template>
+        </StepperPanel>
+
+        <StepperPanel header="Step II">
+            <template #content="{ prevCallback, nextCallback }">
+                <PageTwo/>
+                <!-- {{ appointmentStore.appointmentDetails }} -->
+                <div class="flex pt-4 justify-content-between">
+                    <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="prevCallback" />
+                    <!-- <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" /> -->
+                    <Button v-if="buttonSelecter && user_details.user_type !== 'user'" label="Update" icon="pi pi-save" iconPos="right" @click="clickUpdate" :disabled="user_details.user_type === 'user'"/>
+                    <Button v-else-if="!buttonSelecter && user_details.user_type !== 'user'" label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" :disabled="user_details.user_type === 'user'"/>
+                    <Button v-else-if="!buttonSelecter && user_details.user_type === 'user'" label="Cancel Appointment" icon="pi pi-save" iconPos="right" @click="clickSaveUser"/>
+                </div>
+            </template>
+        </StepperPanel>
+    </Stepper>
+  </div>
 </template>
 
 <style scoped>
-.p-stepper {
-    flex-basis: 50rem;
+
+.content-wrapper {
+  height: 100vh;
+  overflow-y: auto;
+}
+
+
+.sticky-card {
+  
+  position: sticky;
+  top: 0; 
+  z-index: 10;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; 
+}
+
+.stepper-content {
+  padding: 20px;
 }
 </style>
+

@@ -87,6 +87,7 @@ Route::middleware('auth:sanctum')->group (function (){
         Route::post('store', [TeethController::class, 'store']);
         Route::post('update/{appointment_id}', [TeethController::class, 'update']);
         Route::get('fetch/{appointment_id}', [TeethController::class, 'fetch']);
+        Route::get('fetchuser/{appointment_id}', [TeethController::class, 'fetchUserDetails']);
         // Route::get('index', [TeethController::class, 'index']);
     });
 

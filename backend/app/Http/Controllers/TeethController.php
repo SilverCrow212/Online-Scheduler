@@ -201,4 +201,14 @@ class TeethController extends Controller
         ]);
     }
 
+    public function fetchUserDetails($appointment_id){
+
+        $userDetails = DB::table('user_details as ud')
+            ->join('appointment as ap', 'ud.user_id', '=', 'ap.user_details_id')
+            ->where('ap.id', $appointment_id)
+            ->get();
+        return response()->json( $userDetails
+        );
+    }
+
 }
