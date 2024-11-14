@@ -124,11 +124,12 @@ async function changePass(){
 
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">
+                                <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)"@click="visible=true">Forgot Password?</a>
                             </div>
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)" @click="createAccount">Create New Account</a>
                         </div>
                         <Button label="Sign In" class="w-full p-3 text-xl" @click="handleLogin"></Button>
-                        <Button label="Forgot Password" class="w-full p-3 text-xl mt-4" @click="visible=true"></Button>
+                        <!-- <Button label="Forgot Password" class="w-full p-3 text-xl mt-4" @click="visible=true"></Button> -->
                     </div>
                 </div>
             </div>
