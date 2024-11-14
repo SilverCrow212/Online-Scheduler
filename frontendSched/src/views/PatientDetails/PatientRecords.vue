@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import PatientRecordTable from '@/views/PatientDetails/PatientRecordTable.vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
@@ -49,6 +49,8 @@ const filters = ref({
     'user_details.lastname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'user_details.firstname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'user_details.middlename': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'user_details.department_program': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'user_details.type': { value: null, matchMode: FilterMatchMode.EQUALS },
 });
 
 const openProfileWindow = (patient) => {
@@ -63,12 +65,33 @@ const openProfileWindow = (patient) => {
 // Open the new window/tab with the specified dimensions
 window.open(url, 'PrintRecordWindow', `width=${width},height=${height},top=${top},left=${left}`);
 };
+
+const typeOptions = computed(() => {
+    return type.map(t => ({
+        name: t.name, // Display name
+        id: t.id      // The id will be used for filtering
+    }));
+});
 </script>
 
 <template>
     <div class="grid">
         <div class="col-12">
             <div class="card">
+                <div class="flex gap-3 align-items-center mb-3">
+                    <!-- Type Filter Dropdown -->
+                    <div class="flex gap-2 align-items-center">
+                        <label for="typeFilter">Filter by Type</label>
+                        <Dropdown 
+                            id="typeFilter" 
+                            v-model="filters['user_details.type'].value" 
+                            :options="typeOptions" 
+                            optionLabel="name" 
+                            optionValue="id" 
+                            placeholder="Select Type"
+                        />
+                    </div>
+                </div>
                 <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['user_details.lastname','user_details.firstname','user_details.middlename']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" paginator :rows="10" @row-click="dialogOpen">
                     <template #header>
                         <div class="flex justify-content-end">

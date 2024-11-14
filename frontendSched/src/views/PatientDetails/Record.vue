@@ -109,8 +109,22 @@ async function clickSaveUser() {
   <Toast />
   <div class="content-wrapper">
     <div class="sticky-card card">
-      <span class="font-bold">Patient Name:</span>
-      {{ userData?.lastname }}, {{ userData?.firstname }}
+      <div>
+        <span class="font-bold">Patient Name:</span>
+        {{ userData?.lastname }}, {{ userData?.firstname }}
+      </div>
+      <div>
+        <span class="font-bold">School ID:</span>
+        {{ userData?.school_id_number}}
+      </div>
+      <div>
+        <span class="font-bold">Appointment Date:</span>
+        {{ userData.appointment_date}}
+      </div>
+      <div>
+        <span class="font-bold">Appointment Time:</span>
+        {{ userData.appointment_time}}
+      </div>
     </div>
 
     <Stepper v-if="loader">

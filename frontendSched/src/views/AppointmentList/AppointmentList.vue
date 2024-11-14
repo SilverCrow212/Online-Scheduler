@@ -49,6 +49,8 @@ const filters = ref({
     'user_details.lastname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'user_details.firstname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'user_details.middlename': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'user_details.department_program': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    'status': { value: null, matchMode: FilterMatchMode.EQUALS },
 });
 
 onMounted(async () => {
@@ -79,6 +81,13 @@ const getStatusName = (statusId) => {
     console.log('Found status:', status); // Log the found status
     return status ? status.name : 'Unknown';
 };
+
+const statusOptions = computed(() => {
+    return useStatus.map(status => ({
+        label: status.name,  // Name of the status
+        value: status.id     // ID of the status (used for filtering)
+    }));
+});
 </script>
 
 <template>
@@ -93,8 +102,15 @@ const getStatusName = (statusId) => {
                     <div>
                         <Button label="Add New Appointment" @click="visibleSetAppointment = true" />
                     </div>
+                    <!-- Status Filter Dropdown -->
+                    <div class="flex justify-content-between mt-3">
+                        <div class="flex gap-2 align-items-center">
+                            <label for="statusFilter">Filter by Status</label>
+                            <Dropdown id="statusFilter" v-model="filters.status.value" :options="statusOptions" optionLabel="label" optionValue="value" placeholder="Select Status" class="w-15rem" />
+                        </div>
+                    </div>
                 </div>
-                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['user_details.lastname','user_details.firstname','user_details.middlename']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
+                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['user_details.department_program','user_details.lastname','user_details.firstname','user_details.middlename']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
                     <template #header>
                         <div class="flex justify-content-end">
                             <IconField iconPosition="left">
