@@ -10,6 +10,8 @@ use App\Http\Controllers\PrintablesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Auth\SecurityQuestionController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -50,6 +52,8 @@ Route::post('/login', function (Request $request) {
 Route::prefix('user')->group(function () {
     Route::post('register', [UserManagementController::class, 'register']);
 });
+
+Route::get('security-question', [SecurityQuestionController::class, 'getSecurityQuestion']);
 
 
 Route::middleware('auth:sanctum')->group (function (){
@@ -128,4 +132,13 @@ Route::middleware('auth:sanctum')->group (function (){
 
     // Print Records
     Route::get('print_records', [PrintablesController::class,'show']);
+
+    // UPDATE SECURITY QUESTION
+    Route::post('/update-security-question', [UserManagementController::class, 'updateSecurityQuestion']);
+
 });
+
+
+// FORGOT PASSWORD
+Route::post('/verify-security-question', [SecurityQuestionController::class, 'verifySecurityAnswer']);
+Route::post('/reset-password', [SecurityQuestionController::class, 'resetPassword']);

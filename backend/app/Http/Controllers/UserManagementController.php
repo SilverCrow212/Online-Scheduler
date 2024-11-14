@@ -21,6 +21,8 @@ class UserManagementController extends Controller
                     'email' => $r->email,
                     'user_type' => $r->user_type,
                     'password' => Hash::make($r->password),
+                    'security_question' => $r->security_question,
+                    'security_answer' => Hash::make($r->security_answer)
                 ]);
                 // THIS WILL CREATE A USER DETAILS RELATED TO THE USER RECORD
                 UserDetails::create([
@@ -122,6 +124,7 @@ class UserManagementController extends Controller
             throw $th;
         }
     }
+
     public function change_email(Request $r){
         try {
             DB::beginTransaction();
@@ -141,6 +144,29 @@ class UserManagementController extends Controller
                 $logsController->logAction('changed the email of school#: '.$r->school_id_number);
 
             DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+    public function updateSecurityQuestion(Request $r){
+        try {
+            DB::beginTransaction();
+                User::where('school_id_number', $r->school_id_number)
+                ->update([
+                    'security_question' => $r->security_question,
+                    'security_answer' => Hash::make($r->security_answer)
+                ]);
+
+                $logsController = new LogsController();
+                $logsController->logAction('changed the security question of school#: '.$r->school_id_number);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Security question updated successfully',
+            ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;

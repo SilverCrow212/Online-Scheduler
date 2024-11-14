@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -23,6 +24,8 @@ class User extends Authenticatable
         'user_type',
         'email',
         'password',
+        'security_question',
+        'security_answer'
     ];
 
     /**
@@ -49,5 +52,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserDetails::class, 'user_id', 'id');
     }
+
+    // public function setSecurityAnswerAttribute($value)
+    // {
+    //     $this->attributes['security_answer'] = Hash::make($value);
+    // }
 
 }
