@@ -1,13 +1,19 @@
 <script setup>
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { createacc } from '@/store/createacc';
 import { departmentChoices, sexChoices } from '@/store/choices';
-import { CreateAcc } from '@/api/ApiLogin';
+import { CreateAcc, SecurityQuestions } from '@/api/ApiLogin';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 
+
 const toast = useToast();
+
+
+onMounted(async () => {
+   security_questions.value = await SecurityQuestions();
+});
 
 const departmentStore = departmentChoices();
 const createAccStore = createacc();
@@ -93,6 +99,13 @@ const validateForm = async () => {
     if (createaccount.password !== confirmPassword.value) {
         validationErrors.value.confirmPassword = 'Passwords do not match.';
     }
+    if (!security.question) {
+        validationErrors.value.question = 'Security Question is required.';
+    }
+    if (!security.answer) {
+        validationErrors.value.answer = 'Security Question Answer is required.';
+    }
+
 
     // Check if there are any validation errors
     if (Object.keys(validationErrors.value).length === 0) {
@@ -106,6 +119,12 @@ const validateForm = async () => {
     }
 };
 
+
+const security = ref({
+    question:null,
+    answer:null,
+});
+const security_questions = ref([]);
 </script>
 
 <template>
@@ -128,6 +147,20 @@ const validateForm = async () => {
                     <label>Confirm Password</label>
                     <Password v-model="confirmPassword" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.confirmPassword}" />
                     <small v-if="validationErrors.confirmPassword" class="p-error">{{ validationErrors.confirmPassword }}</small>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label>Choose Security Question</label>
+                    <!-- <InputText v-model="createaccount.sex" type="text" :class="{'p-invalid': validationErrors.sex}" /> -->
+                    <Dropdown v-model="security.question" 
+                              :options="security_questions" 
+                              placeholder="Select One"
+                              :class="{'p-invalid': validationErrors.question}" />
+                    <small v-if="validationErrors.question" class="p-error">{{ validationErrors.question }}</small>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label>Answer</label>
+                    <InputText v-model="security.answer" type="text" :class="{'p-invalid': validationErrors.answer}" />
+                    <small v-if="validationErrors.answer" class="p-error">{{ validationErrors.answer }}</small>
                 </div>
                 <div class="field col-12 md:col-4">
                     <label>Firstname</label>
