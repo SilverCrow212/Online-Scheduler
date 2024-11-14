@@ -61,22 +61,42 @@ const visible = ref(false)
 const visible2 = ref(false)
 const forgot = ref({school_id_number:null, security_question:null, security_answer:null});
 const password = ref(null);
-async function clickSecurity(){
+const validationErrors = ref({});
+async function clickSecurity() {
+    validationErrors.value = {};
 
-        const response = await verifySecurity(forgot.value);
-        console.log('response here',response)
-        if(response=='verified'){
-            visible2.value=true
+    if (!forgot.value.school_id_number) {
+        validationErrors.value.school_id_number = 'ID number is required.';
+    }
+    if (!forgot.value.security_question) {
+        validationErrors.value.security_question = 'Security question is required.';
+    }
+    if (!forgot.value.security_answer) {
+        validationErrors.value.security_answer = 'Answer is required.';
+    }
+
+    // If there are no validation errors, proceed
+    if (Object.keys(validationErrors.value).length === 0) {
+        const response = await verifySecurity(forgot.value, toast);
+        console.log('response here', response);
+        if (response === 'verified') {
+            visible2.value = true;
         }
-
+    }
 }
+
 async function changePass(){
+    if (!password.value) {
+        toast.add({ severity: 'error', summary: 'Password is required.' });
+        return;
+    }
     const data = ref({
         school_id_number:forgot.value.school_id_number,
         password:password.value
     })
-        await ResetPassword(data.value);
-        visible2.value=true
+        await ResetPassword(data.value, toast);
+        visible.value=false
+        visible2.value=false
 
 }
 
@@ -116,28 +136,57 @@ async function changePass(){
     </div>
     <AppConfig simple />
 
-    <Dialog v-model:visible="visible" modal header="Forgot Password" :style="{ width: '35rem' }" :dismissableMask="false">
+    <Dialog v-model:visible="visible" modal header="Verify Account" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
         <!-- <AppointmentPopup/> -->
-        <InputText v-model="forgot.school_id_number"  type="text" placeholder="ID number" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
+        <div class="field col-12 md:col-12">
+            <label>ID Number</label>
+            <InputText v-model="forgot.school_id_number"  type="text" placeholder="ID number" class="w-full md:w-30rem"  />
+            <small v-if="validationErrors.school_id_number" class="p-error">{{ validationErrors.school_id_number }}</small>
+        </div>
+        <div class="field col-12 md:col-12">
+            <label>Select Question</label>
+            <Dropdown v-model="forgot.security_question" 
+            :options="security_questions"
+            optionLabel="item"
+            optionValue="id"
+            placeholder="Select One"
+            class="w-full md:w-30rem"
+        />
+        <small v-if="validationErrors.security_question" class="p-error">{{ validationErrors.security_question }}</small>
+        </div>
+        <div class="field col-12 md:col-12">
+            <label>Answer <span style="color:red;">(!Case Sensitive!)</span></label>
+            <InputText v-model="forgot.security_answer"  type="text" placeholder="Answer" class="w-full md:w-30rem " />
+            <small v-if="validationErrors.security_answer" class="p-error">{{ validationErrors.security_answer }}</small>
+        </div>
+         <!-- ID Number
+        <InputText v-model="forgot.school_id_number"  type="text" placeholder="ID number" class="w-full md:w-30rem mb-4" style="padding: 1rem" /> -->
+        <!-- Select Question
         <Dropdown v-model="forgot.security_question" 
             :options="security_questions"
             optionLabel="item"
             optionValue="id"
             placeholder="Select One"
-        />
-        <InputText v-model="forgot.security_answer"  type="text" placeholder="ID number" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
+            class="w-full md:w-30rem mb-5"
+        /> -->
+        <!-- Answer
+        <InputText v-model="forgot.security_answer"  type="text" placeholder="Answer" class="w-full md:w-30rem mb-5" style="padding: 1rem" /> -->
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
-            <Button type="button" label="Save" @click="clickSecurity()"></Button>
+            <Button type="button" label="Verify" @click="clickSecurity()"></Button>
         </div>
     </Dialog>
     
-    <Dialog v-model:visible="visible2" modal header="Change Password" :style="{ width: '35rem' }" :dismissableMask="false">
-    
-    <InputText v-model="password"  type="text" placeholder="ID number" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
+    <Dialog v-model:visible="visible2" modal header="Change Password" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label>New Password</label>
+            <InputText v-model="password" type="text" placeholder="Enter New Password"/>
+        </div>
+    <!-- New Password
+    <InputText v-model="password"  type="text" placeholder="New Password" class="w-full md:w-30rem mb-5" style="padding: 1rem" /> -->
     <div class="flex justify-content-end gap-2">
         <Button type="button" label="Cancel" severity="secondary" @click="visible2 = false"></Button>
-        <Button type="button" label="Save" @click="changePass()"></Button>
+        <Button type="button" label="Change Password" @click="changePass()"></Button>
     </div>
 </Dialog>
 </template>

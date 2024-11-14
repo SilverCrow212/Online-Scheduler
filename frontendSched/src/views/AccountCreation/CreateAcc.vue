@@ -150,7 +150,7 @@ const security_questions = ref([]);
                 </div>
                 <div class="field col-12 md:col-6">
                     <label>Choose Security Question</label>
-                    {{security}}
+                    <!-- {{security}} -->
                     <!-- <InputText v-model="createaccount.sex" type="text" :class="{'p-invalid': validationErrors.sex}" /> -->
                     <Dropdown v-model="createaccount.security_question" 
                               :options="security_questions"
@@ -161,7 +161,7 @@ const security_questions = ref([]);
                     <small v-if="validationErrors.question" class="p-error">{{ validationErrors.question }}</small>
                 </div>
                 <div class="field col-12 md:col-6">
-                    <label>Answer</label>
+                    <label>Answer <span style="color:red;">(!Case Sensitive!)</span></label>
                     <InputText v-model="createaccount.security_answer" type="text" :class="{'p-invalid': validationErrors.answer}" />
                     <small v-if="validationErrors.answer" class="p-error">{{ validationErrors.answer }}</small>
                 </div>

@@ -352,7 +352,32 @@ const validatePasswordForm = async () => {
                 </div>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-4">
+            <div class="card">
+                <h5>Edit Security Questions</h5>
+                <div class="p-fluid formgrid grid" >
+                    <div class="field col-12 md:col-12">
+                        <label>Question</label>
+                        <Dropdown v-model="createaccount.question" 
+                              :options="security_questions"
+                              optionLabel="item"
+                              optionValue="id"
+                              placeholder="Select One"
+                            />
+                        <!-- <small v-if="validationErrorsEmail.email" class="p-error">{{ validationErrorsEmail.email }}</small> -->
+                    </div>
+                    <div class="field col-12 md:col-12">
+                        <label>Answer <span style="color:red;">(!Case Sensitive!)</span></label>
+                        <InputText v-model="createaccount.answer" type="text"  />
+                        <!-- <small v-if="validationErrorsEmail.email" class="p-error">{{ validationErrorsEmail.email }}</small> -->
+                    </div>
+                    <div class="field col-12 flex justify-content-end gap-2">
+                        <Button label="Update Security Question" @click="sendSecurity()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
             <div class="card">
                 <h5>Edit Password</h5>
                 <div class="p-fluid formgrid grid" >
@@ -373,7 +398,7 @@ const validatePasswordForm = async () => {
                 </div>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-4">
             <div class="card">
                 <h5>Edit Email</h5>
                 <div class="p-fluid formgrid grid" >
@@ -388,31 +413,7 @@ const validatePasswordForm = async () => {
                 </div>
             </div>
         </div>
-        <div class="col-6">
-            <div class="card">
-                <h5>Edit Security Questions</h5>
-                <div class="p-fluid formgrid grid" >
-                    <div class="field col-12 md:col-12">
-                        <label>Question</label>
-                        <Dropdown v-model="createaccount.question" 
-                              :options="security_questions"
-                              optionLabel="item"
-                              optionValue="id"
-                              placeholder="Select One"
-                            />
-                        <!-- <small v-if="validationErrorsEmail.email" class="p-error">{{ validationErrorsEmail.email }}</small> -->
-                    </div>
-                    <div class="field col-12 md:col-12">
-                        <label>Answer</label>
-                        <InputText v-model="createaccount.answer" type="text"  />
-                        <!-- <small v-if="validationErrorsEmail.email" class="p-error">{{ validationErrorsEmail.email }}</small> -->
-                    </div>
-                    <div class="field col-12 flex justify-content-end gap-2">
-                        <Button label="Update Questions" @click="sendSecurity()" />
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </template>
 <style>

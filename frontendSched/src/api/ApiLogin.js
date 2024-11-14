@@ -139,40 +139,40 @@ export async function SecurityQuestions() {
 }
 
 
-export async function verifySecurity(email) {
+export async function verifySecurity(question,toast) {
     // const token = localStorage.getItem('token');
     try {
         // const receive = await axios.put('user/user_email_update', email);
-        const response = await axios.post('verify-security-question', {...email});
-        // toast.add({ 
-        //     severity: 'success', 
-        //     summary: 'Email Updated Successfully', 
-        //     detail: 'You have updated the account successfully.', 
-        //     life: 3000 
-        // });
+        const response = await axios.post('verify-security-question', {...question});
+        toast.add({ 
+            severity: 'success', 
+            summary: response.data.message, 
+            detail: 'You have updated the account successfully.', 
+            life: 3000 
+        });
         console.log(response);
         return response.data.status;
     } catch (err) {
         console.error('error', err);
-        // toast.add({ severity: 'error', summary: err.response.data.message, detail: 'Message Detail', life: 3000 });
+        toast.add({ severity: 'error', summary: err.response.data.error, detail: 'Message Detail', life: 3000 });
     }
 }
 
-export async function ResetPassword(email) {
+export async function ResetPassword(password,toast) {
     // const token = localStorage.getItem('token');
     try {
         // const receive = await axios.put('user/user_email_update', email);
-        const response = await axios.post('reset-password', {...email});
-        // toast.add({ 
-        //     severity: 'success', 
-        //     summary: 'Email Updated Successfully', 
-        //     detail: 'You have updated the account successfully.', 
-        //     life: 3000 
-        // });
+        const response = await axios.post('reset-password', {...password});
+        toast.add({ 
+            severity: 'success', 
+            summary: 'Password Updated Successfully', 
+            detail: 'You have updated the account successfully.', 
+            life: 3000 
+        });
         console.log(response);
         return response.data.status;
     } catch (err) {
         console.error('error', err);
-        // toast.add({ severity: 'error', summary: err.response.data.message, detail: 'Message Detail', life: 3000 });
+        toast.add({ severity: 'error', summary: err, detail: 'Message Detail', life: 3000 });
     }
 }
