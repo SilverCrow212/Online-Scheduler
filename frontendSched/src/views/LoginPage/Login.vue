@@ -1,6 +1,6 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import AppConfig from '@/layout/AppConfig.vue';
 import { useRouter } from 'vue-router';
 import { Login } from '@/api/ApiLogin';
@@ -8,13 +8,16 @@ import { fetchUserData } from '@/api/ApiUser';
 import { login, user } from '@/store/user';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import { EditAcc, EditEmail, EditPassword, EditSecurity, SecurityQuestions, verifySecurity, ResetPassword  } from '@/api/ApiLogin';
 
 const toast = useToast();
-
+const security_questions = ref([]);
 const loginStore = login();
 const loginDetails = loginStore.loginDetails;
 const userStore = user();
-
+onMounted(async()=>{
+    security_questions.value = await SecurityQuestions();
+})
 const router = useRouter();
 
 function createAccount() {
@@ -53,6 +56,30 @@ async function handleLogin() {
         localStorage.removeItem('token');
     }
 }
+
+const visible = ref(false)
+const visible2 = ref(false)
+const forgot = ref({school_id_number:null, security_question:null, security_answer:null});
+const password = ref(null);
+async function clickSecurity(){
+
+        const response = await verifySecurity(forgot.value);
+        console.log('response here',response)
+        if(response=='verified'){
+            visible2.value=true
+        }
+
+}
+async function changePass(){
+    const data = ref({
+        school_id_number:forgot.value.school_id_number,
+        password:password.value
+    })
+        await ResetPassword(data.value);
+        visible2.value=true
+
+}
+
 </script>
 
 
@@ -81,12 +108,38 @@ async function handleLogin() {
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)" @click="createAccount">Create New Account</a>
                         </div>
                         <Button label="Sign In" class="w-full p-3 text-xl" @click="handleLogin"></Button>
+                        <Button label="Forgot Password" class="w-full p-3 text-xl mt-4" @click="visible=true"></Button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <AppConfig simple />
+
+    <Dialog v-model:visible="visible" modal header="Forgot Password" :style="{ width: '35rem' }" :dismissableMask="false">
+        <!-- <AppointmentPopup/> -->
+        <InputText v-model="forgot.school_id_number"  type="text" placeholder="ID number" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
+        <Dropdown v-model="forgot.security_question" 
+            :options="security_questions"
+            optionLabel="item"
+            optionValue="id"
+            placeholder="Select One"
+        />
+        <InputText v-model="forgot.security_answer"  type="text" placeholder="ID number" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
+            <Button type="button" label="Save" @click="clickSecurity()"></Button>
+        </div>
+    </Dialog>
+    
+    <Dialog v-model:visible="visible2" modal header="Change Password" :style="{ width: '35rem' }" :dismissableMask="false">
+    
+    <InputText v-model="password"  type="text" placeholder="ID number" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
+    <div class="flex justify-content-end gap-2">
+        <Button type="button" label="Cancel" severity="secondary" @click="visible2 = false"></Button>
+        <Button type="button" label="Save" @click="changePass()"></Button>
+    </div>
+</Dialog>
 </template>
 
 <style scoped>

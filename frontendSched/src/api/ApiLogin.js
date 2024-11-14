@@ -17,15 +17,6 @@ export async function Login(login,toast) {
     }
 }
 
-export async function SecurityQuestions(login) {
-    try {
-        const receive = await axios.get('security', login);
-        return receive.data;
-    } catch (err) {
-        console.error('error', err);
-        toast.add({ severity: 'error', summary: 'Refresh Page', detail: 'Message Detail', life: 3000 });
-    }
-}
 
 export async function CreateAcc(details, toast) {
     try {
@@ -110,5 +101,78 @@ export async function EditEmail(email, toast) {
     } catch (err) {
         console.error('error', err);
         toast.add({ severity: 'error', summary: err.response.data.message, detail: 'Message Detail', life: 3000 });
+    }
+}
+
+export async function EditSecurity(security, toast) {
+    const token = localStorage.getItem('token');
+    try {
+        // const receive = await axios.put('user/user_security_update', security);
+        const response = await axios.post('update-security-question', {...security}, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        toast.add({ 
+            severity: 'success', 
+            summary: 'Security Question Updated Successfully', 
+            detail: 'You have updated the account successfully.', 
+            life: 3000 
+        });
+        console.log('received');
+        return 'received';
+    } catch (err) {
+        console.error('error', err);
+        toast.add({ severity: 'error', summary: err.response.data.message, detail: 'Message Detail', life: 3000 });
+    }
+}
+
+
+export async function SecurityQuestions() {
+    try {
+        const receive = await axios.get('security-question');
+        return receive.data.security_question;
+    } catch (err) {
+        console.error('error', err);
+        toast.add({ severity: 'error', summary: 'Refresh Page', detail: 'Message Detail', life: 3000 });
+    }
+}
+
+
+export async function verifySecurity(email) {
+    // const token = localStorage.getItem('token');
+    try {
+        // const receive = await axios.put('user/user_email_update', email);
+        const response = await axios.post('verify-security-question', {...email});
+        // toast.add({ 
+        //     severity: 'success', 
+        //     summary: 'Email Updated Successfully', 
+        //     detail: 'You have updated the account successfully.', 
+        //     life: 3000 
+        // });
+        console.log(response);
+        return response.data.status;
+    } catch (err) {
+        console.error('error', err);
+        // toast.add({ severity: 'error', summary: err.response.data.message, detail: 'Message Detail', life: 3000 });
+    }
+}
+
+export async function ResetPassword(email) {
+    // const token = localStorage.getItem('token');
+    try {
+        // const receive = await axios.put('user/user_email_update', email);
+        const response = await axios.post('reset-password', {...email});
+        // toast.add({ 
+        //     severity: 'success', 
+        //     summary: 'Email Updated Successfully', 
+        //     detail: 'You have updated the account successfully.', 
+        //     life: 3000 
+        // });
+        console.log(response);
+        return response.data.status;
+    } catch (err) {
+        console.error('error', err);
+        // toast.add({ severity: 'error', summary: err.response.data.message, detail: 'Message Detail', life: 3000 });
     }
 }

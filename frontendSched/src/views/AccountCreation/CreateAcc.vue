@@ -99,10 +99,10 @@ const validateForm = async () => {
     if (createaccount.password !== confirmPassword.value) {
         validationErrors.value.confirmPassword = 'Passwords do not match.';
     }
-    if (!security.question) {
+    if (!createaccount.security_question) {
         validationErrors.value.question = 'Security Question is required.';
     }
-    if (!security.answer) {
+    if (!createaccount.security_answer) {
         validationErrors.value.answer = 'Security Question Answer is required.';
     }
 
@@ -150,16 +150,19 @@ const security_questions = ref([]);
                 </div>
                 <div class="field col-12 md:col-6">
                     <label>Choose Security Question</label>
+                    {{security}}
                     <!-- <InputText v-model="createaccount.sex" type="text" :class="{'p-invalid': validationErrors.sex}" /> -->
-                    <Dropdown v-model="security.question" 
-                              :options="security_questions" 
+                    <Dropdown v-model="createaccount.security_question" 
+                              :options="security_questions"
+                              optionLabel="item"
+                              optionValue="id"
                               placeholder="Select One"
                               :class="{'p-invalid': validationErrors.question}" />
                     <small v-if="validationErrors.question" class="p-error">{{ validationErrors.question }}</small>
                 </div>
                 <div class="field col-12 md:col-6">
                     <label>Answer</label>
-                    <InputText v-model="security.answer" type="text" :class="{'p-invalid': validationErrors.answer}" />
+                    <InputText v-model="createaccount.security_answer" type="text" :class="{'p-invalid': validationErrors.answer}" />
                     <small v-if="validationErrors.answer" class="p-error">{{ validationErrors.answer }}</small>
                 </div>
                 <div class="field col-12 md:col-4">

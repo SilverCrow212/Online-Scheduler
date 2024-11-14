@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { createacc } from '@/store/createacc';
 import { departmentChoices, sexChoices } from '@/store/choices';
-import { EditAcc, EditEmail, EditPassword } from '@/api/ApiLogin';
+import { EditAcc, EditEmail, EditPassword, EditSecurity, SecurityQuestions  } from '@/api/ApiLogin';
 import { fetchUserData } from '@/api/ApiUser';
 import { useToast } from 'primevue/usetoast';
 
@@ -16,10 +16,14 @@ const sexchoices = sexStore.legend;
 const createaccount = createAccStore.accDetails;
 const typeChoice = departmentStore.type;
 const departmentChoice = departmentStore.department;
+
+const security_questions = ref([]);
 onMounted(async () => {
     try {
             // Fetch the user data from the API (you can modify this if necessary)
         const  data  = await fetchUserData();  // Assuming `user_details.id` is the user's ID
+        security_questions.value = await SecurityQuestions();
+
         console.log('asd',data)
         if (data) {
             // Populate the form fields with the fetched data
@@ -142,6 +146,15 @@ const validateForm = async () => {
 
 /// password and email
 // const email = ref(null);
+async function sendSecurity(){
+    const data = {
+            school_id_number:createaccount.school_id_number,
+            security_question:createaccount.question,
+            security_answer:createaccount.answer
+        }
+        await EditSecurity(data, toast);
+}
+
 const validationErrorsEmail = ref({});
 
 const validateEmailForm = async () => {
@@ -371,6 +384,31 @@ const validatePasswordForm = async () => {
                     </div>
                     <div class="field col-12 flex justify-content-end gap-2">
                         <Button label="Update Email" @click="validateEmailForm" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <h5>Edit Security Questions</h5>
+                <div class="p-fluid formgrid grid" >
+                    <div class="field col-12 md:col-12">
+                        <label>Question</label>
+                        <Dropdown v-model="createaccount.question" 
+                              :options="security_questions"
+                              optionLabel="item"
+                              optionValue="id"
+                              placeholder="Select One"
+                            />
+                        <!-- <small v-if="validationErrorsEmail.email" class="p-error">{{ validationErrorsEmail.email }}</small> -->
+                    </div>
+                    <div class="field col-12 md:col-12">
+                        <label>Answer</label>
+                        <InputText v-model="createaccount.answer" type="text"  />
+                        <!-- <small v-if="validationErrorsEmail.email" class="p-error">{{ validationErrorsEmail.email }}</small> -->
+                    </div>
+                    <div class="field col-12 flex justify-content-end gap-2">
+                        <Button label="Update Questions" @click="sendSecurity()" />
                     </div>
                 </div>
             </div>
