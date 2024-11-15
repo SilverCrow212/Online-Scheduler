@@ -269,7 +269,9 @@ export const statusChoices = defineStore('statusChoices', () => {
         {id:1, name: 'Complete - Done'},
         {id:2, name: 'Ongoing - Appointment or Treatment is Still Ongoing'},
         {id:3, name: 'No show - Student Did not Show Up'},
-        {id:4, name: 'Cancelled Appointment - Dentist not Available or Student Cancelled'},
+        {id:4, name: 'Cancelled Appointment - Dentist not Available'},
+        {id:5, name: 'Cancelled Appointment - Student Cancelled'},
+        {id:6, name: 'Cancelled Appointment - No Class Due to Suspension/Others'},
     ]);
     return { legend };
 });
@@ -278,6 +280,17 @@ export const sexChoices = defineStore('sexChoices', () => {
     const legend = ref([
         'Male',
         'Female',
+    ]);
+    return { legend };
+});
+
+
+export const civilStatusChoices = defineStore('civilStatusChoices', () => {
+    const legend = ref([
+        {id:1, name: 'Single'},
+        {id:2, name: 'Married'},
+        {id:3, name: 'Divorced'},
+        {id:4, name: 'Widowed'},
     ]);
     return { legend };
 });

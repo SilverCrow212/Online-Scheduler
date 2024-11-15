@@ -29,5 +29,9 @@ export const appointment = defineStore('appointment', () => {
             updated_at:null,
         },
     ]);
+
+
+
+    
     return { appointmentDetails, clinicalDetails };
 });

@@ -2,7 +2,7 @@
 import { ref,onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { createacc } from '@/store/createacc';
-import { departmentChoices, sexChoices } from '@/store/choices';
+import { departmentChoices, sexChoices, civilStatusChoices } from '@/store/choices';
 import { CreateAcc, SecurityQuestions } from '@/api/ApiLogin';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
@@ -18,12 +18,14 @@ onMounted(async () => {
 const departmentStore = departmentChoices();
 const createAccStore = createacc();
 const sexStore = sexChoices();
+const civilStore = civilStatusChoices();
 const sexchoices = sexStore.legend;
 const createaccount = createAccStore.accDetails;
 const typeChoice = departmentStore.type;
 const departmentChoice = departmentStore.department;
 const studentTypeChoice = departmentStore.studentType;
 const employmentTypeChoice = departmentStore.employmentType;
+const civilStatusChoice = civilStore.legend
 
 const router = useRouter();
 const validationErrors = ref({});
@@ -40,6 +42,7 @@ if (localStorage.getItem('user_details')) {
 }
 const confirmPassword = ref('');
 const validateForm = async () => {
+    visible.value = false 
     validationErrors.value = {};
 
     // Required fields validation
@@ -125,6 +128,9 @@ const security = ref({
     answer:null,
 });
 const security_questions = ref([]);
+
+
+const visible = ref(null);
 </script>
 
 <template>
@@ -135,7 +141,8 @@ const security_questions = ref([]);
             <div class="p-fluid formgrid grid">
                 <div class="field col-12 md:col-4">
                     <label>ID number</label>
-                    <InputText v-model="createaccount.school_id_number" type="text" :class="{'p-invalid': validationErrors.school_id_number}" />
+                    <InputMask  v-model="createaccount.school_id_number" mask="9999999" :class="{'p-invalid': validationErrors.school_id_number}"/>
+                    <!-- <InputText v-model="createaccount.school_id_number" type="text" :class="{'p-invalid': validationErrors.school_id_number}" /> -->
                     <small v-if="validationErrors.school_id_number" class="p-error">{{ validationErrors.school_id_number }}</small>
                 </div>
                 <div class="field col-12 md:col-4">
@@ -267,12 +274,19 @@ const security_questions = ref([]);
                 </div>
                 <div class="field col-12 md:col-4">
                     <label>Contact Number</label>
-                    <InputText v-model="createaccount.contact_no" type="text" :class="{'p-invalid': validationErrors.contact_no}" />
+                    <!-- <InputText v-model="createaccount.contact_no" type="text" :class="{'p-invalid': validationErrors.contact_no}" /> -->
+                    <InputMask  v-model="createaccount.contact_no" mask="99999999999" placeholder="09090909090" :class="{'p-invalid': validationErrors.contact_no}"/>
                     <small v-if="validationErrors.contact_no" class="p-error">{{ validationErrors.contact_no }}</small>
                 </div>
                 <div class="field col-12 md:col-4">
                     <label>Civil Status</label>
-                    <InputText v-model="createaccount.civil_status" type="text" :class="{'p-invalid': validationErrors.civil_status}" />
+                        <Dropdown v-model="createaccount.civil_status" 
+                              :options="civilStatusChoice"
+                              optionLabel="name"
+                              optionValue="id"
+                              placeholder="Select One"
+                              :class="{'p-invalid': validationErrors.civil_status}" />
+                    <!-- <InputText v-model="createaccount.civil_status" type="text" :class="{'p-invalid': validationErrors.civil_status}" /> -->
                     <small v-if="validationErrors.civil_status" class="p-error">{{ validationErrors.civil_status }}</small>
                 </div>
                 <div class="field col-12 md:col-4">
@@ -295,11 +309,22 @@ const security_questions = ref([]);
                 </div>
                 <div class="field col-12 flex justify-content-end gap-2">
                     <Button label="Back" @click="goBack" />
-                    <Button label="Submit" @click="validateForm" />
+                    <Button label="Submit" @click="visible=true" />
                 </div>
             </div>
         </div>
     </div>
+
+
+    <Dialog v-model:visible="visible" modal header="Confirmation" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label>Are you sure you entered the correct Details?</label>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
+            <Button type="button" label="Confirm" @click="validateForm"></Button>
+        </div>
+    </Dialog>
 </template>
 
 

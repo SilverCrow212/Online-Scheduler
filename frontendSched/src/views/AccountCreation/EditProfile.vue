@@ -219,7 +219,8 @@ const validatePasswordForm = async () => {
                 <div class="p-fluid formgrid grid" >
                     <div class="field col-12 md:col-4">
                         <label>ID number</label>
-                        <InputText v-model="createaccount.school_id_number" type="text" :class="{'p-invalid': validationErrors.school_id_number}" disabled/>
+                        <!-- <InputText v-model="createaccount.school_id_number" type="text" :class="{'p-invalid': validationErrors.school_id_number}" disabled/> -->
+                        <InputMask  v-model="createaccount.school_id_number" mask="9999999" :class="{'p-invalid': validationErrors.school_id_number}"/>
                         <small v-if="validationErrors.school_id_number" class="p-error">{{ validationErrors.school_id_number }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
@@ -319,7 +320,8 @@ const validatePasswordForm = async () => {
                     </div>
                     <div class="field col-12 md:col-4">
                         <label>Contact Number</label>
-                        <InputText v-model="createaccount.contact_no" type="text" :class="{'p-invalid': validationErrors.contact_no}" />
+                        <InputMask  v-model="createaccount.contact_no" mask="99999999999" placeholder="09090909090" :class="{'p-invalid': validationErrors.contact_no}"/>
+                        <!-- <InputText v-model="createaccount.contact_no" type="text" :class="{'p-invalid': validationErrors.contact_no}" /> -->
                         <small v-if="validationErrors.contact_no" class="p-error">{{ validationErrors.contact_no }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
