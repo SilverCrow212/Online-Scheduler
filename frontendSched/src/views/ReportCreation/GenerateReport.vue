@@ -1,57 +1,78 @@
 <template>
   <div class="card">
-    Select Date(Based on Month)
+    Select Date (Based on Month)
     <div class="mb-4">
-      <Calendar v-model="date" view="month" dateFormat="mm/yy" :manualInput="false"/>
+      <Calendar v-model="date" dateFormat="mm/yy" :manualInput="false"/>
     </div>
     <div>
-      <button @click="downloadDocx">Download DOCX</button>
+      <button @click="downloadXlsx">Download Excel</button>
     </div>
-</div>
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
-import Docxtemplater from 'docxtemplater';
-import PizZip from 'pizzip';
-import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';  // Import the full XLSX library
 
-const date =ref();
+const date = ref();
+
 // Sample data to replace in the template
-const templateData = {
+const templateData = ref({
   name: 'John Doe',
-};
+  date: '', // This will be dynamically updated based on user selection
+  otherInfo: 'Some additional data'
+});
 
-// Function to handle DOCX download
-const downloadDocx = async () => {
+// Function to handle Excel download
+const downloadXlsx = async () => {
   try {
-    // Fetch the DOCX template (ensure the template is in your public directory or accessible path)
-    const response = await fetch('/reports/reports.docx'); // Use the correct path, e.g., '/reports/reports.docx' if it's in the public folder
+    // Update templateData with the selected date
+    templateData.value.date = date.value ? date.value : 'October 2024'; // Use actual selected date, fallback to 'October 2024'
+
+    // Force re-fetching by appending a timestamp to the file URL (to prevent cache issues)
+    const timestamp = new Date().getTime();
+    const response = await fetch(`/reports/reports.xlsx?timestamp=${timestamp}`);  // File is in the 'public/reports' folder
     if (!response.ok) {
       throw new Error('Template not found');
     }
     const arrayBuffer = await response.arrayBuffer();
 
-    // Load the template into PizZip
-    const zip = new PizZip(arrayBuffer);
+    // Load the Excel template into a workbook
+    const wb = XLSX.read(arrayBuffer, { type: 'array' });
 
-    // Initialize docxtemplater with the PizZip instance
-    const doc = new Docxtemplater(zip, { paragraphLoop: true, lineBreaks: true });
+    // Access the first sheet in the template (assuming you want to modify the first sheet)
+    const ws = wb.Sheets[wb.SheetNames[0]];
 
-    // Set the data to replace in the template
-    doc.setData(templateData);
+    // Get the reference to the range of the sheet
+    const range = XLSX.utils.decode_range(ws['!ref']);
 
-    // Render the document (replace the placeholders with the actual data)
-    doc.render();
+    // Iterate over each cell in the range
+    for (let row = range.s.r; row <= range.e.r; row++) {
+      for (let col = range.s.c; col <= range.e.c; col++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+        let cell = ws[cellAddress];
 
-    // Generate the final document (output as a binary .docx file)
-    const out = doc.getZip().generate({ type: 'blob' });
+        if (cell && typeof cell.v === 'string') {
+          // Save the original style (if any)
+          const originalStyle = cell.s ? { ...cell.s } : null; // Copy style if it exists
 
-    // Trigger the download
-    saveAs(out, 'generated_document.docx');
+          // Replace placeholders with corresponding data
+          cell.v = cell.v.replace(/{name}/g, templateData.value.name)
+                         .replace(/{date}/g, templateData.value.date)
+                         .replace(/{otherInfo}/g, templateData.value.otherInfo);
+
+          // Restore the original style if it was available
+          if (originalStyle) {
+            cell.s = originalStyle;
+          }
+        }
+      }
+    }
+
+    // Use writeFile to directly trigger the download (keeping original formatting)
+    XLSX.writeFile(wb, 'generated_report.xlsx');
   } catch (error) {
-    console.error('Error generating DOCX:', error);
+    console.error('Error generating Excel:', error);
   }
 };
 </script>
