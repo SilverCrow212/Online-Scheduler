@@ -96,7 +96,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                 </div>
             </div>
         </div>
-        <div class="field col-12 md:col-12">
+        <div class="field col-12 md:col-6">
             <h5>Others</h5>
             <div class="col-12 p-0 m-0">
                 <div class="field col-12 md:col-12">
@@ -104,9 +104,20 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                 </div>
             </div>
         </div>
-        <div class="field col-12 md:col-3">
-            <label for="dateOfExamination1">Date of Examination</label>
-            <InputText id="dateOfExamination1" v-model="useOthers.dateOfExamination1" placeholder="Date of Examination" :disabled="user_details.user_type === 'user'"/>
+        <div class="field col-12 md:col-6">
+            <h5>Date of Examination</h5>
+            <!-- <InputText id="dateOfExamination1" v-model="useOthers.dateOfExamination1" placeholder="Date of Examination" :disabled="user_details.user_type === 'user'"/> -->
+            <Calendar
+                  :showIcon="true" 
+                  :showButtonBar="true"
+                  v-model="useOthers.dateOfExamination1"
+                  :min-date="minDate"
+                  dateFormat="mm/dd/yy"
+                  :disabled-dates="disabledDates"
+                  :disabledDays="[0, 6]"
+                  :manualInput="false"
+                  :disabled="user_details.user_type === 'user'"
+                />
             <div class="oral-hygiene-status">
                 <div v-for="category in oralHygieneChoice" :key="category.id" class="mb-1">
                     <RadioButton 
@@ -122,7 +133,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
             <div class="status-label">Oral Hygiene Status</div>
         </div>
 
-        <div class="field col-12 md:col-3">
+        <!-- <div class="field col-12 md:col-3">
             <label for="dateOfExamination2">Date of Examination</label>
             <InputText id="dateOfExamination2" v-model="useOthers.dateOfExamination2" placeholder="Date of Examination" :disabled="user_details.user_type === 'user'"/>
             <div class="oral-hygiene-status">
@@ -138,9 +149,9 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                 </div>
             </div>
             <div class="status-label">Oral Hygiene Status</div>
-        </div>
+        </div> -->
 
-        <div class="field col-12 md:col-3">
+        <!-- <div class="field col-12 md:col-3">
             <label for="dateOfExamination3">Date of Examination</label>
             <InputText id="dateOfExamination3" v-model="useOthers.dateOfExamination3" placeholder="Date of Examination" :disabled="user_details.user_type === 'user'"/>
             <div class="oral-hygiene-status">
@@ -156,9 +167,9 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                 </div>
             </div>
             <div class="status-label">Oral Hygiene Status</div>
-        </div>
+        </div> -->
 
-        <div class="field col-12 md:col-3">
+        <!-- <div class="field col-12 md:col-3">
             <label for="dateOfExamination4">Date of Examination</label>
             <InputText id="dateOfExamination4" v-model="useOthers.dateOfExamination4" placeholder="Date of Examination" :disabled="user_details.user_type === 'user'"/>
             <div class="oral-hygiene-status">
@@ -174,7 +185,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                 </div>
             </div>
             <div class="status-label">Oral Hygiene Status</div>
-        </div>
+        </div> -->
 
     </div>
 </template>
