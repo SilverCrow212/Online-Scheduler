@@ -30,8 +30,11 @@ const civilStatusChoice = civilStore.legend
 const router = useRouter();
 const validationErrors = ref({});
 const userTypeChoice = ['user'];
-const goBack = () => {
+const goBack = async () => {
+    console.log("GoBack triggered"); // Debug if this log appears
     router.go(-1);
+    createAccStore.resetAccDetails();  // Reset store data here
+    await nextTick(); // Ensure reactivity is handled properly
 };
 
 if (localStorage.getItem('user_details')) {
@@ -308,7 +311,7 @@ const visible = ref(null);
                     <Textarea v-model="createaccount.bsu_address" rows="3" />
                 </div>
                 <div class="field col-12 flex justify-content-end gap-2">
-                    <Button label="Back" @click="goBack" />
+                    <Button label="Back" @click="goBack()" />
                     <Button label="Submit" @click="visible=true" />
                 </div>
             </div>

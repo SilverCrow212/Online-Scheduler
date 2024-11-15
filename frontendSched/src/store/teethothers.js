@@ -26,5 +26,33 @@ export const otherInputs = defineStore('otherInputs', () => {
         medicine_prescribed:null,
         remarks:null
     });
-    return { firstPage, servicesRendered };
+
+    const resetotherInputs = () => {
+        firstPage.value = {
+            periodicalScreening: [],
+            occlusion: [],
+            appliances: [],
+            rpd: null,
+            tmd: [],
+            tmdOthers: null,
+            others: null,
+            dateOfExamination1: null,
+            dateOfExamination2: null,
+            dateOfExamination3: null,
+            dateOfExamination4: null,
+            oralHygieneStatus1: null,
+            oralHygieneStatus2: null,
+            oralHygieneStatus3: null,
+            oralHygieneStatus4: null,
+        };
+
+        servicesRendered.value = {
+            services_rendered: [],
+            tooth_number: null,
+            medicine_prescribed: null,
+            remarks: null
+        };
+    };
+
+    return { firstPage, servicesRendered, resetotherInputs };
 });

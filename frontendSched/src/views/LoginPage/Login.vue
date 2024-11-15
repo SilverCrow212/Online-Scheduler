@@ -183,13 +183,13 @@ async function changePass(){
             <label>New Password</label>
             <InputText v-model="password" type="text" placeholder="Enter New Password"/>
         </div>
-    <!-- New Password
-    <InputText v-model="password"  type="text" placeholder="New Password" class="w-full md:w-30rem mb-5" style="padding: 1rem" /> -->
-    <div class="flex justify-content-end gap-2">
-        <Button type="button" label="Cancel" severity="secondary" @click="visible2 = false"></Button>
-        <Button type="button" label="Change Password" @click="changePass()"></Button>
-    </div>
-</Dialog>
+        <!-- New Password
+        <InputText v-model="password"  type="text" placeholder="New Password" class="w-full md:w-30rem mb-5" style="padding: 1rem" /> -->
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="visible2 = false"></Button>
+            <Button type="button" label="Change Password" @click="changePass()"></Button>
+        </div>
+    </Dialog>
 </template>
 
 <style scoped>

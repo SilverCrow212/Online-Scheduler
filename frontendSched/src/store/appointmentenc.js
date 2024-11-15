@@ -16,22 +16,20 @@ export const appointment = defineStore('appointment', () => {
      },
     );
 
-    const clinicalDetails = ref([
-        {
+    const resetAppointmentDetails = () => {
+        appointmentDetails.value = {
             id: null, 
-            appointment_id:null,
-            hygiene_status:null,
-            services_rendered:null, 
-            teeth_questionmark:null, 
-            medicine_given:null, 
-            remarks:null,
-            created_at:null,
-            updated_at:null,
-        },
-    ]);
-
-
+            user_details_id: null,
+            consent_form: null,
+            enccode: null, 
+            appointment_date: null, 
+            appointment_time: null, 
+            status: 2,  // default status
+            created_at: null,
+            updated_at: null,
+        };
+    };
 
     
-    return { appointmentDetails, clinicalDetails };
+    return { appointmentDetails, resetAppointmentDetails };
 });

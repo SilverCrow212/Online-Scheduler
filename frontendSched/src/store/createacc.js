@@ -29,15 +29,14 @@ export const createacc = defineStore('createacc', () => {
      },
     );
     const resetAccDetails = () => {
-        // Use spread operator to reset the object to its initial state
-        accDetails.value = { 
-            ...accDetails.value, 
+        console.log('Before Reset:', accDetails.value);  // Log current state
+        accDetails.value = {
             school_id_number: null, 
             password: null, 
             firstname: null, 
             lastname: null, 
             middlename: null,
-            user_type: 'user', 
+            user_type: 'user',
             type: null, 
             employee_student_type: null, 
             office_level: null, 
@@ -56,6 +55,8 @@ export const createacc = defineStore('createacc', () => {
             security_answer: null,
             security_question: null
         };
+        console.log('After Reset:', accDetails.value);  // Log state after reset
     };
+    
     return { accDetails, resetAccDetails };
 });

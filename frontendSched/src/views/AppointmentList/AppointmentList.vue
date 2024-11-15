@@ -41,6 +41,7 @@ async function clickSave(){
         console.log('sent to backend', useAppoinment);
         await storeAppointment(useAppoinment,toast);
         patients.value = await fetchAppointment(formattedDate.value);
+        appointmentStore.resetAppointmentDetails();
         visibleSetAppointment.value = false
     }
 }

@@ -34,7 +34,8 @@ const userData = ref();
 async function fetchingDetails() {
   teethStore.resetTeethData(); 
     teethStore.resetFirstPage(); 
-    teethStore.resetServicesRendered(); 
+    teethStore.resetServicesRendered();
+    otherInputsStore.resetotherInputs();
     try {
         const fetchData = await fetchClinicalDetails(appointmentId);
         const fetchUser = await fetchClinicalDetailsUser(appointmentId);
@@ -119,11 +120,11 @@ async function clickSaveUser() {
       </div>
       <div>
         <span class="font-bold">Appointment Date:</span>
-        {{ userData.appointment_date}}
+        {{ userData?.appointment_date}}
       </div>
       <div>
         <span class="font-bold">Appointment Time:</span>
-        {{ userData.appointment_time}}
+        {{ userData?.appointment_time}}
       </div>
     </div>
 
