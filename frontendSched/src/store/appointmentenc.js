@@ -1,35 +1,30 @@
 import { defineStore } from 'pinia';
-import { Fragment, ref } from 'vue';
+import { ref } from 'vue';
 
 export const appointment = defineStore('appointment', () => {
-    const appointmentDetails = ref(
-        {
-            id: null, 
-            user_details_id:null,
-            consent_form:null,
-            enccode:null, 
-            appointment_date:null, 
-            appointment_time:null, 
-            status:2,
-            created_at:null,
-            updated_at:null,
-     },
-    );
+  // Define default appointment state
+  const getDefaultAppointmentState = () => ({
+    id: null,
+    user_details_id: null,
+    consent_form: null,
+    enccode: null,
+    appointment_date: null,
+    appointment_time: null,
+    status: 2, // Default status
+    created_at: null,
+    updated_at: null,
+  });
 
-    const resetAppointmentDetails = () => {
-        appointmentDetails.value = {
-            id: null, 
-            user_details_id: null,
-            consent_form: null,
-            enccode: null, 
-            appointment_date: null, 
-            appointment_time: null, 
-            status: 2,  // default status
-            created_at: null,
-            updated_at: null,
-        };
-    };
+  // Reactive state using `ref`
+  const appointmentDetails = ref(getDefaultAppointmentState());
 
-    
-    return { appointmentDetails, resetAppointmentDetails };
+  // Reset function to reset state to default values
+  const resetAppointmentDetails = () => {
+    console.log('Before Reset:', appointmentDetails.value);
+    // Use Object.assign to reset deeply reactive state
+    Object.assign(appointmentDetails.value, getDefaultAppointmentState()); 
+    console.log('After Reset:', appointmentDetails.value);
+  };
+
+  return { appointmentDetails, resetAppointmentDetails };
 });

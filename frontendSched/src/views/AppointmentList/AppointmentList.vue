@@ -55,6 +55,7 @@ const filters = ref({
 });
 
 onMounted(async () => {
+    appointmentStore.resetAppointmentDetails();
     patients.value = await fetchAppointment(formattedDate.value);
 });
 

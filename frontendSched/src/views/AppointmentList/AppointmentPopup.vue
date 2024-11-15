@@ -39,7 +39,6 @@ const selectedDate = ref(null);
 
   onMounted(async () => {
       informedConsentStore.resetData();
-      appointmentStore.resetAppointmentDetails();
       const data = await fetchAllPatient(); // Fetch the patient records
       patients.value = data;
       console.log('patients data', patients.value)
@@ -146,7 +145,6 @@ const clickClose = () => {
                     optionLabel="school_id_number" 
                     :suggestions="filteredPatient" 
                     @complete="search"
-                    @item-select="onItemSelect" 
                     />
               </div>
 

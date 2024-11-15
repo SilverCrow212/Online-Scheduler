@@ -51,6 +51,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
             <Textarea v-model="otherInput.remarks" rows="5" cols="30" :disabled="user_details.user_type === 'user'"/>
         </div>
         <div class="field col-12 md:col-12">
+            
             <label>Status</label>
             <Dropdown
             id="status"

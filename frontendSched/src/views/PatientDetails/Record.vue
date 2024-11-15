@@ -28,6 +28,7 @@ const buttonSelecter = ref(false);
 // const statuschoices = statusStore.legend
 const loader = ref(false);
 onMounted(async () => {
+    
     await fetchingDetails();
 });
 const userData = ref();
@@ -36,7 +37,6 @@ async function fetchingDetails() {
     teethStore.resetFirstPage(); 
     teethStore.resetServicesRendered();
     otherInputsStore.resetotherInputs();
-    appointmentStore.resetAppointmentDetails();
     try {
         const fetchData = await fetchClinicalDetails(appointmentId);
         const fetchUser = await fetchClinicalDetailsUser(appointmentId);
@@ -70,6 +70,7 @@ async function clickSave() {
       appointment: appointmentStore.appointmentDetails.status
     };
     const response = await storeClinicalDetails(appointmentId, patientData, toast);
+    await fetchingDetails();
     visibleSave.value=false;
     console.log('Data saved successfully:', response);
   } catch (error) {
@@ -86,6 +87,7 @@ async function clickUpdate() {
       appointment: appointmentStore.appointmentDetails.status
     };
     const response = await updateClinicalDetails(appointmentId, patientData, toast);
+    await fetchingDetails();
     visibleUpdate.value=false;
     console.log('Data saved successfully:', response);
   } catch (error) {
@@ -103,7 +105,7 @@ async function clickSaveUser() {
       appointment: appointmentStore.appointmentDetails.status
     };
     const response = await storeClinicalDetails(appointmentId, patientData, toast);
-
+    await fetchingDetails();
     visibleCancel.value=false;
 
     console.log('Data saved successfully:', response);
