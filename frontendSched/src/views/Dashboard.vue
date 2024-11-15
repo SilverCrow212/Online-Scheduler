@@ -108,7 +108,7 @@ const getStatusName = (statusId) => {
     </div>
     <div class="col-12 lg:col-6 xl:col-4">
         <div class="card mb-0">
-            <Calendar v-model="date" inline class="w-full" :disabledDays="[0, 6]" />
+            <Calendar v-model="date" inline class="w-full" :disabledDays="[0, 6]" :manualInput="false"/>
         </div>
     </div>
     <div class="col-12 lg:col-6 xl:col-8">

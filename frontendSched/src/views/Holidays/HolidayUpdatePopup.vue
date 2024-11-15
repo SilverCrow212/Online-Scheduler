@@ -34,6 +34,7 @@ watch(selectedDate, () => {
                   :showButtonBar="true"
                   v-model="selectedDate"
                   dateFormat="mm/dd/yy"
+                  :manualInput="false"
                 />
               </div>
               <div class="field col-12 md:col-12">

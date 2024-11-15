@@ -156,6 +156,7 @@ const clickClose = () => {
                   dateFormat="mm/dd/yy"
                   :disabled-dates="disabledDates"
                   :disabledDays="[0, 6]"
+                  :manualInput="false"
                 />
               </div>
               <div class="field col-12 md:col-12"  v-if="selectedDate!==null">

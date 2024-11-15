@@ -97,7 +97,7 @@ const statusOptions = computed(() => {
             <div class="card">
                 <div class="flex justify-content-between align-items-center">
                     <div>
-                        <Calendar v-model="date" dateFormat="mm/dd/yy" :disabledDays="[0, 6]" />
+                        <Calendar v-model="date" dateFormat="mm/dd/yy" :disabledDays="[0, 6]" :manualInput="false"/>
                     </div>
                     <div>
                         <Button label="Add New Appointment" @click="visibleSetAppointment = true" />
