@@ -32,10 +32,11 @@ onMounted(async () => {
 });
 const userData = ref();
 async function fetchingDetails() {
-  teethStore.resetTeethData(); 
+    teethStore.resetTeethData(); 
     teethStore.resetFirstPage(); 
     teethStore.resetServicesRendered();
     otherInputsStore.resetotherInputs();
+    appointmentStore.resetAppointmentDetails();
     try {
         const fetchData = await fetchClinicalDetails(appointmentId);
         const fetchUser = await fetchClinicalDetailsUser(appointmentId);
