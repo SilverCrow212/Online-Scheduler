@@ -10,10 +10,10 @@ if (localStorage.getItem('user_details')) {
             {
                 label: 'Menu',
                 items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+                { label: 'Create Account', icon: 'pi pi-user-plus', to: '/create-account' },
+                { label: 'Patient Records', icon: 'pi pi-folder-open', to: '/patient-records' },
                 { label: 'Appointments', icon: 'pi pi-calendar-plus', to: '/appointment' },
                 // { label: 'Create New Account', icon: 'pi pi-user-plus', to: '/create-account' },
-                { label: 'Patient Records', icon: 'pi pi-folder-open', to: '/patient-records' },
-                { label: 'Create Account', icon: 'pi pi-user-plus', to: '/create-account' },
                 { label: 'Set Holiday', icon: 'pi pi-bookmark', to: '/holiday' },
                 { label: 'Export Report', icon: 'pi pi-download', to: '/reports' }
                 ],
