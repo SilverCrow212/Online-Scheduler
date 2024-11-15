@@ -119,10 +119,10 @@ CREATE TABLE `clinical_details` (
   `id` int(11) NOT NULL,
   `appointment_id` int(11) DEFAULT NULL,
   `firstPage` longtext DEFAULT NULL,
-  `services_rendered` varchar(45) DEFAULT NULL,
-  `tooth_number` varchar(45) DEFAULT NULL,
-  `medicine_prescribed` varchar(45) DEFAULT NULL,
-  `remarks` varchar(45) DEFAULT NULL,
+  `services_rendered` longtext DEFAULT NULL,
+  `tooth_number` longtext DEFAULT NULL,
+  `medicine_prescribed` longtext DEFAULT NULL,
+  `remarks` longtext DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
