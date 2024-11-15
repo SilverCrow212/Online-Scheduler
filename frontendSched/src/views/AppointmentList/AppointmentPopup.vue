@@ -9,20 +9,15 @@ import { fetchAllPatient } from '@/api/ApiPatientRecords';
 const patients = ref(null);
 const selectedPatientId = ref(null);
 const filteredPatient = ref();
-onMounted(async () => {
-    const data = await fetchAllPatient(); // Fetch the patient records
-    patients.value = data;
-    console.log('patients data', patients.value)
-});
 // compute the school_id_number into the id number input below 
 
 
 const search = (event) => {
-    setTimeout(() => {
+  setTimeout(() => {
         if (!event.query.trim().length) {
             filteredPatient.value = [...patients.value];
         } else {
-            filteredPatient.value = patients.value.filter(patient => {
+          filteredPatient.value = patients.value.filter(patient => {
                 // Check if user_details exists and filter based on school_id_number
                 return patient.user_details && 
                        patient.user_details.school_id_number &&
@@ -40,6 +35,15 @@ const filledSlots = ref(['2024-05-28', '2024-05-30']);
 const minDate = new Date();
 const visibleInformedConsent = ref(false);
 const selectedDate = ref(null);
+
+
+  onMounted(async () => {
+      informedConsentStore.resetData();
+      appointmentStore.resetAppointmentDetails();
+      const data = await fetchAllPatient(); // Fetch the patient records
+      patients.value = data;
+      console.log('patients data', patients.value)
+  });
 // console.log('testing',test)
 const checkboxOptions = ref([
   '8:00 am - 9:00 am',
