@@ -25,7 +25,7 @@ const toast = useToast();
 onMounted(async () => {
     const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
     records.value = data;
-    
+    appointmentStore.resetAppointmentDetails();
     // console.log('patients value popup',records.value)
 });
 
@@ -50,6 +50,7 @@ async function clickSave(){
         const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
         records.value = data;
         visibleSetAppointment.value = false
+        appointmentStore.resetAppointmentDetails();
     }
     // visibleSetAppointment.value = false
 }
