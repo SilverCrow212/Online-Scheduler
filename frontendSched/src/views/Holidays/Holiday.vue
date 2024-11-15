@@ -48,21 +48,31 @@ async function clickSave(){
     await storeHoliday(useHoliday);
     console.log('holiday', useHoliday)
     holiday.value = await fetchHoliday();
+    holidayStore.resetHolidayInput()
     visibleSetHoliday.value = false;
+    popsave.value = false;
 }
 
 async function clickUpdate(){
     await updateHoliday(useHoliday);
     console.log('holiday', useHoliday)
     holiday.value = await fetchHoliday();
+    holidayStore.resetHolidayInput()
     visibleUpdateHoliday.value = false;
+    popupdate.value = false;
 }
 
 async function clickDelete(){
     await deleteHoliday(useHoliday);
     holiday.value = await fetchHoliday();
+    holidayStore.resetHolidayInput()
     visibleUpdateHoliday.value = false;
+    popdelete.value = false;
 }
+
+const popsave = ref(false);
+const popupdate = ref(false);
+const popdelete = ref(false);
 </script>
 
 <template>
@@ -102,7 +112,7 @@ async function clickDelete(){
         <HolidayAddPopup/>
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Cancel" severity="secondary" @click="visibleSetHoliday = false"></Button>
-            <Button type="button" label="Save" @click="clickSave"></Button>
+            <Button type="button" label="Save" @click="popsave=true"></Button>
         </div>
     </Dialog>
 
@@ -111,7 +121,37 @@ async function clickDelete(){
         <div class="flex justify-content-end gap-2">
             <!-- {{ useHoliday }} -->
             <Button type="button" label="Cancel" severity="secondary" @click="visibleUpdateHoliday = false"></Button>
-            <Button type="button" label="Delete" severity="danger" @click="clickDelete"></Button>
+            <Button type="button" label="Delete" severity="danger" @click="popdelete=true"></Button>
+            <Button type="button" label="Update" @click="popupdate=true"></Button>
+        </div>
+    </Dialog>
+
+
+
+    <Dialog v-model:visible="popsave" modal header="Save Holiday" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label>Are you sure you entered the correct Details?</label>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="popsave = false"></Button>
+            <Button type="button" label="Save" @click="clickSave"></Button>
+        </div>
+    </Dialog>
+    <Dialog v-model:visible="popdelete" modal header="Delete Holiday" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label>Are you sure you want to delete this holiday?</label>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="popdelete = false"></Button>
+            <Button type="button" label="Delete" @click="clickDelete"></Button>
+        </div>
+    </Dialog>
+    <Dialog v-model:visible="popupdate" modal header="Update Holiday" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label>Are you sure you entered the correct Details?</label>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="popupdate = false"></Button>
             <Button type="button" label="Update" @click="clickUpdate"></Button>
         </div>
     </Dialog>

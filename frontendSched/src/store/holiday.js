@@ -6,6 +6,12 @@ export const holidayInput = defineStore('holidayInput', () => {
         date:null,
         description:null,
     });
+    const resetHolidayInput = () => {
+        setHoliday.value = {
+            date: null,
+            description: null,
+        };
+    };
 
-    return { setHoliday };
+    return { setHoliday, resetHolidayInput };
 });
