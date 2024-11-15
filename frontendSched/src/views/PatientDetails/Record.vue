@@ -69,6 +69,7 @@ async function clickSave() {
       appointment: appointmentStore.appointmentDetails.status
     };
     const response = await storeClinicalDetails(appointmentId, patientData, toast);
+    visibleSave.value=false;
     console.log('Data saved successfully:', response);
   } catch (error) {
     console.error('Error saving clinical details:', error);
@@ -84,6 +85,7 @@ async function clickUpdate() {
       appointment: appointmentStore.appointmentDetails.status
     };
     const response = await updateClinicalDetails(appointmentId, patientData, toast);
+    visibleUpdate.value=false;
     console.log('Data saved successfully:', response);
   } catch (error) {
     console.error('Error saving clinical details:', error);
@@ -100,11 +102,18 @@ async function clickSaveUser() {
       appointment: appointmentStore.appointmentDetails.status
     };
     const response = await storeClinicalDetails(appointmentId, patientData, toast);
+
+    visibleCancel.value=false;
+
     console.log('Data saved successfully:', response);
   } catch (error) {
     console.error('Error saving clinical details:', error);
   }
 }
+
+const visibleUpdate = ref(null);
+const visibleSave = ref(null);
+const visibleCancel = ref(null);
 </script>   
 <template>
   <Toast />
@@ -147,14 +156,47 @@ async function clickSaveUser() {
                 <div class="flex pt-4 justify-content-between">
                     <Button label="Back" severity="secondary" icon="pi pi-arrow-left" @click="prevCallback" />
                     <!-- <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" /> -->
-                    <Button v-if="buttonSelecter && user_details.user_type !== 'user'" label="Update" icon="pi pi-save" iconPos="right" @click="clickUpdate" :disabled="user_details.user_type === 'user'"/>
-                    <Button v-else-if="!buttonSelecter && user_details.user_type !== 'user'" label="Save" icon="pi pi-save" iconPos="right" @click="clickSave" :disabled="user_details.user_type === 'user'"/>
-                    <Button v-else-if="!buttonSelecter && user_details.user_type === 'user'" label="Cancel Appointment" icon="pi pi-save" iconPos="right" @click="clickSaveUser"/>
+                    <Button v-if="buttonSelecter && user_details.user_type !== 'user'" label="Update" icon="pi pi-save" iconPos="right" @click="visibleUpdate = true" :disabled="user_details.user_type === 'user'"/>
+                    <Button v-else-if="!buttonSelecter && user_details.user_type !== 'user'" label="Save" icon="pi pi-save" iconPos="right" @click="visibleSave = true" :disabled="user_details.user_type === 'user'"/>
+                    <Button v-else-if="!buttonSelecter && user_details.user_type === 'user'" label="Cancel Appointment" icon="pi pi-save" iconPos="right" @click="visibleCancel = false"/>
                 </div>
             </template>
         </StepperPanel>
     </Stepper>
   </div>
+
+<!-- Update -->
+  <Dialog v-model:visible="visibleUpdate" modal header="Confirmation" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+      <div class="field col-12 md:col-12">
+          <label>Are you sure you entered the correct Details?</label>
+      </div>
+      <div class="flex justify-content-end gap-2">
+          <Button type="button" label="Cancel" severity="secondary" @click="visibleUpdate = false"></Button>
+          <Button type="button" label="Confirm" @click="clickUpdate"></Button>
+      </div>
+  </Dialog>
+
+  <!-- Save -->
+  <Dialog v-model:visible="visibleSave" modal header="Confirmation" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+      <div class="field col-12 md:col-12">
+          <label>Are you sure you entered the correct Details?</label>
+      </div>
+      <div class="flex justify-content-end gap-2">
+          <Button type="button" label="Cancel" severity="secondary" @click="visibleSave = false"></Button>
+          <Button type="button" label="Confirm" @click="clickSave"></Button>
+      </div>
+  </Dialog>
+
+  <!-- //user -->
+  <Dialog v-model:visible="visibleCancel" modal header="Confirmation" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+      <div class="field col-12 md:col-12">
+          <label>Are you sure you entered the correct Details?</label>
+      </div>
+      <div class="flex justify-content-end gap-2">
+          <Button type="button" label="Cancel" severity="secondary" @click="visibleCancel = false"></Button>
+          <Button type="button" label="Confirm" @click="clickSaveUser"></Button>
+      </div>
+  </Dialog>
 </template>
 
 <style scoped>

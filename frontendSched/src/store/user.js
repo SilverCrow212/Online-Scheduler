@@ -33,6 +33,8 @@ export const user = defineStore('user', () => {
             guardian_no: null,
             permanent_address: null,
             bsu_address: null,
+            question:null,
+            answer:null,
             created_at: null,
             updated_at: null,
      },
