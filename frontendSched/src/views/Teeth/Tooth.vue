@@ -114,7 +114,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
               name="dynamic"
               :value="choice.id" 
             />
-            <label :for="choice.id" class="ml-2">{{ choice.name }}</label>
+            <label :for="choice.id" class="ml-2">{{choice.key}} | {{ choice.name }}</label>
           </div>
         </div>
       
@@ -134,7 +134,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
             name="dynamic"
             :value="choice.id" 
           />
-          <label :for="choice.id" class="ml-2">{{ choice.name }}</label>
+          <label :for="choice.id" class="ml-2">{{choice.key}} | {{ choice.name }}</label>
         </div>
       </div>
     
