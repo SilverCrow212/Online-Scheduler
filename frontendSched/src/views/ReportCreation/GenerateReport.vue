@@ -2,7 +2,7 @@
   <div class="card">
     Select Date(Based on Month)
     <div class="mb-4">
-      <Calendar v-model="date" dateFormat="mm/yy" :manualInput="false"/>
+      <Calendar v-model="date" view="month" dateFormat="mm/yy" :manualInput="false"/>
     </div>
     <div>
       <button @click="downloadDocx">Download DOCX</button>
