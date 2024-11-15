@@ -34,7 +34,7 @@ CREATE TABLE `appointment` (
   `enccode` longtext DEFAULT NULL,
   `appointment_date` date DEFAULT NULL,
   `appointment_time` longtext DEFAULT NULL,
-  `status` longtext DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
