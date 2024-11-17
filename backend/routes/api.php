@@ -133,6 +133,9 @@ Route::middleware('auth:sanctum')->group (function (){
     // Print Records
     Route::get('print_records', [PrintablesController::class,'show']);
 
+    // Export Report
+    Route::get('export_report', [PrintablesController::class,'exportReport']);
+
     // UPDATE SECURITY QUESTION
     Route::post('/update-security-question', [UserManagementController::class, 'updateSecurityQuestion']);
 

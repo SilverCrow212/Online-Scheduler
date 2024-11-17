@@ -1,82 +1,58 @@
 <template>
-  <div class="card">
-    Select Date (Based on Month)
+    <div class="card">
+    Select Date(Based on Month)
     <div class="mb-4">
-      <Calendar v-model="date" dateFormat="mm/yy" :manualInput="false"/>
+      <Calendar v-model="date" dateFormat="mm/dd/yy" />
     </div>
     <div>
-      <button @click="downloadXlsx">Download Excel</button>
+      <!-- <button @click="downloadDocx">Download DOCX</button> -->
+      <button @click="getData">Download DOCX</button>
     </div>
-  </div>
+</div>
 </template>
-
 <script setup>
 import { ref } from 'vue';
-import * as XLSX from 'xlsx';  // Import the full XLSX library
-
-const date = ref();
-
+import { fetchDataReport } from '@/api/ApiExportReport';
+import Docxtemplater from 'docxtemplater';
+import PizZip from 'pizzip';
+import { saveAs } from 'file-saver';
 // Sample data to replace in the template
-const templateData = ref({
-  name: 'John Doe',
-  date: '', // This will be dynamically updated based on user selection
-  otherInfo: 'Some additional data'
-});
 
-// Function to handle Excel download
-const downloadXlsx = async () => {
+async function getData (){
+
+  fetchDataReport();
+}
+
+
+const templateData = {
+  name: '1',
+};
+// Function to handle DOCX download
+const downloadDocx = async () => {
   try {
-    // Update templateData with the selected date
-    templateData.value.date = date.value ? date.value : 'October 2024'; // Use actual selected date, fallback to 'October 2024'
-
-    // Force re-fetching by appending a timestamp to the file URL (to prevent cache issues)
-    const timestamp = new Date().getTime();
-    const response = await fetch(`/reports/reports.xlsx?timestamp=${timestamp}`);  // File is in the 'public/reports' folder
+    // Fetch the DOCX template (ensure the template is in your public directory or accessible path)
+    const response = await fetch('/reports/reports.docx'); // Use the correct path, e.g., '/reports/reports.docx' if it's in the public folder
     if (!response.ok) {
       throw new Error('Template not found');
     }
     const arrayBuffer = await response.arrayBuffer();
-
-    // Load the Excel template into a workbook
-    const wb = XLSX.read(arrayBuffer, { type: 'array' });
-
-    // Access the first sheet in the template (assuming you want to modify the first sheet)
-    const ws = wb.Sheets[wb.SheetNames[0]];
-
-    // Get the reference to the range of the sheet
-    const range = XLSX.utils.decode_range(ws['!ref']);
-
-    // Iterate over each cell in the range
-    for (let row = range.s.r; row <= range.e.r; row++) {
-      for (let col = range.s.c; col <= range.e.c; col++) {
-        const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
-        let cell = ws[cellAddress];
-
-        if (cell && typeof cell.v === 'string') {
-          // Save the original style (if any)
-          const originalStyle = cell.s ? { ...cell.s } : null; // Copy style if it exists
-
-          // Replace placeholders with corresponding data
-          cell.v = cell.v.replace(/{name}/g, templateData.value.name)
-                         .replace(/{date}/g, templateData.value.date)
-                         .replace(/{otherInfo}/g, templateData.value.otherInfo);
-
-          // Restore the original style if it was available
-          if (originalStyle) {
-            cell.s = originalStyle;
-          }
-        }
-      }
-    }
-
-    // Use writeFile to directly trigger the download (keeping original formatting)
-    XLSX.writeFile(wb, 'generated_report.xlsx');
+    // Load the template into PizZip
+    const zip = new PizZip(arrayBuffer);
+    // Initialize docxtemplater with the PizZip instance
+    const doc = new Docxtemplater(zip, { paragraphLoop: true, lineBreaks: true });
+    // Set the data to replace in the template
+    doc.setData(templateData);
+    // Render the document (replace the placeholders with the actual data)
+    doc.render();
+    // Generate the final document (output as a binary .docx file)
+    const out = doc.getZip().generate({ type: 'blob' });
+    // Trigger the download
+    saveAs(out, 'generated_document.docx');
   } catch (error) {
-    console.error('Error generating Excel:', error);
+    console.error('Error generating DOCX:', error);
   }
 };
 </script>
-
 <style scoped>
 button {
   padding: 10px;
