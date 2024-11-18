@@ -10,26 +10,12 @@ class PrintablesController extends Controller
     public function show(Request $r)
     {
         // return Holidays::all();
-        $results = DB::table('user_details as ud')
-            ->leftJoin('appointment as ap', 'ud.user_id', '=', 'ap.user_details_id')
-            ->leftJoin('clinical_details as cd', 'ap.id', '=', 'cd.appointment_id')
-            ->where('ud.user_id', 2)
-            ->where('ap.status', 1)
-            ->select(
-                'ud.user_id',
-                'ud.firstname',
-                'ud.lastname',
-                'ap.id as appointment_id',
-                'ap.appointment_date',
-                'ap.appointment_time',
-                'ap.status as appointment_status',
-                'cd.id as clinical_detail_id',
-                'cd.services_rendered',
-                'cd.tooth_number',
-                'cd.medicine_prescribed',
-                'cd.remarks'
-            )
-            ->get();
+        $results = DB::table('user_details')
+        ->join('appointment', 'appointment.user_details_id', '=', 'user_details.user_id')
+        ->join('clinical_details', 'clinical_details.appointment_id', '=', 'appointment.id')
+        ->where('appointment.status', 1)
+        ->select('user_details.*', 'appointment.*', 'clinical_details.*')
+        ->get();
 
             return response()->json([
                 'status' => 'success',
@@ -52,7 +38,7 @@ class PrintablesController extends Controller
         //     PE:patients_examined,
         //     EE:enrollees_examined
         //     PT:patients_treated
-        //     OP:oral_prophylaxis
+        //     OP:oral_prolyphaxis
         //     EX:extraction
         //     PTO:permanent_tooth
         //     TTO:temporary_tooth
@@ -112,6 +98,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -125,6 +112,7 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
@@ -172,6 +160,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -185,6 +174,7 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
@@ -233,6 +223,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -246,11 +237,12 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
             //until here not yet placed
-            'oral_prophylaxis' =>
+            'OP' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -294,6 +286,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -307,10 +300,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'extraction' =>
+            'EX' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -354,6 +348,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -367,10 +362,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'permanent_tooth'=>
+            'PTO'=>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -414,6 +410,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -427,10 +424,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'temporary_tooth' =>
+            'TTO' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -474,6 +472,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -487,10 +486,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'filling_restoration' =>
+            'FR' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -534,6 +534,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -547,10 +548,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'tooth_filled_comp'=>
+            'TFC'=>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -594,6 +596,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -607,10 +610,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'tooth_filled_gic' =>
+            'TFG' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -654,6 +658,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -667,10 +672,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'sealant'=>
+            'SE'=>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -714,6 +720,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -727,10 +734,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'tooth_applied_sealant' =>
+            'TAS' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -774,6 +782,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -787,10 +796,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'other_treatment'=>
+            'OT'=>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -834,6 +844,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -847,10 +858,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'oral_health_instruction' =>
+            'OHI' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -894,6 +906,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -907,10 +920,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'patients_referred' =>
+            'PR' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -954,6 +968,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -967,10 +982,11 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'issued_certificate' =>
+            'IC' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -1014,6 +1030,7 @@ class PrintablesController extends Controller
                     'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
+                    'DM0'=>0,
                     'DM5'=>0,
                     'DM13'=>0,
                     'DM18'=>0,
@@ -1027,6 +1044,7 @@ class PrintablesController extends Controller
                     'DF25'=>0,
                     'DF45'=>0,
                     'DF55'=>0,
+                    'DF66'=>0,
                     'DFT'=>0,
                     'DT'=>0,
                 ],
@@ -1039,649 +1057,649 @@ class PrintablesController extends Controller
                     // start of oral prophylaxis
                     if($result->age>=18 && $result->age <=24 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['SM18'] +=1;
-                            $data['oral_prophylaxis']['SMT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['SM18'] +=1;
+                            $data['OP']['SMT'] +=1;
+                            $data['OP']['ST'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['SF18'] +=1;
-                            $data['oral_prophylaxis']['SFT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['SF18'] +=1;
+                            $data['OP']['SFT'] +=1;
+                            $data['OP']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['SM25'] +=1;
-                            $data['oral_prophylaxis']['SMT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['SM25'] +=1;
+                            $data['OP']['SMT'] +=1;
+                            $data['OP']['ST'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['SF25'] +=1;
-                            $data['oral_prophylaxis']['SFT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['SF25'] +=1;
+                            $data['OP']['SFT'] +=1;
+                            $data['OP']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['SM35'] +=1;
-                            $data['oral_prophylaxis']['SMT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['SM35'] +=1;
+                            $data['OP']['SMT'] +=1;
+                            $data['OP']['ST'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['SF35'] +=1;
-                            $data['oral_prophylaxis']['SFT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['SF35'] +=1;
+                            $data['OP']['SFT'] +=1;
+                            $data['OP']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['SM45'] +=1;
-                            $data['oral_prophylaxis']['SMT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['SM45'] +=1;
+                            $data['OP']['SMT'] +=1;
+                            $data['OP']['ST'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['SF45'] +=1;
-                            $data['oral_prophylaxis']['SFT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['SF45'] +=1;
+                            $data['OP']['SFT'] +=1;
+                            $data['OP']['ST'] +=1;
                         }
                     }
                     ///end of oral prophylaxis
-                    // start of extraction
+                    // start of EX
                     if($result->age>=18 && $result->age <=24 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['SM18'] +=1;
-                            $data['extraction']['SMT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['SM18'] +=1;
+                            $data['EX']['SMT'] +=1;
+                            $data['EX']['ST'] +=1;
                         }
                         else{
-                            $data['extraction']['SF18'] +=1;
-                            $data['extraction']['SFT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['SF18'] +=1;
+                            $data['EX']['SFT'] +=1;
+                            $data['EX']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['SM25'] +=1;
-                            $data['extraction']['SMT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['SM25'] +=1;
+                            $data['EX']['SMT'] +=1;
+                            $data['EX']['ST'] +=1;
                         }
                         else{
-                            $data['extraction']['SF25'] +=1;
-                            $data['extraction']['SFT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['SF25'] +=1;
+                            $data['EX']['SFT'] +=1;
+                            $data['EX']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['SM35'] +=1;
-                            $data['extraction']['SMT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['SM35'] +=1;
+                            $data['EX']['SMT'] +=1;
+                            $data['EX']['ST'] +=1;
                         }
                         else{
-                            $data['extraction']['SF35'] +=1;
-                            $data['extraction']['SFT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['SF35'] +=1;
+                            $data['EX']['SFT'] +=1;
+                            $data['EX']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['SM45'] +=1;
-                            $data['extraction']['SMT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['SM45'] +=1;
+                            $data['EX']['SMT'] +=1;
+                            $data['EX']['ST'] +=1;
                         }
                         else{
-                            $data['extraction']['SF45'] +=1;
-                            $data['extraction']['SFT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['SF45'] +=1;
+                            $data['EX']['SFT'] +=1;
+                            $data['EX']['ST'] +=1;
                         }
                     }
-                    ///end of extraction
+                    ///end of EX
                     // start of permanent tooth
                     if($result->age>=18 && $result->age <=24 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['SM18'] +=1;
-                            $data['permanent_tooth']['SMT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['SM18'] +=1;
+                            $data['PTO']['SMT'] +=1;
+                            $data['PTO']['ST'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['SF18'] +=1;
-                            $data['permanent_tooth']['SFT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['SF18'] +=1;
+                            $data['PTO']['SFT'] +=1;
+                            $data['PTO']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['SM25'] +=1;
-                            $data['permanent_tooth']['SMT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['SM25'] +=1;
+                            $data['PTO']['SMT'] +=1;
+                            $data['PTO']['ST'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['SF25'] +=1;
-                            $data['permanent_tooth']['SFT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['SF25'] +=1;
+                            $data['PTO']['SFT'] +=1;
+                            $data['PTO']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['SM35'] +=1;
-                            $data['permanent_tooth']['SMT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['SM35'] +=1;
+                            $data['PTO']['SMT'] +=1;
+                            $data['PTO']['ST'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['SF35'] +=1;
-                            $data['permanent_tooth']['SFT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['SF35'] +=1;
+                            $data['PTO']['SFT'] +=1;
+                            $data['PTO']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['SM45'] +=1;
-                            $data['permanent_tooth']['SMT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['SM45'] +=1;
+                            $data['PTO']['SMT'] +=1;
+                            $data['PTO']['ST'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['SF45'] +=1;
-                            $data['permanent_tooth']['SFT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['SF45'] +=1;
+                            $data['PTO']['SFT'] +=1;
+                            $data['PTO']['ST'] +=1;
                         }
                     }
                     ///end of permanent tooth
                     // start of temporary tooth
                     if($result->age>=18 && $result->age <=24 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['SM18'] +=1;
-                            $data['temporary_tooth']['SMT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['SM18'] +=1;
+                            $data['TTO']['SMT'] +=1;
+                            $data['TTO']['ST'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['SF18'] +=1;
-                            $data['temporary_tooth']['SFT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['SF18'] +=1;
+                            $data['TTO']['SFT'] +=1;
+                            $data['TTO']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['SM25'] +=1;
-                            $data['temporary_tooth']['SMT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['SM25'] +=1;
+                            $data['TTO']['SMT'] +=1;
+                            $data['TTO']['ST'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['SF25'] +=1;
-                            $data['temporary_tooth']['SFT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['SF25'] +=1;
+                            $data['TTO']['SFT'] +=1;
+                            $data['TTO']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['SM35'] +=1;
-                            $data['temporary_tooth']['SMT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['SM35'] +=1;
+                            $data['TTO']['SMT'] +=1;
+                            $data['TTO']['ST'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['SF35'] +=1;
-                            $data['temporary_tooth']['SFT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['SF35'] +=1;
+                            $data['TTO']['SFT'] +=1;
+                            $data['TTO']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['SM45'] +=1;
-                            $data['temporary_tooth']['SMT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['SM45'] +=1;
+                            $data['TTO']['SMT'] +=1;
+                            $data['TTO']['ST'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['SF45'] +=1;
-                            $data['temporary_tooth']['SFT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['SF45'] +=1;
+                            $data['TTO']['SFT'] +=1;
+                            $data['TTO']['ST'] +=1;
                         }
                     }
                     ///end of temporary tooth
                     // start of filling/restoration
                     if($result->age>=18 && $result->age <=24 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['SM18'] +=1;
-                            $data['filling_restoration']['SMT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['SM18'] +=1;
+                            $data['FR']['SMT'] +=1;
+                            $data['FR']['ST'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['SF18'] +=1;
-                            $data['filling_restoration']['SFT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['SF18'] +=1;
+                            $data['FR']['SFT'] +=1;
+                            $data['FR']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['SM25'] +=1;
-                            $data['filling_restoration']['SMT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['SM25'] +=1;
+                            $data['FR']['SMT'] +=1;
+                            $data['FR']['ST'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['SF25'] +=1;
-                            $data['filling_restoration']['SFT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['SF25'] +=1;
+                            $data['FR']['SFT'] +=1;
+                            $data['FR']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['SM35'] +=1;
-                            $data['filling_restoration']['SMT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['SM35'] +=1;
+                            $data['FR']['SMT'] +=1;
+                            $data['FR']['ST'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['SF35'] +=1;
-                            $data['filling_restoration']['SFT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['SF35'] +=1;
+                            $data['FR']['SFT'] +=1;
+                            $data['FR']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['SM45'] +=1;
-                            $data['filling_restoration']['SMT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['SM45'] +=1;
+                            $data['FR']['SMT'] +=1;
+                            $data['FR']['ST'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['SF45'] +=1;
-                            $data['filling_restoration']['SFT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['SF45'] +=1;
+                            $data['FR']['SFT'] +=1;
+                            $data['FR']['ST'] +=1;
                         }
                     }
                     ///end of filling/restoration
                     // start of teeth filled with comp
                     if($result->age>=18 && $result->age <=24 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['SM18'] +=1;
-                            $data['tooth_filled_comp']['SMT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['SM18'] +=1;
+                            $data['TFC']['SMT'] +=1;
+                            $data['TFC']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['SF18'] +=1;
-                            $data['tooth_filled_comp']['SFT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['SF18'] +=1;
+                            $data['TFC']['SFT'] +=1;
+                            $data['TFC']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['SM25'] +=1;
-                            $data['tooth_filled_comp']['SMT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['SM25'] +=1;
+                            $data['TFC']['SMT'] +=1;
+                            $data['TFC']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['SF25'] +=1;
-                            $data['tooth_filled_comp']['SFT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['SF25'] +=1;
+                            $data['TFC']['SFT'] +=1;
+                            $data['TFC']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['SM35'] +=1;
-                            $data['tooth_filled_comp']['SMT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['SM35'] +=1;
+                            $data['TFC']['SMT'] +=1;
+                            $data['TFC']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['SF35'] +=1;
-                            $data['tooth_filled_comp']['SFT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['SF35'] +=1;
+                            $data['TFC']['SFT'] +=1;
+                            $data['TFC']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['SM45'] +=1;
-                            $data['tooth_filled_comp']['SMT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['SM45'] +=1;
+                            $data['TFC']['SMT'] +=1;
+                            $data['TFC']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['SF45'] +=1;
-                            $data['tooth_filled_comp']['SFT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['SF45'] +=1;
+                            $data['TFC']['SFT'] +=1;
+                            $data['TFC']['ST'] +=1;
                         }
                     }
                     ///end of teeth filled with comp
                     // start of teeth filled with gic
                     if($result->age>=18 && $result->age <=24 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['SM18'] +=1;
-                            $data['tooth_filled_gic']['SMT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['SM18'] +=1;
+                            $data['TFG']['SMT'] +=1;
+                            $data['TFG']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['SF18'] +=1;
-                            $data['tooth_filled_gic']['SFT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['SF18'] +=1;
+                            $data['TFG']['SFT'] +=1;
+                            $data['TFG']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['SM25'] +=1;
-                            $data['tooth_filled_gic']['SMT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['SM25'] +=1;
+                            $data['TFG']['SMT'] +=1;
+                            $data['TFG']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['SF25'] +=1;
-                            $data['tooth_filled_gic']['SFT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['SF25'] +=1;
+                            $data['TFG']['SFT'] +=1;
+                            $data['TFG']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['SM35'] +=1;
-                            $data['tooth_filled_gic']['SMT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['SM35'] +=1;
+                            $data['TFG']['SMT'] +=1;
+                            $data['TFG']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['SF35'] +=1;
-                            $data['tooth_filled_gic']['SFT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['SF35'] +=1;
+                            $data['TFG']['SFT'] +=1;
+                            $data['TFG']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['SM45'] +=1;
-                            $data['tooth_filled_gic']['SMT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['SM45'] +=1;
+                            $data['TFG']['SMT'] +=1;
+                            $data['TFG']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['SF45'] +=1;
-                            $data['tooth_filled_gic']['SFT'] +=1;
+                            $data['TFG']['SF45'] +=1;
+                            $data['TFG']['SFT'] +=1;
                         }
                     }
                     ///end of teeth filled with gic
-                    // start of Sealant
+                    // start of SE
                     if($result->age>=18 && $result->age <=24 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['SM18'] +=1;
-                            $data['sealant']['SMT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['SM18'] +=1;
+                            $data['SE']['SMT'] +=1;
+                            $data['SE']['ST'] +=1;
                         }
                         else{
-                            $data['sealant']['SF18'] +=1;
-                            $data['sealant']['SFT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['SF18'] +=1;
+                            $data['SE']['SFT'] +=1;
+                            $data['SE']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['SM25'] +=1;
-                            $data['sealant']['SMT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['SM25'] +=1;
+                            $data['SE']['SMT'] +=1;
+                            $data['SE']['ST'] +=1;
                         }
                         else{
-                            $data['sealant']['SF25'] +=1;
-                            $data['sealant']['SFT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['SF25'] +=1;
+                            $data['SE']['SFT'] +=1;
+                            $data['SE']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['SM35'] +=1;
-                            $data['sealant']['SMT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['SM35'] +=1;
+                            $data['SE']['SMT'] +=1;
+                            $data['SE']['ST'] +=1;
                         }
                         else{
-                            $data['sealant']['SF35'] +=1;
-                            $data['sealant']['SFT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['SF35'] +=1;
+                            $data['SE']['SFT'] +=1;
+                            $data['SE']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['SM45'] +=1;
-                            $data['sealant']['SMT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['SM45'] +=1;
+                            $data['SE']['SMT'] +=1;
+                            $data['SE']['ST'] +=1;
                         }
                         else{
-                            $data['sealant']['SF45'] +=1;
-                            $data['sealant']['SFT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['SF45'] +=1;
+                            $data['SE']['SFT'] +=1;
+                            $data['SE']['ST'] +=1;
                         }
                     }
-                    ///end of Sealant
-                    // start of Tooth Applied w/ sealant
+                    ///end of SE
+                    // start of Tooth Applied w/ SE
                     if($result->age>=18 && $result->age <=24 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['SM18'] +=1;
-                            $data['tooth_applied_sealant']['SMT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['SM18'] +=1;
+                            $data['TAS']['SMT'] +=1;
+                            $data['TAS']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['SF18'] +=1;
-                            $data['tooth_applied_sealant']['SFT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['SF18'] +=1;
+                            $data['TAS']['SFT'] +=1;
+                            $data['TAS']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['SM25'] +=1;
-                            $data['tooth_applied_sealant']['SMT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['SM25'] +=1;
+                            $data['TAS']['SMT'] +=1;
+                            $data['TAS']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['SF25'] +=1;
-                            $data['tooth_applied_sealant']['SFT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['SF25'] +=1;
+                            $data['TAS']['SFT'] +=1;
+                            $data['TAS']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['SM35'] +=1;
-                            $data['tooth_applied_sealant']['SMT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['SM35'] +=1;
+                            $data['TAS']['SMT'] +=1;
+                            $data['TAS']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['SF35'] +=1;
-                            $data['tooth_applied_sealant']['SFT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['SF35'] +=1;
+                            $data['TAS']['SFT'] +=1;
+                            $data['TAS']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['SM45'] +=1;
-                            $data['tooth_applied_sealant']['SMT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['SM45'] +=1;
+                            $data['TAS']['SMT'] +=1;
+                            $data['TAS']['ST'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['SF45'] +=1;
-                            $data['tooth_applied_sealant']['SFT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['SF45'] +=1;
+                            $data['TAS']['SFT'] +=1;
+                            $data['TAS']['ST'] +=1;
                         }
                     }
-                    ///end of Tooth Applied w/ sealant
+                    ///end of Tooth Applied w/ SE
                     // start of Other Treatment
                     if($result->age>=18 && $result->age <=24 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['SM18'] +=1;
-                            $data['other_treatment']['SMT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['SM18'] +=1;
+                            $data['OT']['SMT'] +=1;
+                            $data['OT']['ST'] +=1;
                         }
                         else{
-                            $data['other_treatment']['SF18'] +=1;
-                            $data['other_treatment']['SFT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['SF18'] +=1;
+                            $data['OT']['SFT'] +=1;
+                            $data['OT']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['SM25'] +=1;
-                            $data['other_treatment']['SMT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['SM25'] +=1;
+                            $data['OT']['SMT'] +=1;
+                            $data['OT']['ST'] +=1;
                         }
                         else{
-                            $data['other_treatment']['SF25'] +=1;
-                            $data['other_treatment']['SFT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['SF25'] +=1;
+                            $data['OT']['SFT'] +=1;
+                            $data['OT']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['SM35'] +=1;
-                            $data['other_treatment']['SMT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['SM35'] +=1;
+                            $data['OT']['SMT'] +=1;
+                            $data['OT']['ST'] +=1;
                         }
                         else{
-                            $data['other_treatment']['SF35'] +=1;
-                            $data['other_treatment']['SFT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['SF35'] +=1;
+                            $data['OT']['SFT'] +=1;
+                            $data['OT']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['SM45'] +=1;
-                            $data['other_treatment']['SMT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['SM45'] +=1;
+                            $data['OT']['SMT'] +=1;
+                            $data['OT']['ST'] +=1;
                         }
                         else{
-                            $data['other_treatment']['SF45'] +=1;
-                            $data['other_treatment']['SFT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['SF45'] +=1;
+                            $data['OT']['SFT'] +=1;
+                            $data['OT']['ST'] +=1;
                         }
                     }
                     ///end of Other Treatment
                     // start of Oral Health Instruction
                     if($result->age>=18 && $result->age <=24 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['SM18'] +=1;
-                            $data['oral_health_instruction']['SMT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['SM18'] +=1;
+                            $data['OHI']['SMT'] +=1;
+                            $data['OHI']['ST'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['SF18'] +=1;
-                            $data['oral_health_instruction']['SFT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['SF18'] +=1;
+                            $data['OHI']['SFT'] +=1;
+                            $data['OHI']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['SM25'] +=1;
-                            $data['oral_health_instruction']['SMT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['SM25'] +=1;
+                            $data['OHI']['SMT'] +=1;
+                            $data['OHI']['ST'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['SF25'] +=1;
-                            $data['oral_health_instruction']['SFT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['SF25'] +=1;
+                            $data['OHI']['SFT'] +=1;
+                            $data['OHI']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['SM35'] +=1;
-                            $data['oral_health_instruction']['SMT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['SM35'] +=1;
+                            $data['OHI']['SMT'] +=1;
+                            $data['OHI']['ST'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['SF35'] +=1;
-                            $data['oral_health_instruction']['SFT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['SF35'] +=1;
+                            $data['OHI']['SFT'] +=1;
+                            $data['OHI']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['SM45'] +=1;
-                            $data['oral_health_instruction']['SMT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['SM45'] +=1;
+                            $data['OHI']['SMT'] +=1;
+                            $data['OHI']['ST'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['SF45'] +=1;
-                            $data['oral_health_instruction']['SFT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['SF45'] +=1;
+                            $data['OHI']['SFT'] +=1;
+                            $data['OHI']['ST'] +=1;
                         }
                     }
                     ///end of Oral Health Instruction
                     // start of Referral
                     if($result->age>=18 && $result->age <=24 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['SM18'] +=1;
-                            $data['patients_referred']['SMT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['SM18'] +=1;
+                            $data['PR']['SMT'] +=1;
+                            $data['PR']['ST'] +=1;
                         }
                         else{
-                            $data['patients_referred']['SF18'] +=1;
-                            $data['patients_referred']['SFT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['SF18'] +=1;
+                            $data['PR']['SFT'] +=1;
+                            $data['PR']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['SM25'] +=1;
-                            $data['patients_referred']['SMT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['SM25'] +=1;
+                            $data['PR']['SMT'] +=1;
+                            $data['PR']['ST'] +=1;
                         }
                         else{
-                            $data['patients_referred']['SF25'] +=1;
-                            $data['patients_referred']['SFT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['SF25'] +=1;
+                            $data['PR']['SFT'] +=1;
+                            $data['PR']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['SM35'] +=1;
-                            $data['patients_referred']['SMT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['SM35'] +=1;
+                            $data['PR']['SMT'] +=1;
+                            $data['PR']['ST'] +=1;
                         }
                         else{
-                            $data['patients_referred']['SF35'] +=1;
-                            $data['patients_referred']['SFT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['SF35'] +=1;
+                            $data['PR']['SFT'] +=1;
+                            $data['PR']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['SM45'] +=1;
-                            $data['patients_referred']['SMT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['SM45'] +=1;
+                            $data['PR']['SMT'] +=1;
+                            $data['PR']['ST'] +=1;
                         }
                         else{
-                            $data['patients_referred']['SF45'] +=1;
-                            $data['patients_referred']['SFT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['SF45'] +=1;
+                            $data['PR']['SFT'] +=1;
+                            $data['PR']['ST'] +=1;
                         }
                     }
                     ///end of Referral
                     // start of Issuance of Med Cert
                     if($result->age>=18 && $result->age <=24 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['SM18'] +=1;
-                            $data['issued_certificate']['SMT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['SM18'] +=1;
+                            $data['IC']['SMT'] +=1;
+                            $data['IC']['ST'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['SF18'] +=1;
-                            $data['issued_certificate']['SFT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['SF18'] +=1;
+                            $data['IC']['SFT'] +=1;
+                            $data['IC']['ST'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['SM25'] +=1;
-                            $data['issued_certificate']['SMT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['SM25'] +=1;
+                            $data['IC']['SMT'] +=1;
+                            $data['IC']['ST'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['SF25'] +=1;
-                            $data['issued_certificate']['SFT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['SF25'] +=1;
+                            $data['IC']['SFT'] +=1;
+                            $data['IC']['ST'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['SM35'] +=1;
-                            $data['issued_certificate']['SMT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['SM35'] +=1;
+                            $data['IC']['SMT'] +=1;
+                            $data['IC']['ST'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['SF35'] +=1;
-                            $data['issued_certificate']['SFT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['SF35'] +=1;
+                            $data['IC']['SFT'] +=1;
+                            $data['IC']['ST'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['SM45'] +=1;
-                            $data['issued_certificate']['SMT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['SM45'] +=1;
+                            $data['IC']['SMT'] +=1;
+                            $data['IC']['ST'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['SF45'] +=1;
-                            $data['issued_certificate']['SFT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['SF45'] +=1;
+                            $data['IC']['SFT'] +=1;
+                            $data['IC']['ST'] +=1;
                         }
                     }
                     ///end of Issuance of Med Cert
@@ -1692,962 +1710,962 @@ class PrintablesController extends Controller
                     // start of oral prophylaxis
                     if($result->age>=13 && $result->age <=17 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['CM13'] +=1;
-                            $data['oral_prophylaxis']['CMT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CM13'] +=1;
+                            $data['OP']['CMT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['CF13'] +=1;
-                            $data['oral_prophylaxis']['CFT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CF13'] +=1;
+                            $data['OP']['CFT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['CM18'] +=1;
-                            $data['oral_prophylaxis']['CMT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CM18'] +=1;
+                            $data['OP']['CMT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['CF18'] +=1;
-                            $data['oral_prophylaxis']['CFT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CF18'] +=1;
+                            $data['OP']['CFT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['CM25'] +=1;
-                            $data['oral_prophylaxis']['CMT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CM25'] +=1;
+                            $data['OP']['CMT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['CF25'] +=1;
-                            $data['oral_prophylaxis']['CFT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CF25'] +=1;
+                            $data['OP']['CFT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['CM35'] +=1;
-                            $data['oral_prophylaxis']['CMT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CM35'] +=1;
+                            $data['OP']['CMT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['CF35'] +=1;
-                            $data['oral_prophylaxis']['CFT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CF35'] +=1;
+                            $data['OP']['CFT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['CM45'] +=1;
-                            $data['oral_prophylaxis']['CMT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CM45'] +=1;
+                            $data['OP']['CMT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['CF45'] +=1;
-                            $data['oral_prophylaxis']['CFT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CF45'] +=1;
+                            $data['OP']['CFT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['CM55'] +=1;
-                            $data['oral_prophylaxis']['CMT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CM55'] +=1;
+                            $data['OP']['CMT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['CF55'] +=1;
-                            $data['oral_prophylaxis']['CFT'] +=1;
-                            $data['oral_prophylaxis']['CT'] +=1;
+                            $data['OP']['CF55'] +=1;
+                            $data['OP']['CFT'] +=1;
+                            $data['OP']['CT'] +=1;
                         }
                     }
                     // end of oral prophylaxis
-                    // start of extraction
+                    // start of EX
                     if($result->age>=13 && $result->age <=17 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['CM13'] +=1;
-                            $data['extraction']['CMT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CM13'] +=1;
+                            $data['EX']['CMT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                         else{
-                            $data['extraction']['CF13'] +=1;
-                            $data['extraction']['CFT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CF13'] +=1;
+                            $data['EX']['CFT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['CM18'] +=1;
-                            $data['extraction']['CMT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CM18'] +=1;
+                            $data['EX']['CMT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                         else{
-                            $data['extraction']['CF18'] +=1;
-                            $data['extraction']['CFT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CF18'] +=1;
+                            $data['EX']['CFT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['CM25'] +=1;
-                            $data['extraction']['CMT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CM25'] +=1;
+                            $data['EX']['CMT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                         else{
-                            $data['extraction']['CF25'] +=1;
-                            $data['extraction']['CFT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CF25'] +=1;
+                            $data['EX']['CFT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['CM35'] +=1;
-                            $data['extraction']['CMT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CM35'] +=1;
+                            $data['EX']['CMT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                         else{
-                            $data['extraction']['CF35'] +=1;
-                            $data['extraction']['CFT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CF35'] +=1;
+                            $data['EX']['CFT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['CM45'] +=1;
-                            $data['extraction']['CMT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CM45'] +=1;
+                            $data['EX']['CMT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                         else{
-                            $data['extraction']['CF45'] +=1;
-                            $data['extraction']['CFT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CF45'] +=1;
+                            $data['EX']['CFT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['CM55'] +=1;
-                            $data['extraction']['CMT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CM55'] +=1;
+                            $data['EX']['CMT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                         else{
-                            $data['extraction']['CF55'] +=1;
-                            $data['extraction']['CFT'] +=1;
-                            $data['extraction']['CT'] +=1;
+                            $data['EX']['CF55'] +=1;
+                            $data['EX']['CFT'] +=1;
+                            $data['EX']['CT'] +=1;
                         }
                     }
-                    // end of extraction
+                    // end of EX
                     // start of Permanent Tooth
                     if($result->age>=13 && $result->age <=17 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['CM13'] +=1;
-                            $data['permanent_tooth']['CMT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CM13'] +=1;
+                            $data['PTO']['CMT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['CF13'] +=1;
-                            $data['permanent_tooth']['CFT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CF13'] +=1;
+                            $data['PTO']['CFT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['CM18'] +=1;
-                            $data['permanent_tooth']['CMT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CM18'] +=1;
+                            $data['PTO']['CMT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['CF18'] +=1;
-                            $data['permanent_tooth']['CFT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CF18'] +=1;
+                            $data['PTO']['CFT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['CM25'] +=1;
-                            $data['permanent_tooth']['CMT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CM25'] +=1;
+                            $data['PTO']['CMT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['CF25'] +=1;
-                            $data['permanent_tooth']['CFT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CF25'] +=1;
+                            $data['PTO']['CFT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['CM35'] +=1;
-                            $data['permanent_tooth']['CMT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CM35'] +=1;
+                            $data['PTO']['CMT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['CF35'] +=1;
-                            $data['permanent_tooth']['CFT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CF35'] +=1;
+                            $data['PTO']['CFT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['CM45'] +=1;
-                            $data['permanent_tooth']['CMT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CM45'] +=1;
+                            $data['PTO']['CMT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['CF45'] +=1;
-                            $data['permanent_tooth']['CFT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CF45'] +=1;
+                            $data['PTO']['CFT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['CM55'] +=1;
-                            $data['permanent_tooth']['CMT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CM55'] +=1;
+                            $data['PTO']['CMT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['CF55'] +=1;
-                            $data['permanent_tooth']['CFT'] +=1;
-                            $data['permanent_tooth']['CT'] +=1;
+                            $data['PTO']['CF55'] +=1;
+                            $data['PTO']['CFT'] +=1;
+                            $data['PTO']['CT'] +=1;
                         }
                     }
                     // end of Permanent Tooth
                     // start of Temporary Tooth
                     if($result->age>=13 && $result->age <=17 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['CM13'] +=1;
-                            $data['temporary_tooth']['CMT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CM13'] +=1;
+                            $data['TTO']['CMT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['CF13'] +=1;
-                            $data['temporary_tooth']['CFT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CF13'] +=1;
+                            $data['TTO']['CFT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['CM18'] +=1;
-                            $data['temporary_tooth']['CMT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CM18'] +=1;
+                            $data['TTO']['CMT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['CF18'] +=1;
-                            $data['temporary_tooth']['CFT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CF18'] +=1;
+                            $data['TTO']['CFT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['CM25'] +=1;
-                            $data['temporary_tooth']['CMT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CM25'] +=1;
+                            $data['TTO']['CMT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['CF25'] +=1;
-                            $data['temporary_tooth']['CFT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CF25'] +=1;
+                            $data['TTO']['CFT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['CM35'] +=1;
-                            $data['temporary_tooth']['CMT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CM35'] +=1;
+                            $data['TTO']['CMT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['CF35'] +=1;
-                            $data['temporary_tooth']['CFT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CF35'] +=1;
+                            $data['TTO']['CFT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['CM45'] +=1;
-                            $data['temporary_tooth']['CMT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CM45'] +=1;
+                            $data['TTO']['CMT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['CF45'] +=1;
-                            $data['temporary_tooth']['CFT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CF45'] +=1;
+                            $data['TTO']['CFT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['CM55'] +=1;
-                            $data['temporary_tooth']['CMT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CM55'] +=1;
+                            $data['TTO']['CMT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['CF55'] +=1;
-                            $data['temporary_tooth']['CFT'] +=1;
-                            $data['temporary_tooth']['CT'] +=1;
+                            $data['TTO']['CF55'] +=1;
+                            $data['TTO']['CFT'] +=1;
+                            $data['TTO']['CT'] +=1;
                         }
                     }
                     // end of Temporary Tooth
                     // start of Filling/Restoration
                     if($result->age>=13 && $result->age <=17 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['CM13'] +=1;
-                            $data['filling_restoration']['CMT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CM13'] +=1;
+                            $data['FR']['CMT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['CF13'] +=1;
-                            $data['filling_restoration']['CFT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CF13'] +=1;
+                            $data['FR']['CFT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['CM18'] +=1;
-                            $data['filling_restoration']['CMT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CM18'] +=1;
+                            $data['FR']['CMT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['CF18'] +=1;
-                            $data['filling_restoration']['CFT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CF18'] +=1;
+                            $data['FR']['CFT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['CM25'] +=1;
-                            $data['filling_restoration']['CMT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CM25'] +=1;
+                            $data['FR']['CMT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['CF25'] +=1;
-                            $data['filling_restoration']['CFT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CF25'] +=1;
+                            $data['FR']['CFT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['CM35'] +=1;
-                            $data['filling_restoration']['CMT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CM35'] +=1;
+                            $data['FR']['CMT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['CF35'] +=1;
-                            $data['filling_restoration']['CFT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CF35'] +=1;
+                            $data['FR']['CFT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['CM45'] +=1;
-                            $data['filling_restoration']['CMT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CM45'] +=1;
+                            $data['FR']['CMT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['CF45'] +=1;
-                            $data['filling_restoration']['CFT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CF45'] +=1;
+                            $data['FR']['CFT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['CM55'] +=1;
-                            $data['filling_restoration']['CMT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CM55'] +=1;
+                            $data['FR']['CMT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['CF55'] +=1;
-                            $data['filling_restoration']['CFT'] +=1;
-                            $data['filling_restoration']['CT'] +=1;
+                            $data['FR']['CF55'] +=1;
+                            $data['FR']['CFT'] +=1;
+                            $data['FR']['CT'] +=1;
                         }
                     }
                     // end of Filling/Restoration
                     // start of Tooth filled w/ Comp
                     if($result->age>=13 && $result->age <=17 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['CM13'] +=1;
-                            $data['tooth_filled_comp']['CMT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CM13'] +=1;
+                            $data['TFC']['CMT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['CF13'] +=1;
-                            $data['tooth_filled_comp']['CFT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CF13'] +=1;
+                            $data['TFC']['CFT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['CM18'] +=1;
-                            $data['tooth_filled_comp']['CMT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CM18'] +=1;
+                            $data['TFC']['CMT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['CF18'] +=1;
-                            $data['tooth_filled_comp']['CFT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CF18'] +=1;
+                            $data['TFC']['CFT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['CM25'] +=1;
-                            $data['tooth_filled_comp']['CMT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CM25'] +=1;
+                            $data['TFC']['CMT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['CF25'] +=1;
-                            $data['tooth_filled_comp']['CFT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CF25'] +=1;
+                            $data['TFC']['CFT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['CM35'] +=1;
-                            $data['tooth_filled_comp']['CMT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CM35'] +=1;
+                            $data['TFC']['CMT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['CF35'] +=1;
-                            $data['tooth_filled_comp']['CFT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CF35'] +=1;
+                            $data['TFC']['CFT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['CM45'] +=1;
-                            $data['tooth_filled_comp']['CMT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CM45'] +=1;
+                            $data['TFC']['CMT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['CF45'] +=1;
-                            $data['tooth_filled_comp']['CFT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CF45'] +=1;
+                            $data['TFC']['CFT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['CM55'] +=1;
-                            $data['tooth_filled_comp']['CMT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CM55'] +=1;
+                            $data['TFC']['CMT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['CF55'] +=1;
-                            $data['tooth_filled_comp']['CFT'] +=1;
-                            $data['tooth_filled_comp']['CT'] +=1;
+                            $data['TFC']['CF55'] +=1;
+                            $data['TFC']['CFT'] +=1;
+                            $data['TFC']['CT'] +=1;
                         }
                     }
                     // end of Tooth filled w/ Comp
                     // start of Tooth filled w/ GIC
                     if($result->age>=13 && $result->age <=17 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['CM13'] +=1;
-                            $data['tooth_filled_gic']['CMT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CM13'] +=1;
+                            $data['TFG']['CMT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['CF13'] +=1;
-                            $data['tooth_filled_gic']['CFT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CF13'] +=1;
+                            $data['TFG']['CFT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['CM18'] +=1;
-                            $data['tooth_filled_gic']['CMT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CM18'] +=1;
+                            $data['TFG']['CMT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['CF18'] +=1;
-                            $data['tooth_filled_gic']['CFT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CF18'] +=1;
+                            $data['TFG']['CFT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['CM25'] +=1;
-                            $data['tooth_filled_gic']['CMT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CM25'] +=1;
+                            $data['TFG']['CMT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['CF25'] +=1;
-                            $data['tooth_filled_gic']['CFT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CF25'] +=1;
+                            $data['TFG']['CFT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['CM35'] +=1;
-                            $data['tooth_filled_gic']['CMT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CM35'] +=1;
+                            $data['TFG']['CMT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['CF35'] +=1;
-                            $data['tooth_filled_gic']['CFT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CF35'] +=1;
+                            $data['TFG']['CFT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['CM45'] +=1;
-                            $data['tooth_filled_gic']['CMT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CM45'] +=1;
+                            $data['TFG']['CMT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['CF45'] +=1;
-                            $data['tooth_filled_gic']['CFT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CF45'] +=1;
+                            $data['TFG']['CFT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['CM55'] +=1;
-                            $data['tooth_filled_gic']['CMT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CM55'] +=1;
+                            $data['TFG']['CMT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['CF55'] +=1;
-                            $data['tooth_filled_gic']['CFT'] +=1;
-                            $data['tooth_filled_gic']['CT'] +=1;
+                            $data['TFG']['CF55'] +=1;
+                            $data['TFG']['CFT'] +=1;
+                            $data['TFG']['CT'] +=1;
                         }
                     }
                     // end of Tooth filled w/ GIC
-                    // start of sealant
+                    // start of SE
                     if($result->age>=13 && $result->age <=17 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['CM13'] +=1;
-                            $data['sealant']['CMT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CM13'] +=1;
+                            $data['SE']['CMT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                         else{
-                            $data['sealant']['CF13'] +=1;
-                            $data['sealant']['CFT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CF13'] +=1;
+                            $data['SE']['CFT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['CM18'] +=1;
-                            $data['sealant']['CMT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CM18'] +=1;
+                            $data['SE']['CMT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                         else{
-                            $data['sealant']['CF18'] +=1;
-                            $data['sealant']['CFT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CF18'] +=1;
+                            $data['SE']['CFT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['CM25'] +=1;
-                            $data['sealant']['CMT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CM25'] +=1;
+                            $data['SE']['CMT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                         else{
-                            $data['sealant']['CF25'] +=1;
-                            $data['sealant']['CFT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CF25'] +=1;
+                            $data['SE']['CFT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['CM35'] +=1;
-                            $data['sealant']['CMT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CM35'] +=1;
+                            $data['SE']['CMT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                         else{
-                            $data['sealant']['CF35'] +=1;
-                            $data['sealant']['CFT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CF35'] +=1;
+                            $data['SE']['CFT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['CM45'] +=1;
-                            $data['sealant']['CMT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CM45'] +=1;
+                            $data['SE']['CMT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                         else{
-                            $data['sealant']['CF45'] +=1;
-                            $data['sealant']['CFT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CF45'] +=1;
+                            $data['SE']['CFT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['CM55'] +=1;
-                            $data['sealant']['CMT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CM55'] +=1;
+                            $data['SE']['CMT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                         else{
-                            $data['sealant']['CF55'] +=1;
-                            $data['sealant']['CFT'] +=1;
-                            $data['sealant']['CT'] +=1;
+                            $data['SE']['CF55'] +=1;
+                            $data['SE']['CFT'] +=1;
+                            $data['SE']['CT'] +=1;
                         }
                     }
-                    // end of sealant
-                    // start of Tooth Applied w/ sealant
+                    // end of SE
+                    // start of Tooth Applied w/ SE
                     if($result->age>=13 && $result->age <=17 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['CM13'] +=1;
-                            $data['tooth_applied_sealant']['CMT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CM13'] +=1;
+                            $data['TAS']['CMT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['CF13'] +=1;
-                            $data['tooth_applied_sealant']['CFT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CF13'] +=1;
+                            $data['TAS']['CFT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['CM18'] +=1;
-                            $data['tooth_applied_sealant']['CMT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CM18'] +=1;
+                            $data['TAS']['CMT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['CF18'] +=1;
-                            $data['tooth_applied_sealant']['CFT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CF18'] +=1;
+                            $data['TAS']['CFT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['CM25'] +=1;
-                            $data['tooth_applied_sealant']['CMT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CM25'] +=1;
+                            $data['TAS']['CMT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['CF25'] +=1;
-                            $data['tooth_applied_sealant']['CFT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CF25'] +=1;
+                            $data['TAS']['CFT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['CM35'] +=1;
-                            $data['tooth_applied_sealant']['CMT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CM35'] +=1;
+                            $data['TAS']['CMT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['CF35'] +=1;
-                            $data['tooth_applied_sealant']['CFT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CF35'] +=1;
+                            $data['TAS']['CFT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['CM45'] +=1;
-                            $data['tooth_applied_sealant']['CMT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CM45'] +=1;
+                            $data['TAS']['CMT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['CF45'] +=1;
-                            $data['tooth_applied_sealant']['CFT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CF45'] +=1;
+                            $data['TAS']['CFT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['CM55'] +=1;
-                            $data['tooth_applied_sealant']['CMT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CM55'] +=1;
+                            $data['TAS']['CMT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['CF55'] +=1;
-                            $data['tooth_applied_sealant']['CFT'] +=1;
-                            $data['tooth_applied_sealant']['CT'] +=1;
+                            $data['TAS']['CF55'] +=1;
+                            $data['TAS']['CFT'] +=1;
+                            $data['TAS']['CT'] +=1;
                         }
                     }
-                    // end of Tooth Applied w/ sealant
+                    // end of Tooth Applied w/ SE
                     // start of Other Treatment
                     if($result->age>=13 && $result->age <=17 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['CM13'] +=1;
-                            $data['other_treatment']['CMT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CM13'] +=1;
+                            $data['OT']['CMT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['CF13'] +=1;
-                            $data['other_treatment']['CFT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CF13'] +=1;
+                            $data['OT']['CFT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['CM18'] +=1;
-                            $data['other_treatment']['CMT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CM18'] +=1;
+                            $data['OT']['CMT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['CF18'] +=1;
-                            $data['other_treatment']['CFT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CF18'] +=1;
+                            $data['OT']['CFT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['CM25'] +=1;
-                            $data['other_treatment']['CMT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CM25'] +=1;
+                            $data['OT']['CMT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['CF25'] +=1;
-                            $data['other_treatment']['CFT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CF25'] +=1;
+                            $data['OT']['CFT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['CM35'] +=1;
-                            $data['other_treatment']['CMT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CM35'] +=1;
+                            $data['OT']['CMT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['CF35'] +=1;
-                            $data['other_treatment']['CFT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CF35'] +=1;
+                            $data['OT']['CFT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['CM45'] +=1;
-                            $data['other_treatment']['CMT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CM45'] +=1;
+                            $data['OT']['CMT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['CF45'] +=1;
-                            $data['other_treatment']['CFT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CF45'] +=1;
+                            $data['OT']['CFT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['CM55'] +=1;
-                            $data['other_treatment']['CMT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CM55'] +=1;
+                            $data['OT']['CMT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['CF55'] +=1;
-                            $data['other_treatment']['CFT'] +=1;
-                            $data['other_treatment']['CT'] +=1;
+                            $data['OT']['CF55'] +=1;
+                            $data['OT']['CFT'] +=1;
+                            $data['OT']['CT'] +=1;
                         }
                     }
                     // end of Other Treatment
                     // start of Oral Health Instruction
                     if($result->age>=13 && $result->age <=17 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['CM13'] +=1;
-                            $data['oral_health_instruction']['CMT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CM13'] +=1;
+                            $data['OHI']['CMT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['CF13'] +=1;
-                            $data['oral_health_instruction']['CFT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CF13'] +=1;
+                            $data['OHI']['CFT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['CM18'] +=1;
-                            $data['oral_health_instruction']['CMT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CM18'] +=1;
+                            $data['OHI']['CMT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['CF18'] +=1;
-                            $data['oral_health_instruction']['CFT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CF18'] +=1;
+                            $data['OHI']['CFT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['CM25'] +=1;
-                            $data['oral_health_instruction']['CMT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CM25'] +=1;
+                            $data['OHI']['CMT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['CF25'] +=1;
-                            $data['oral_health_instruction']['CFT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CF25'] +=1;
+                            $data['OHI']['CFT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['CM35'] +=1;
-                            $data['oral_health_instruction']['CMT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CM35'] +=1;
+                            $data['OHI']['CMT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['CF35'] +=1;
-                            $data['oral_health_instruction']['CFT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CF35'] +=1;
+                            $data['OHI']['CFT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['CM45'] +=1;
-                            $data['oral_health_instruction']['CMT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CM45'] +=1;
+                            $data['OHI']['CMT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['CF45'] +=1;
-                            $data['oral_health_instruction']['CFT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CF45'] +=1;
+                            $data['OHI']['CFT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['CM55'] +=1;
-                            $data['oral_health_instruction']['CMT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CM55'] +=1;
+                            $data['OHI']['CMT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['CF55'] +=1;
-                            $data['oral_health_instruction']['CFT'] +=1;
-                            $data['oral_health_instruction']['CT'] +=1;
+                            $data['OHI']['CF55'] +=1;
+                            $data['OHI']['CFT'] +=1;
+                            $data['OHI']['CT'] +=1;
                         }
                     }
                     // end of Oral Health Instruction
                     // start of Referral
                     if($result->age>=13 && $result->age <=17 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['CM13'] +=1;
-                            $data['patients_referred']['CMT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CM13'] +=1;
+                            $data['PR']['CMT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['CF13'] +=1;
-                            $data['patients_referred']['CFT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CF13'] +=1;
+                            $data['PR']['CFT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['CM18'] +=1;
-                            $data['patients_referred']['CMT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CM18'] +=1;
+                            $data['PR']['CMT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['CF18'] +=1;
-                            $data['patients_referred']['CFT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CF18'] +=1;
+                            $data['PR']['CFT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['CM25'] +=1;
-                            $data['patients_referred']['CMT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CM25'] +=1;
+                            $data['PR']['CMT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['CF25'] +=1;
-                            $data['patients_referred']['CFT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CF25'] +=1;
+                            $data['PR']['CFT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['CM35'] +=1;
-                            $data['patients_referred']['CMT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CM35'] +=1;
+                            $data['PR']['CMT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['CF35'] +=1;
-                            $data['patients_referred']['CFT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CF35'] +=1;
+                            $data['PR']['CFT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['CM45'] +=1;
-                            $data['patients_referred']['CMT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CM45'] +=1;
+                            $data['PR']['CMT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['CF45'] +=1;
-                            $data['patients_referred']['CFT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CF45'] +=1;
+                            $data['PR']['CFT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['CM55'] +=1;
-                            $data['patients_referred']['CMT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CM55'] +=1;
+                            $data['PR']['CMT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['CF55'] +=1;
-                            $data['patients_referred']['CFT'] +=1;
-                            $data['patients_referred']['CT'] +=1;
+                            $data['PR']['CF55'] +=1;
+                            $data['PR']['CFT'] +=1;
+                            $data['PR']['CT'] +=1;
                         }
                     }
                     // end of Referral
                     // start of Issuance of Med Cert
                     if($result->age>=13 && $result->age <=17 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['CM13'] +=1;
-                            $data['issued_certificate']['CMT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CM13'] +=1;
+                            $data['IC']['CMT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['CF13'] +=1;
-                            $data['issued_certificate']['CFT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CF13'] +=1;
+                            $data['IC']['CFT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['CM18'] +=1;
-                            $data['issued_certificate']['CMT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CM18'] +=1;
+                            $data['IC']['CMT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['CF18'] +=1;
-                            $data['issued_certificate']['CFT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CF18'] +=1;
+                            $data['IC']['CFT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['CM25'] +=1;
-                            $data['issued_certificate']['CMT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CM25'] +=1;
+                            $data['IC']['CMT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['CF25'] +=1;
-                            $data['issued_certificate']['CFT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CF25'] +=1;
+                            $data['IC']['CFT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['CM35'] +=1;
-                            $data['issued_certificate']['CMT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CM35'] +=1;
+                            $data['IC']['CMT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['CF35'] +=1;
-                            $data['issued_certificate']['CFT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CF35'] +=1;
+                            $data['IC']['CFT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['CM45'] +=1;
-                            $data['issued_certificate']['CMT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CM45'] +=1;
+                            $data['IC']['CMT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['CF45'] +=1;
-                            $data['issued_certificate']['CFT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CF45'] +=1;
+                            $data['IC']['CFT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                     }
                     if($result->age>=55 && $result->age <=65 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['CM55'] +=1;
-                            $data['issued_certificate']['CMT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CM55'] +=1;
+                            $data['IC']['CMT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['CF55'] +=1;
-                            $data['issued_certificate']['CFT'] +=1;
-                            $data['issued_certificate']['CT'] +=1;
+                            $data['IC']['CF55'] +=1;
+                            $data['IC']['CFT'] +=1;
+                            $data['IC']['CT'] +=1;
                         }
                     }
                     // end of Issuance of Med Cert
@@ -2658,79 +2676,79 @@ class PrintablesController extends Controller
                     // start of oral prophylaxis
                     if($result->age>=13 && $result->age <=17 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['HM13'] +=1;
-                            $data['oral_prophylaxis']['HMT'] +=1;
-                            $data['oral_prophylaxis']['HT'] +=1;
+                            $data['OP']['HM13'] +=1;
+                            $data['OP']['HMT'] +=1;
+                            $data['OP']['HT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['HF13'] +=1;
-                            $data['oral_prophylaxis']['HFT'] +=1;
-                            $data['oral_prophylaxis']['HT'] +=1;
+                            $data['OP']['HF13'] +=1;
+                            $data['OP']['HFT'] +=1;
+                            $data['OP']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['HM18'] +=1;
-                            $data['oral_prophylaxis']['HMT'] +=1;
-                            $data['oral_prophylaxis']['HT'] +=1;
+                            $data['OP']['HM18'] +=1;
+                            $data['OP']['HMT'] +=1;
+                            $data['OP']['HT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['HF18'] +=1;
-                            $data['oral_prophylaxis']['HFT'] +=1;
-                            $data['oral_prophylaxis']['HT'] +=1;
+                            $data['OP']['HF18'] +=1;
+                            $data['OP']['HFT'] +=1;
+                            $data['OP']['HT'] +=1;
                         }
                     }
 
                     // end of oral prophylaxis
-                    // start of extraction
+                    // start of EX
                     if($result->age>=13 && $result->age <=17 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['HM13'] +=1;
-                            $data['extraction']['HMT'] +=1;
-                            $data['extraction']['HT'] +=1;
+                            $data['EX']['HM13'] +=1;
+                            $data['EX']['HMT'] +=1;
+                            $data['EX']['HT'] +=1;
                         }
                         else{
-                            $data['extraction']['HF13'] +=1;
-                            $data['extraction']['HFT'] +=1;
-                            $data['extraction']['HT'] +=1;
+                            $data['EX']['HF13'] +=1;
+                            $data['EX']['HFT'] +=1;
+                            $data['EX']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['HM18'] +=1;
-                            $data['extraction']['HMT'] +=1;
-                            $data['extraction']['HT'] +=1;
+                            $data['EX']['HM18'] +=1;
+                            $data['EX']['HMT'] +=1;
+                            $data['EX']['HT'] +=1;
                         }
                         else{
-                            $data['extraction']['HF18'] +=1;
-                            $data['extraction']['HFT'] +=1;
-                            $data['extraction']['HT'] +=1;
+                            $data['EX']['HF18'] +=1;
+                            $data['EX']['HFT'] +=1;
+                            $data['EX']['HT'] +=1;
                         }
                     }
-                    // end of extraction
+                    // end of EX
                     // start of Permanent Tooth
                     if($result->age>=13 && $result->age <=17 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['HM13'] +=1;
-                            $data['permanent_tooth']['HMT'] +=1;
-                            $data['permanent_tooth']['HT'] +=1;
+                            $data['PTO']['HM13'] +=1;
+                            $data['PTO']['HMT'] +=1;
+                            $data['PTO']['HT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['HF13'] +=1;
-                            $data['permanent_tooth']['HFT'] +=1;
-                            $data['permanent_tooth']['HT'] +=1;
+                            $data['PTO']['HF13'] +=1;
+                            $data['PTO']['HFT'] +=1;
+                            $data['PTO']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['HM18'] +=1;
-                            $data['permanent_tooth']['HMT'] +=1;
-                            $data['permanent_tooth']['HT'] +=1;
+                            $data['PTO']['HM18'] +=1;
+                            $data['PTO']['HMT'] +=1;
+                            $data['PTO']['HT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['HF18'] +=1;
-                            $data['permanent_tooth']['HFT'] +=1;
-                            $data['permanent_tooth']['HT'] +=1;
+                            $data['PTO']['HF18'] +=1;
+                            $data['PTO']['HFT'] +=1;
+                            $data['PTO']['HT'] +=1;
                         }
                     }
 
@@ -2738,261 +2756,261 @@ class PrintablesController extends Controller
                     // start of Temporary Tooth
                     if($result->age>=13 && $result->age <=17 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['HM13'] +=1;
-                            $data['temporary_tooth']['HMT'] +=1;
-                            $data['temporary_tooth']['HT'] +=1;
+                            $data['TTO']['HM13'] +=1;
+                            $data['TTO']['HMT'] +=1;
+                            $data['TTO']['HT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['HF13'] +=1;
-                            $data['temporary_tooth']['HFT'] +=1;
-                            $data['temporary_tooth']['HT'] +=1;
+                            $data['TTO']['HF13'] +=1;
+                            $data['TTO']['HFT'] +=1;
+                            $data['TTO']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['HM18'] +=1;
-                            $data['temporary_tooth']['HMT'] +=1;
-                            $data['temporary_tooth']['HT'] +=1;
+                            $data['TTO']['HM18'] +=1;
+                            $data['TTO']['HMT'] +=1;
+                            $data['TTO']['HT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['HF18'] +=1;
-                            $data['temporary_tooth']['HFT'] +=1;
-                            $data['temporary_tooth']['HT'] +=1;
+                            $data['TTO']['HF18'] +=1;
+                            $data['TTO']['HFT'] +=1;
+                            $data['TTO']['HT'] +=1;
                         }
                     }
                     // end of Temporary Tooth
                     // start of Filling/Restoration
                     if($result->age>=13 && $result->age <=17 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['HM13'] +=1;
-                            $data['filling_restoration']['HMT'] +=1;
-                            $data['filling_restoration']['HT'] +=1;
+                            $data['FR']['HM13'] +=1;
+                            $data['FR']['HMT'] +=1;
+                            $data['FR']['HT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['HF13'] +=1;
-                            $data['filling_restoration']['HFT'] +=1;
-                            $data['filling_restoration']['HT'] +=1;
+                            $data['FR']['HF13'] +=1;
+                            $data['FR']['HFT'] +=1;
+                            $data['FR']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['HM18'] +=1;
-                            $data['filling_restoration']['HMT'] +=1;
-                            $data['filling_restoration']['HT'] +=1;
+                            $data['FR']['HM18'] +=1;
+                            $data['FR']['HMT'] +=1;
+                            $data['FR']['HT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['HF18'] +=1;
-                            $data['filling_restoration']['HFT'] +=1;
-                            $data['filling_restoration']['HT'] +=1;
+                            $data['FR']['HF18'] +=1;
+                            $data['FR']['HFT'] +=1;
+                            $data['FR']['HT'] +=1;
                         }
                     }
                     // end of Filling/Restoration
                     // start of Tooth filled w/ Comp
                     if($result->age>=13 && $result->age <=17 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['HM13'] +=1;
-                            $data['tooth_filled_comp']['HMT'] +=1;
-                            $data['tooth_filled_comp']['HT'] +=1;
+                            $data['TFC']['HM13'] +=1;
+                            $data['TFC']['HMT'] +=1;
+                            $data['TFC']['HT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['HF13'] +=1;
-                            $data['tooth_filled_comp']['HFT'] +=1;
-                            $data['tooth_filled_comp']['HT'] +=1;
+                            $data['TFC']['HF13'] +=1;
+                            $data['TFC']['HFT'] +=1;
+                            $data['TFC']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['HM18'] +=1;
-                            $data['tooth_filled_comp']['HMT'] +=1;
-                            $data['tooth_filled_comp']['HT'] +=1;
+                            $data['TFC']['HM18'] +=1;
+                            $data['TFC']['HMT'] +=1;
+                            $data['TFC']['HT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['HF18'] +=1;
-                            $data['tooth_filled_comp']['HFT'] +=1;
-                            $data['tooth_filled_comp']['HT'] +=1;
+                            $data['TFC']['HF18'] +=1;
+                            $data['TFC']['HFT'] +=1;
+                            $data['TFC']['HT'] +=1;
                         }
                     }
                     // end of Tooth filled w/ Comp
                     // start of Tooth filled w/ GIC
                     if($result->age>=13 && $result->age <=17 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['HM13'] +=1;
-                            $data['tooth_filled_gic']['HMT'] +=1;
-                            $data['tooth_filled_gic']['HT'] +=1;
+                            $data['TFG']['HM13'] +=1;
+                            $data['TFG']['HMT'] +=1;
+                            $data['TFG']['HT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['HF13'] +=1;
-                            $data['tooth_filled_gic']['HFT'] +=1;
-                            $data['tooth_filled_gic']['HT'] +=1;
+                            $data['TFG']['HF13'] +=1;
+                            $data['TFG']['HFT'] +=1;
+                            $data['TFG']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['HM18'] +=1;
-                            $data['tooth_filled_gic']['HMT'] +=1;
-                            $data['tooth_filled_gic']['HT'] +=1;
+                            $data['TFG']['HM18'] +=1;
+                            $data['TFG']['HMT'] +=1;
+                            $data['TFG']['HT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['HF18'] +=1;
-                            $data['tooth_filled_gic']['HFT'] +=1;
-                            $data['tooth_filled_gic']['HT'] +=1;
+                            $data['TFG']['HF18'] +=1;
+                            $data['TFG']['HFT'] +=1;
+                            $data['TFG']['HT'] +=1;
                         }
                     }
                     // end of Tooth filled w/ GIC
-                    // start of sealant
+                    // start of SE
                     if($result->age>=13 && $result->age <=17 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['HM13'] +=1;
-                            $data['sealant']['HMT'] +=1;
-                            $data['sealant']['HT'] +=1;
+                            $data['SE']['HM13'] +=1;
+                            $data['SE']['HMT'] +=1;
+                            $data['SE']['HT'] +=1;
                         }
                         else{
-                            $data['sealant']['HF13'] +=1;
-                            $data['sealant']['HFT'] +=1;
-                            $data['sealant']['HT'] +=1;
+                            $data['SE']['HF13'] +=1;
+                            $data['SE']['HFT'] +=1;
+                            $data['SE']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['HM18'] +=1;
-                            $data['sealant']['HMT'] +=1;
-                            $data['sealant']['HT'] +=1;
+                            $data['SE']['HM18'] +=1;
+                            $data['SE']['HMT'] +=1;
+                            $data['SE']['HT'] +=1;
                         }
                         else{
-                            $data['sealant']['HF18'] +=1;
-                            $data['sealant']['HFT'] +=1;
-                            $data['sealant']['HT'] +=1;
+                            $data['SE']['HF18'] +=1;
+                            $data['SE']['HFT'] +=1;
+                            $data['SE']['HT'] +=1;
                         }
                     }
-                    // end of sealant
-                    // start of Tooth Applied w/ sealant
+                    // end of SE
+                    // start of Tooth Applied w/ SE
                     if($result->age>=13 && $result->age <=17 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['HM13'] +=1;
-                            $data['tooth_applied_sealant']['HMT'] +=1;
-                            $data['tooth_applied_sealant']['HT'] +=1;
+                            $data['TAS']['HM13'] +=1;
+                            $data['TAS']['HMT'] +=1;
+                            $data['TAS']['HT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['HF13'] +=1;
-                            $data['tooth_applied_sealant']['HFT'] +=1;
-                            $data['tooth_applied_sealant']['HT'] +=1;
+                            $data['TAS']['HF13'] +=1;
+                            $data['TAS']['HFT'] +=1;
+                            $data['TAS']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['HM18'] +=1;
-                            $data['tooth_applied_sealant']['HMT'] +=1;
-                            $data['tooth_applied_sealant']['HT'] +=1;
+                            $data['TAS']['HM18'] +=1;
+                            $data['TAS']['HMT'] +=1;
+                            $data['TAS']['HT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['HF18'] +=1;
-                            $data['tooth_applied_sealant']['HFT'] +=1;
-                            $data['tooth_applied_sealant']['HT'] +=1;
+                            $data['TAS']['HF18'] +=1;
+                            $data['TAS']['HFT'] +=1;
+                            $data['TAS']['HT'] +=1;
                         }
                     }
 
-                    // end of Tooth Applied w/ sealant
+                    // end of Tooth Applied w/ SE
                     // start of Other Treatment
                     if($result->age>=13 && $result->age <=17 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['HM13'] +=1;
-                            $data['other_treatment']['HMT'] +=1;
-                            $data['other_treatment']['HT'] +=1;
+                            $data['OT']['HM13'] +=1;
+                            $data['OT']['HMT'] +=1;
+                            $data['OT']['HT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['HF13'] +=1;
-                            $data['other_treatment']['HFT'] +=1;
-                            $data['other_treatment']['HT'] +=1;
+                            $data['OT']['HF13'] +=1;
+                            $data['OT']['HFT'] +=1;
+                            $data['OT']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['HM18'] +=1;
-                            $data['other_treatment']['HMT'] +=1;
-                            $data['other_treatment']['HT'] +=1;
+                            $data['OT']['HM18'] +=1;
+                            $data['OT']['HMT'] +=1;
+                            $data['OT']['HT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['HF18'] +=1;
-                            $data['other_treatment']['HFT'] +=1;
-                            $data['other_treatment']['HT'] +=1;
+                            $data['OT']['HF18'] +=1;
+                            $data['OT']['HFT'] +=1;
+                            $data['OT']['HT'] +=1;
                         }
                     }
                     // end of Other Treatment
                     // start of Oral Health Instruction
                     if($result->age>=13 && $result->age <=17 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['HM13'] +=1;
-                            $data['oral_health_instruction']['HMT'] +=1;
-                            $data['oral_health_instruction']['HT'] +=1;
+                            $data['OHI']['HM13'] +=1;
+                            $data['OHI']['HMT'] +=1;
+                            $data['OHI']['HT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['HF13'] +=1;
-                            $data['oral_health_instruction']['HFT'] +=1;
-                            $data['oral_health_instruction']['HT'] +=1;
+                            $data['OHI']['HF13'] +=1;
+                            $data['OHI']['HFT'] +=1;
+                            $data['OHI']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['HM18'] +=1;
-                            $data['oral_health_instruction']['HMT'] +=1;
-                            $data['oral_health_instruction']['HT'] +=1;
+                            $data['OHI']['HM18'] +=1;
+                            $data['OHI']['HMT'] +=1;
+                            $data['OHI']['HT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['HF18'] +=1;
-                            $data['oral_health_instruction']['HFT'] +=1;
-                            $data['oral_health_instruction']['HT'] +=1;
+                            $data['OHI']['HF18'] +=1;
+                            $data['OHI']['HFT'] +=1;
+                            $data['OHI']['HT'] +=1;
                         }
                     }
                     // end of Oral Health Instruction
                     // start of Referral
                     if($result->age>=13 && $result->age <=17 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['HM13'] +=1;
-                            $data['patients_referred']['HMT'] +=1;
-                            $data['patients_referred']['HT'] +=1;
+                            $data['PR']['HM13'] +=1;
+                            $data['PR']['HMT'] +=1;
+                            $data['PR']['HT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['HF13'] +=1;
-                            $data['patients_referred']['HFT'] +=1;
-                            $data['patients_referred']['HT'] +=1;
+                            $data['PR']['HF13'] +=1;
+                            $data['PR']['HFT'] +=1;
+                            $data['PR']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['HM18'] +=1;
-                            $data['patients_referred']['HMT'] +=1;
-                            $data['patients_referred']['HT'] +=1;
+                            $data['PR']['HM18'] +=1;
+                            $data['PR']['HMT'] +=1;
+                            $data['PR']['HT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['HF18'] +=1;
-                            $data['patients_referred']['HFT'] +=1;
-                            $data['patients_referred']['HT'] +=1;
+                            $data['PR']['HF18'] +=1;
+                            $data['PR']['HFT'] +=1;
+                            $data['PR']['HT'] +=1;
                         }
                     }
                     // end of Referral
                     // start of Issuance of Med Cert
                     if($result->age>=13 && $result->age <=17 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['HM13'] +=1;
-                            $data['issued_certificate']['HMT'] +=1;
-                            $data['issued_certificate']['HT'] +=1;
+                            $data['IC']['HM13'] +=1;
+                            $data['IC']['HMT'] +=1;
+                            $data['IC']['HT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['HF13'] +=1;
-                            $data['issued_certificate']['HFT'] +=1;
-                            $data['issued_certificate']['HT'] +=1;
+                            $data['IC']['HF13'] +=1;
+                            $data['IC']['HFT'] +=1;
+                            $data['IC']['HT'] +=1;
                         }
                     }
                     if($result->age>=18 && $result->age <=24 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['HM18'] +=1;
-                            $data['issued_certificate']['HMT'] +=1;
-                            $data['issued_certificate']['HT'] +=1;
+                            $data['IC']['HM18'] +=1;
+                            $data['IC']['HMT'] +=1;
+                            $data['IC']['HT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['HF18'] +=1;
-                            $data['issued_certificate']['HFT'] +=1;
-                            $data['issued_certificate']['HT'] +=1;
+                            $data['IC']['HF18'] +=1;
+                            $data['IC']['HFT'] +=1;
+                            $data['IC']['HT'] +=1;
                         }
                     }
                     // end of Issuance of Med Cert
@@ -3003,79 +3021,79 @@ class PrintablesController extends Controller
                     // start of oral prophylaxis
                     if($result->age>=5 && $result->age <=12 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['EM13'] +=1;
-                            $data['oral_prophylaxis']['EMT'] +=1;
-                            $data['oral_prophylaxis']['ET'] +=1;
+                            $data['OP']['EM13'] +=1;
+                            $data['OP']['EMT'] +=1;
+                            $data['OP']['ET'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['EF13'] +=1;
-                            $data['oral_prophylaxis']['EFT'] +=1;
-                            $data['oral_prophylaxis']['ET'] +=1;
+                            $data['OP']['EF13'] +=1;
+                            $data['OP']['EFT'] +=1;
+                            $data['OP']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['EM18'] +=1;
-                            $data['oral_prophylaxis']['EMT'] +=1;
-                            $data['oral_prophylaxis']['ET'] +=1;
+                            $data['OP']['EM18'] +=1;
+                            $data['OP']['EMT'] +=1;
+                            $data['OP']['ET'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['EF18'] +=1;
-                            $data['oral_prophylaxis']['EFT'] +=1;
-                            $data['oral_prophylaxis']['ET'] +=1;
+                            $data['OP']['EF18'] +=1;
+                            $data['OP']['EFT'] +=1;
+                            $data['OP']['ET'] +=1;
                         }
                     }
 
                     // end of oral prophylaxis
-                    // start of extraction
+                    // start of EX
                     if($result->age>=5 && $result->age <=12 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['EM13'] +=1;
-                            $data['extraction']['EMT'] +=1;
-                            $data['extraction']['ET'] +=1;
+                            $data['EX']['EM13'] +=1;
+                            $data['EX']['EMT'] +=1;
+                            $data['EX']['ET'] +=1;
                         }
                         else{
-                            $data['extraction']['EF13'] +=1;
-                            $data['extraction']['EFT'] +=1;
-                            $data['extraction']['ET'] +=1;
+                            $data['EX']['EF13'] +=1;
+                            $data['EX']['EFT'] +=1;
+                            $data['EX']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['EM18'] +=1;
-                            $data['extraction']['EMT'] +=1;
-                            $data['extraction']['ET'] +=1;
+                            $data['EX']['EM18'] +=1;
+                            $data['EX']['EMT'] +=1;
+                            $data['EX']['ET'] +=1;
                         }
                         else{
-                            $data['extraction']['EF18'] +=1;
-                            $data['extraction']['EFT'] +=1;
-                            $data['extraction']['ET'] +=1;
+                            $data['EX']['EF18'] +=1;
+                            $data['EX']['EFT'] +=1;
+                            $data['EX']['ET'] +=1;
                         }
                     }
-                    // end of extraction
+                    // end of EX
                     // start of Permanent Tooth
                     if($result->age>=5 && $result->age <=12 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['EM13'] +=1;
-                            $data['permanent_tooth']['EMT'] +=1;
-                            $data['permanent_tooth']['ET'] +=1;
+                            $data['PTO']['EM13'] +=1;
+                            $data['PTO']['EMT'] +=1;
+                            $data['PTO']['ET'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['EF13'] +=1;
-                            $data['permanent_tooth']['EFT'] +=1;
-                            $data['permanent_tooth']['ET'] +=1;
+                            $data['PTO']['EF13'] +=1;
+                            $data['PTO']['EFT'] +=1;
+                            $data['PTO']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['EM18'] +=1;
-                            $data['permanent_tooth']['EMT'] +=1;
-                            $data['permanent_tooth']['ET'] +=1;
+                            $data['PTO']['EM18'] +=1;
+                            $data['PTO']['EMT'] +=1;
+                            $data['PTO']['ET'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['EF18'] +=1;
-                            $data['permanent_tooth']['EFT'] +=1;
-                            $data['permanent_tooth']['ET'] +=1;
+                            $data['PTO']['EF18'] +=1;
+                            $data['PTO']['EFT'] +=1;
+                            $data['PTO']['ET'] +=1;
                         }
                     }
 
@@ -3083,914 +3101,2352 @@ class PrintablesController extends Controller
                     // start of Temporary Tooth
                     if($result->age>=5 && $result->age <=12 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['EM13'] +=1;
-                            $data['temporary_tooth']['EMT'] +=1;
-                            $data['temporary_tooth']['ET'] +=1;
+                            $data['TTO']['EM13'] +=1;
+                            $data['TTO']['EMT'] +=1;
+                            $data['TTO']['ET'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['EF13'] +=1;
-                            $data['temporary_tooth']['EFT'] +=1;
-                            $data['temporary_tooth']['ET'] +=1;
+                            $data['TTO']['EF13'] +=1;
+                            $data['TTO']['EFT'] +=1;
+                            $data['TTO']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['EM18'] +=1;
-                            $data['temporary_tooth']['EMT'] +=1;
-                            $data['temporary_tooth']['ET'] +=1;
+                            $data['TTO']['EM18'] +=1;
+                            $data['TTO']['EMT'] +=1;
+                            $data['TTO']['ET'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['EF18'] +=1;
-                            $data['temporary_tooth']['EFT'] +=1;
-                            $data['temporary_tooth']['ET'] +=1;
+                            $data['TTO']['EF18'] +=1;
+                            $data['TTO']['EFT'] +=1;
+                            $data['TTO']['ET'] +=1;
                         }
                     }
                     // end of Temporary Tooth
                     // start of Filling/Restoration
                     if($result->age>=5 && $result->age <=12 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['EM13'] +=1;
-                            $data['filling_restoration']['EMT'] +=1;
-                            $data['filling_restoration']['ET'] +=1;
+                            $data['FR']['EM13'] +=1;
+                            $data['FR']['EMT'] +=1;
+                            $data['FR']['ET'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['EF13'] +=1;
-                            $data['filling_restoration']['EFT'] +=1;
-                            $data['filling_restoration']['ET'] +=1;
+                            $data['FR']['EF13'] +=1;
+                            $data['FR']['EFT'] +=1;
+                            $data['FR']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['EM18'] +=1;
-                            $data['filling_restoration']['EMT'] +=1;
-                            $data['filling_restoration']['ET'] +=1;
+                            $data['FR']['EM18'] +=1;
+                            $data['FR']['EMT'] +=1;
+                            $data['FR']['ET'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['EF18'] +=1;
-                            $data['filling_restoration']['EFT'] +=1;
-                            $data['filling_restoration']['ET'] +=1;
+                            $data['FR']['EF18'] +=1;
+                            $data['FR']['EFT'] +=1;
+                            $data['FR']['ET'] +=1;
                         }
                     }
                     // end of Filling/Restoration
                     // start of Tooth filled w/ Comp
                     if($result->age>=5 && $result->age <=12 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['EM13'] +=1;
-                            $data['tooth_filled_comp']['EMT'] +=1;
-                            $data['tooth_filled_comp']['ET'] +=1;
+                            $data['TFC']['EM13'] +=1;
+                            $data['TFC']['EMT'] +=1;
+                            $data['TFC']['ET'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['EF13'] +=1;
-                            $data['tooth_filled_comp']['EFT'] +=1;
-                            $data['tooth_filled_comp']['ET'] +=1;
+                            $data['TFC']['EF13'] +=1;
+                            $data['TFC']['EFT'] +=1;
+                            $data['TFC']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['EM18'] +=1;
-                            $data['tooth_filled_comp']['EMT'] +=1;
-                            $data['tooth_filled_comp']['ET'] +=1;
+                            $data['TFC']['EM18'] +=1;
+                            $data['TFC']['EMT'] +=1;
+                            $data['TFC']['ET'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['EF18'] +=1;
-                            $data['tooth_filled_comp']['EFT'] +=1;
-                            $data['tooth_filled_comp']['ET'] +=1;
+                            $data['TFC']['EF18'] +=1;
+                            $data['TFC']['EFT'] +=1;
+                            $data['TFC']['ET'] +=1;
                         }
                     }
                     // end of Tooth filled w/ Comp
                     // start of Tooth filled w/ GIC
                     if($result->age>=5 && $result->age <=12 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['EM13'] +=1;
-                            $data['tooth_filled_gic']['EMT'] +=1;
-                            $data['tooth_filled_gic']['ET'] +=1;
+                            $data['TFG']['EM13'] +=1;
+                            $data['TFG']['EMT'] +=1;
+                            $data['TFG']['ET'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['EF13'] +=1;
-                            $data['tooth_filled_gic']['EFT'] +=1;
-                            $data['tooth_filled_gic']['ET'] +=1;
+                            $data['TFG']['EF13'] +=1;
+                            $data['TFG']['EFT'] +=1;
+                            $data['TFG']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['EM18'] +=1;
-                            $data['tooth_filled_gic']['EMT'] +=1;
-                            $data['tooth_filled_gic']['ET'] +=1;
+                            $data['TFG']['EM18'] +=1;
+                            $data['TFG']['EMT'] +=1;
+                            $data['TFG']['ET'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['EF18'] +=1;
-                            $data['tooth_filled_gic']['EFT'] +=1;
-                            $data['tooth_filled_gic']['ET'] +=1;
+                            $data['TFG']['EF18'] +=1;
+                            $data['TFG']['EFT'] +=1;
+                            $data['TFG']['ET'] +=1;
                         }
                     }
                     // end of Tooth filled w/ GIC
-                    // start of sealant
+                    // start of SE
                     if($result->age>=5 && $result->age <=12 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['EM13'] +=1;
-                            $data['sealant']['EMT'] +=1;
-                            $data['sealant']['ET'] +=1;
+                            $data['SE']['EM13'] +=1;
+                            $data['SE']['EMT'] +=1;
+                            $data['SE']['ET'] +=1;
                         }
                         else{
-                            $data['sealant']['EF13'] +=1;
-                            $data['sealant']['EFT'] +=1;
-                            $data['sealant']['ET'] +=1;
+                            $data['SE']['EF13'] +=1;
+                            $data['SE']['EFT'] +=1;
+                            $data['SE']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['EM18'] +=1;
-                            $data['sealant']['EMT'] +=1;
-                            $data['sealant']['ET'] +=1;
+                            $data['SE']['EM18'] +=1;
+                            $data['SE']['EMT'] +=1;
+                            $data['SE']['ET'] +=1;
                         }
                         else{
-                            $data['sealant']['EF18'] +=1;
-                            $data['sealant']['EFT'] +=1;
-                            $data['sealant']['ET'] +=1;
+                            $data['SE']['EF18'] +=1;
+                            $data['SE']['EFT'] +=1;
+                            $data['SE']['ET'] +=1;
                         }
                     }
-                    // end of sealant
-                    // start of Tooth Applied w/ sealant
+                    // end of SE
+                    // start of Tooth Applied w/ SE
                     if($result->age>=5 && $result->age <=12 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['EM13'] +=1;
-                            $data['tooth_applied_sealant']['EMT'] +=1;
-                            $data['tooth_applied_sealant']['ET'] +=1;
+                            $data['TAS']['EM13'] +=1;
+                            $data['TAS']['EMT'] +=1;
+                            $data['TAS']['ET'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['EF13'] +=1;
-                            $data['tooth_applied_sealant']['EFT'] +=1;
-                            $data['tooth_applied_sealant']['ET'] +=1;
+                            $data['TAS']['EF13'] +=1;
+                            $data['TAS']['EFT'] +=1;
+                            $data['TAS']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['EM18'] +=1;
-                            $data['tooth_applied_sealant']['EMT'] +=1;
-                            $data['tooth_applied_sealant']['ET'] +=1;
+                            $data['TAS']['EM18'] +=1;
+                            $data['TAS']['EMT'] +=1;
+                            $data['TAS']['ET'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['EF18'] +=1;
-                            $data['tooth_applied_sealant']['EFT'] +=1;
-                            $data['tooth_applied_sealant']['ET'] +=1;
+                            $data['TAS']['EF18'] +=1;
+                            $data['TAS']['EFT'] +=1;
+                            $data['TAS']['ET'] +=1;
                         }
                     }
 
-                    // end of Tooth Applied w/ sealant
+                    // end of Tooth Applied w/ SE
                     // start of Other Treatment
                     if($result->age>=5 && $result->age <=12 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['EM13'] +=1;
-                            $data['other_treatment']['EMT'] +=1;
-                            $data['other_treatment']['ET'] +=1;
+                            $data['OT']['EM13'] +=1;
+                            $data['OT']['EMT'] +=1;
+                            $data['OT']['ET'] +=1;
                         }
                         else{
-                            $data['other_treatment']['EF13'] +=1;
-                            $data['other_treatment']['EFT'] +=1;
-                            $data['other_treatment']['ET'] +=1;
+                            $data['OT']['EF13'] +=1;
+                            $data['OT']['EFT'] +=1;
+                            $data['OT']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['EM18'] +=1;
-                            $data['other_treatment']['EMT'] +=1;
-                            $data['other_treatment']['ET'] +=1;
+                            $data['OT']['EM18'] +=1;
+                            $data['OT']['EMT'] +=1;
+                            $data['OT']['ET'] +=1;
                         }
                         else{
-                            $data['other_treatment']['EF18'] +=1;
-                            $data['other_treatment']['EFT'] +=1;
-                            $data['other_treatment']['ET'] +=1;
+                            $data['OT']['EF18'] +=1;
+                            $data['OT']['EFT'] +=1;
+                            $data['OT']['ET'] +=1;
                         }
                     }
                     // end of Other Treatment
                     // start of Oral Health Instruction
                     if($result->age>=5 && $result->age <=12 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['EM13'] +=1;
-                            $data['oral_health_instruction']['EMT'] +=1;
-                            $data['oral_health_instruction']['ET'] +=1;
+                            $data['OHI']['EM13'] +=1;
+                            $data['OHI']['EMT'] +=1;
+                            $data['OHI']['ET'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['EF13'] +=1;
-                            $data['oral_health_instruction']['EFT'] +=1;
-                            $data['oral_health_instruction']['ET'] +=1;
+                            $data['OHI']['EF13'] +=1;
+                            $data['OHI']['EFT'] +=1;
+                            $data['OHI']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['EM18'] +=1;
-                            $data['oral_health_instruction']['EMT'] +=1;
-                            $data['oral_health_instruction']['ET'] +=1;
+                            $data['OHI']['EM18'] +=1;
+                            $data['OHI']['EMT'] +=1;
+                            $data['OHI']['ET'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['EF18'] +=1;
-                            $data['oral_health_instruction']['EFT'] +=1;
-                            $data['oral_health_instruction']['ET'] +=1;
+                            $data['OHI']['EF18'] +=1;
+                            $data['OHI']['EFT'] +=1;
+                            $data['OHI']['ET'] +=1;
                         }
                     }
                     // end of Oral Health Instruction
                     // start of Referral
                     if($result->age>=5 && $result->age <=12 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['EM13'] +=1;
-                            $data['patients_referred']['EMT'] +=1;
-                            $data['patients_referred']['ET'] +=1;
+                            $data['PR']['EM13'] +=1;
+                            $data['PR']['EMT'] +=1;
+                            $data['PR']['ET'] +=1;
                         }
                         else{
-                            $data['patients_referred']['EF13'] +=1;
-                            $data['patients_referred']['EFT'] +=1;
-                            $data['patients_referred']['ET'] +=1;
+                            $data['PR']['EF13'] +=1;
+                            $data['PR']['EFT'] +=1;
+                            $data['PR']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['EM18'] +=1;
-                            $data['patients_referred']['EMT'] +=1;
-                            $data['patients_referred']['ET'] +=1;
+                            $data['PR']['EM18'] +=1;
+                            $data['PR']['EMT'] +=1;
+                            $data['PR']['ET'] +=1;
                         }
                         else{
-                            $data['patients_referred']['EF18'] +=1;
-                            $data['patients_referred']['EFT'] +=1;
-                            $data['patients_referred']['ET'] +=1;
+                            $data['PR']['EF18'] +=1;
+                            $data['PR']['EFT'] +=1;
+                            $data['PR']['ET'] +=1;
                         }
                     }
                     // end of Referral
                     // start of Issuance of Med Cert
                     if($result->age>=5 && $result->age <=12 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['EM13'] +=1;
-                            $data['issued_certificate']['EMT'] +=1;
-                            $data['issued_certificate']['ET'] +=1;
+                            $data['IC']['EM13'] +=1;
+                            $data['IC']['EMT'] +=1;
+                            $data['IC']['ET'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['EF13'] +=1;
-                            $data['issued_certificate']['EFT'] +=1;
-                            $data['issued_certificate']['ET'] +=1;
+                            $data['IC']['EF13'] +=1;
+                            $data['IC']['EFT'] +=1;
+                            $data['IC']['ET'] +=1;
                         }
                     }
                     if($result->age>=13 && $result->age <=17 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['EM18'] +=1;
-                            $data['issued_certificate']['EMT'] +=1;
-                            $data['issued_certificate']['ET'] +=1;
+                            $data['IC']['EM18'] +=1;
+                            $data['IC']['EMT'] +=1;
+                            $data['IC']['ET'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['EF18'] +=1;
-                            $data['issued_certificate']['EFT'] +=1;
-                            $data['issued_certificate']['ET'] +=1;
+                            $data['IC']['EF18'] +=1;
+                            $data['IC']['EFT'] +=1;
+                            $data['IC']['ET'] +=1;
                         }
                     }
                     // end of Issuance of Med Cert
                 }
             }
-            if($result->type==2 && $result->services_rendered){
+            // if($result->type==2 && $result->services_rendered){
+            //     foreach(json_decode($result->services_rendered) as $test){
+            //         // start of oral prophylaxis
+            //         if($result->age>=18 && $result->age <=24 && $test->id==3){
+            //             if($result->sex == 'Male'){
+            //                 $data['OP']['SM18'] +=1;
+            //                 $data['OP']['SMT'] +=1;
+            //                 $data['OP']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OP']['SF18'] +=1;
+            //                 $data['OP']['SFT'] +=1;
+            //                 $data['OP']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==3){
+            //             if($result->sex == 'Male'){
+            //                 $data['OP']['SM25'] +=1;
+            //                 $data['OP']['SMT'] +=1;
+            //                 $data['OP']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OP']['SF25'] +=1;
+            //                 $data['OP']['SFT'] +=1;
+            //                 $data['OP']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==3){
+            //             if($result->sex == 'Male'){
+            //                 $data['OP']['SM35'] +=1;
+            //                 $data['OP']['SMT'] +=1;
+            //                 $data['OP']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OP']['SF35'] +=1;
+            //                 $data['OP']['SFT'] +=1;
+            //                 $data['OP']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==3){
+            //             if($result->sex == 'Male'){
+            //                 $data['OP']['SM45'] +=1;
+            //                 $data['OP']['SMT'] +=1;
+            //                 $data['OP']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OP']['SF45'] +=1;
+            //                 $data['OP']['SFT'] +=1;
+            //                 $data['OP']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of oral prophylaxis
+            //         // start of EX
+            //         if($result->age>=18 && $result->age <=24 && $test->id==4){
+            //             if($result->sex == 'Male'){
+            //                 $data['EX']['SM18'] +=1;
+            //                 $data['EX']['SMT'] +=1;
+            //                 $data['EX']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['EX']['SF18'] +=1;
+            //                 $data['EX']['SFT'] +=1;
+            //                 $data['EX']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==4){
+            //             if($result->sex == 'Male'){
+            //                 $data['EX']['SM25'] +=1;
+            //                 $data['EX']['SMT'] +=1;
+            //                 $data['EX']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['EX']['SF25'] +=1;
+            //                 $data['EX']['SFT'] +=1;
+            //                 $data['EX']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==4){
+            //             if($result->sex == 'Male'){
+            //                 $data['EX']['SM35'] +=1;
+            //                 $data['EX']['SMT'] +=1;
+            //                 $data['EX']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['EX']['SF35'] +=1;
+            //                 $data['EX']['SFT'] +=1;
+            //                 $data['EX']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==4){
+            //             if($result->sex == 'Male'){
+            //                 $data['EX']['SM45'] +=1;
+            //                 $data['EX']['SMT'] +=1;
+            //                 $data['EX']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['EX']['SF45'] +=1;
+            //                 $data['EX']['SFT'] +=1;
+            //                 $data['EX']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of EX
+            //         // start of permanent tooth
+            //         if($result->age>=18 && $result->age <=24 && $test->id==5){
+            //             if($result->sex == 'Male'){
+            //                 $data['PTO']['SM18'] +=1;
+            //                 $data['PTO']['SMT'] +=1;
+            //                 $data['PTO']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['PTO']['SF18'] +=1;
+            //                 $data['PTO']['SFT'] +=1;
+            //                 $data['PTO']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==5){
+            //             if($result->sex == 'Male'){
+            //                 $data['PTO']['SM25'] +=1;
+            //                 $data['PTO']['SMT'] +=1;
+            //                 $data['PTO']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['PTO']['SF25'] +=1;
+            //                 $data['PTO']['SFT'] +=1;
+            //                 $data['PTO']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==5){
+            //             if($result->sex == 'Male'){
+            //                 $data['PTO']['SM35'] +=1;
+            //                 $data['PTO']['SMT'] +=1;
+            //                 $data['PTO']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['PTO']['SF35'] +=1;
+            //                 $data['PTO']['SFT'] +=1;
+            //                 $data['PTO']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==5){
+            //             if($result->sex == 'Male'){
+            //                 $data['PTO']['SM45'] +=1;
+            //                 $data['PTO']['SMT'] +=1;
+            //                 $data['PTO']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['PTO']['SF45'] +=1;
+            //                 $data['PTO']['SFT'] +=1;
+            //                 $data['PTO']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of permanent tooth
+            //         // start of temporary tooth
+            //         if($result->age>=18 && $result->age <=24 && $test->id==6){
+            //             if($result->sex == 'Male'){
+            //                 $data['TTO']['SM18'] +=1;
+            //                 $data['TTO']['SMT'] +=1;
+            //                 $data['TTO']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TTO']['SF18'] +=1;
+            //                 $data['TTO']['SFT'] +=1;
+            //                 $data['TTO']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==6){
+            //             if($result->sex == 'Male'){
+            //                 $data['TTO']['SM25'] +=1;
+            //                 $data['TTO']['SMT'] +=1;
+            //                 $data['TTO']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TTO']['SF25'] +=1;
+            //                 $data['TTO']['SFT'] +=1;
+            //                 $data['TTO']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==6){
+            //             if($result->sex == 'Male'){
+            //                 $data['TTO']['SM35'] +=1;
+            //                 $data['TTO']['SMT'] +=1;
+            //                 $data['TTO']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TTO']['SF35'] +=1;
+            //                 $data['TTO']['SFT'] +=1;
+            //                 $data['TTO']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==6){
+            //             if($result->sex == 'Male'){
+            //                 $data['TTO']['SM45'] +=1;
+            //                 $data['TTO']['SMT'] +=1;
+            //                 $data['TTO']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TTO']['SF45'] +=1;
+            //                 $data['TTO']['SFT'] +=1;
+            //                 $data['TTO']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of temporary tooth
+            //         // start of filling/restoration
+            //         if($result->age>=18 && $result->age <=24 && $test->id==7){
+            //             if($result->sex == 'Male'){
+            //                 $data['FR']['SM18'] +=1;
+            //                 $data['FR']['SMT'] +=1;
+            //                 $data['FR']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['FR']['SF18'] +=1;
+            //                 $data['FR']['SFT'] +=1;
+            //                 $data['FR']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==7){
+            //             if($result->sex == 'Male'){
+            //                 $data['FR']['SM25'] +=1;
+            //                 $data['FR']['SMT'] +=1;
+            //                 $data['FR']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['FR']['SF25'] +=1;
+            //                 $data['FR']['SFT'] +=1;
+            //                 $data['FR']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==7){
+            //             if($result->sex == 'Male'){
+            //                 $data['FR']['SM35'] +=1;
+            //                 $data['FR']['SMT'] +=1;
+            //                 $data['FR']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['FR']['SF35'] +=1;
+            //                 $data['FR']['SFT'] +=1;
+            //                 $data['FR']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==7){
+            //             if($result->sex == 'Male'){
+            //                 $data['FR']['SM45'] +=1;
+            //                 $data['FR']['SMT'] +=1;
+            //                 $data['FR']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['FR']['SF45'] +=1;
+            //                 $data['FR']['SFT'] +=1;
+            //                 $data['FR']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of filling/restoration
+            //         // start of teeth filled with comp
+            //         if($result->age>=18 && $result->age <=24 && $test->id==8){
+            //             if($result->sex == 'Male'){
+            //                 $data['TFC']['SM18'] +=1;
+            //                 $data['TFC']['SMT'] +=1;
+            //                 $data['TFC']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TFC']['SF18'] +=1;
+            //                 $data['TFC']['SFT'] +=1;
+            //                 $data['TFC']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==8){
+            //             if($result->sex == 'Male'){
+            //                 $data['TFC']['SM25'] +=1;
+            //                 $data['TFC']['SMT'] +=1;
+            //                 $data['TFC']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TFC']['SF25'] +=1;
+            //                 $data['TFC']['SFT'] +=1;
+            //                 $data['TFC']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==8){
+            //             if($result->sex == 'Male'){
+            //                 $data['TFC']['SM35'] +=1;
+            //                 $data['TFC']['SMT'] +=1;
+            //                 $data['TFC']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TFC']['SF35'] +=1;
+            //                 $data['TFC']['SFT'] +=1;
+            //                 $data['TFC']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==8){
+            //             if($result->sex == 'Male'){
+            //                 $data['TFC']['SM45'] +=1;
+            //                 $data['TFC']['SMT'] +=1;
+            //                 $data['TFC']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TFC']['SF45'] +=1;
+            //                 $data['TFC']['SFT'] +=1;
+            //                 $data['TFC']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of teeth filled with comp
+            //         // start of teeth filled with gic
+            //         if($result->age>=18 && $result->age <=24 && $test->id==9){
+            //             if($result->sex == 'Male'){
+            //                 $data['TFG']['SM18'] +=1;
+            //                 $data['TFG']['SMT'] +=1;
+            //                 $data['TFG']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TFG']['SF18'] +=1;
+            //                 $data['TFG']['SFT'] +=1;
+            //                 $data['TFG']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==9){
+            //             if($result->sex == 'Male'){
+            //                 $data['TFG']['SM25'] +=1;
+            //                 $data['TFG']['SMT'] +=1;
+            //                 $data['TFG']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TFG']['SF25'] +=1;
+            //                 $data['TFG']['SFT'] +=1;
+            //                 $data['TFG']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==9){
+            //             if($result->sex == 'Male'){
+            //                 $data['TFG']['SM35'] +=1;
+            //                 $data['TFG']['SMT'] +=1;
+            //                 $data['TFG']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TFG']['SF35'] +=1;
+            //                 $data['TFG']['SFT'] +=1;
+            //                 $data['TFG']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==9){
+            //             if($result->sex == 'Male'){
+            //                 $data['TFG']['SM45'] +=1;
+            //                 $data['TFG']['SMT'] +=1;
+            //                 $data['TFG']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TFG']['SF45'] +=1;
+            //                 $data['TFG']['SFT'] +=1;
+            //             }
+            //         }
+            //         ///end of teeth filled with gic
+            //         // start of SE
+            //         if($result->age>=18 && $result->age <=24 && $test->id==10){
+            //             if($result->sex == 'Male'){
+            //                 $data['SE']['SM18'] +=1;
+            //                 $data['SE']['SMT'] +=1;
+            //                 $data['SE']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['SE']['SF18'] +=1;
+            //                 $data['SE']['SFT'] +=1;
+            //                 $data['SE']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==10){
+            //             if($result->sex == 'Male'){
+            //                 $data['SE']['SM25'] +=1;
+            //                 $data['SE']['SMT'] +=1;
+            //                 $data['SE']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['SE']['SF25'] +=1;
+            //                 $data['SE']['SFT'] +=1;
+            //                 $data['SE']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==10){
+            //             if($result->sex == 'Male'){
+            //                 $data['SE']['SM35'] +=1;
+            //                 $data['SE']['SMT'] +=1;
+            //                 $data['SE']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['SE']['SF35'] +=1;
+            //                 $data['SE']['SFT'] +=1;
+            //                 $data['SE']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==10){
+            //             if($result->sex == 'Male'){
+            //                 $data['SE']['SM45'] +=1;
+            //                 $data['SE']['SMT'] +=1;
+            //                 $data['SE']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['SE']['SF45'] +=1;
+            //                 $data['SE']['SFT'] +=1;
+            //                 $data['SE']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of SE
+            //         // start of Tooth Applied w/ SE
+            //         if($result->age>=18 && $result->age <=24 && $test->id==11){
+            //             if($result->sex == 'Male'){
+            //                 $data['TAS']['SM18'] +=1;
+            //                 $data['TAS']['SMT'] +=1;
+            //                 $data['TAS']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TAS']['SF18'] +=1;
+            //                 $data['TAS']['SFT'] +=1;
+            //                 $data['TAS']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==11){
+            //             if($result->sex == 'Male'){
+            //                 $data['TAS']['SM25'] +=1;
+            //                 $data['TAS']['SMT'] +=1;
+            //                 $data['TAS']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TAS']['SF25'] +=1;
+            //                 $data['TAS']['SFT'] +=1;
+            //                 $data['TAS']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==11){
+            //             if($result->sex == 'Male'){
+            //                 $data['TAS']['SM35'] +=1;
+            //                 $data['TAS']['SMT'] +=1;
+            //                 $data['TAS']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TAS']['SF35'] +=1;
+            //                 $data['TAS']['SFT'] +=1;
+            //                 $data['TAS']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==11){
+            //             if($result->sex == 'Male'){
+            //                 $data['TAS']['SM45'] +=1;
+            //                 $data['TAS']['SMT'] +=1;
+            //                 $data['TAS']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['TAS']['SF45'] +=1;
+            //                 $data['TAS']['SFT'] +=1;
+            //                 $data['TAS']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of Tooth Applied w/ SE
+            //         // start of Other Treatment
+            //         if($result->age>=18 && $result->age <=24 && $test->id==12){
+            //             if($result->sex == 'Male'){
+            //                 $data['OT']['SM18'] +=1;
+            //                 $data['OT']['SMT'] +=1;
+            //                 $data['OT']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OT']['SF18'] +=1;
+            //                 $data['OT']['SFT'] +=1;
+            //                 $data['OT']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==12){
+            //             if($result->sex == 'Male'){
+            //                 $data['OT']['SM25'] +=1;
+            //                 $data['OT']['SMT'] +=1;
+            //                 $data['OT']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OT']['SF25'] +=1;
+            //                 $data['OT']['SFT'] +=1;
+            //                 $data['OT']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==12){
+            //             if($result->sex == 'Male'){
+            //                 $data['OT']['SM35'] +=1;
+            //                 $data['OT']['SMT'] +=1;
+            //                 $data['OT']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OT']['SF35'] +=1;
+            //                 $data['OT']['SFT'] +=1;
+            //                 $data['OT']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==12){
+            //             if($result->sex == 'Male'){
+            //                 $data['OT']['SM45'] +=1;
+            //                 $data['OT']['SMT'] +=1;
+            //                 $data['OT']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OT']['SF45'] +=1;
+            //                 $data['OT']['SFT'] +=1;
+            //                 $data['OT']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of Other Treatment
+            //         // start of Oral Health Instruction
+            //         if($result->age>=18 && $result->age <=24 && $test->id==13){
+            //             if($result->sex == 'Male'){
+            //                 $data['OHI']['SM18'] +=1;
+            //                 $data['OHI']['SMT'] +=1;
+            //                 $data['OHI']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OHI']['SF18'] +=1;
+            //                 $data['OHI']['SFT'] +=1;
+            //                 $data['OHI']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==13){
+            //             if($result->sex == 'Male'){
+            //                 $data['OHI']['SM25'] +=1;
+            //                 $data['OHI']['SMT'] +=1;
+            //                 $data['OHI']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OHI']['SF25'] +=1;
+            //                 $data['OHI']['SFT'] +=1;
+            //                 $data['OHI']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==13){
+            //             if($result->sex == 'Male'){
+            //                 $data['OHI']['SM35'] +=1;
+            //                 $data['OHI']['SMT'] +=1;
+            //                 $data['OHI']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OHI']['SF35'] +=1;
+            //                 $data['OHI']['SFT'] +=1;
+            //                 $data['OHI']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==13){
+            //             if($result->sex == 'Male'){
+            //                 $data['OHI']['SM45'] +=1;
+            //                 $data['OHI']['SMT'] +=1;
+            //                 $data['OHI']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['OHI']['SF45'] +=1;
+            //                 $data['OHI']['SFT'] +=1;
+            //                 $data['OHI']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of Oral Health Instruction
+            //         // start of Referral
+            //         if($result->age>=18 && $result->age <=24 && $test->id==14){
+            //             if($result->sex == 'Male'){
+            //                 $data['PR']['SM18'] +=1;
+            //                 $data['PR']['SMT'] +=1;
+            //                 $data['PR']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['PR']['SF18'] +=1;
+            //                 $data['PR']['SFT'] +=1;
+            //                 $data['PR']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==14){
+            //             if($result->sex == 'Male'){
+            //                 $data['PR']['SM25'] +=1;
+            //                 $data['PR']['SMT'] +=1;
+            //                 $data['PR']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['PR']['SF25'] +=1;
+            //                 $data['PR']['SFT'] +=1;
+            //                 $data['PR']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==14){
+            //             if($result->sex == 'Male'){
+            //                 $data['PR']['SM35'] +=1;
+            //                 $data['PR']['SMT'] +=1;
+            //                 $data['PR']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['PR']['SF35'] +=1;
+            //                 $data['PR']['SFT'] +=1;
+            //                 $data['PR']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==14){
+            //             if($result->sex == 'Male'){
+            //                 $data['PR']['SM45'] +=1;
+            //                 $data['PR']['SMT'] +=1;
+            //                 $data['PR']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['PR']['SF45'] +=1;
+            //                 $data['PR']['SFT'] +=1;
+            //                 $data['PR']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of Referral
+            //         // start of Issuance of Med Cert
+            //         if($result->age>=18 && $result->age <=24 && $test->id==15){
+            //             if($result->sex == 'Male'){
+            //                 $data['IC']['SM18'] +=1;
+            //                 $data['IC']['SMT'] +=1;
+            //                 $data['IC']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['IC']['SF18'] +=1;
+            //                 $data['IC']['SFT'] +=1;
+            //                 $data['IC']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=25 && $result->age <=34 && $test->id==15){
+            //             if($result->sex == 'Male'){
+            //                 $data['IC']['SM25'] +=1;
+            //                 $data['IC']['SMT'] +=1;
+            //                 $data['IC']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['IC']['SF25'] +=1;
+            //                 $data['IC']['SFT'] +=1;
+            //                 $data['IC']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=35 && $result->age <=44 && $test->id==15){
+            //             if($result->sex == 'Male'){
+            //                 $data['IC']['SM35'] +=1;
+            //                 $data['IC']['SMT'] +=1;
+            //                 $data['IC']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['IC']['SF35'] +=1;
+            //                 $data['IC']['SFT'] +=1;
+            //                 $data['IC']['ST'] +=1;
+            //             }
+            //         }
+            //         if($result->age>=45 && $result->age <=54 && $test->id==15){
+            //             if($result->sex == 'Male'){
+            //                 $data['IC']['SM45'] +=1;
+            //                 $data['IC']['SMT'] +=1;
+            //                 $data['IC']['ST'] +=1;
+            //             }
+            //             else{
+            //                 $data['IC']['SF45'] +=1;
+            //                 $data['IC']['SFT'] +=1;
+            //                 $data['IC']['ST'] +=1;
+            //             }
+            //         }
+            //         ///end of Issuance of Med Cert
+            //     }
+            // }
+            if($result->type==3 && $result->services_rendered){
                 foreach(json_decode($result->services_rendered) as $test){
                     // start of oral prophylaxis
-                    if($result->age>=18 && $result->age <=24 && $test->id==3){
+                    if($result->age>=0 && $result->age <=4 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['SM18'] +=1;
-                            $data['oral_prophylaxis']['SMT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['DM0'] +=1;
+                            $data['OP']['DMT'] +=1;
+                            $data['OP']['DT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['SF18'] +=1;
-                            $data['oral_prophylaxis']['SFT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['DF0'] +=1;
+                            $data['OP']['DFT'] +=1;
+                            $data['OP']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==3){
+                        if($result->sex == 'Male'){
+                            $data['OP']['DM5'] +=1;
+                            $data['OP']['DMT'] +=1;
+                            $data['OP']['DT'] +=1;
+                        }
+                        else{
+                            $data['OP']['DF5'] +=1;
+                            $data['OP']['DFT'] +=1;
+                            $data['OP']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==3){
+                        if($result->sex == 'Male'){
+                            $data['OP']['DM13'] +=1;
+                            $data['OP']['DMT'] +=1;
+                            $data['OP']['DT'] +=1;
+                        }
+                        else{
+                            $data['OP']['DF13'] +=1;
+                            $data['OP']['DFT'] +=1;
+                            $data['OP']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==3){
+                        if($result->sex == 'Male'){
+                            $data['OP']['DM18'] +=1;
+                            $data['OP']['DMT'] +=1;
+                            $data['OP']['DT'] +=1;
+                        }
+                        else{
+                            $data['OP']['DF18'] +=1;
+                            $data['OP']['DFT'] +=1;
+                            $data['OP']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['SM25'] +=1;
-                            $data['oral_prophylaxis']['SMT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['DM25'] +=1;
+                            $data['OP']['DMT'] +=1;
+                            $data['OP']['DT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['SF25'] +=1;
-                            $data['oral_prophylaxis']['SFT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['DF25'] +=1;
+                            $data['OP']['DFT'] +=1;
+                            $data['OP']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['SM35'] +=1;
-                            $data['oral_prophylaxis']['SMT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['DM35'] +=1;
+                            $data['OP']['DMT'] +=1;
+                            $data['OP']['DT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['SF35'] +=1;
-                            $data['oral_prophylaxis']['SFT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['DF35'] +=1;
+                            $data['OP']['DFT'] +=1;
+                            $data['OP']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==3){
                         if($result->sex == 'Male'){
-                            $data['oral_prophylaxis']['SM45'] +=1;
-                            $data['oral_prophylaxis']['SMT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['DM45'] +=1;
+                            $data['OP']['DMT'] +=1;
+                            $data['OP']['DT'] +=1;
                         }
                         else{
-                            $data['oral_prophylaxis']['SF45'] +=1;
-                            $data['oral_prophylaxis']['SFT'] +=1;
-                            $data['oral_prophylaxis']['ST'] +=1;
+                            $data['OP']['DF45'] +=1;
+                            $data['OP']['DFT'] +=1;
+                            $data['OP']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=55 && $result->age <=65 && $test->id==3){
+                        if($result->sex == 'Male'){
+                            $data['OP']['DM55'] +=1;
+                            $data['OP']['DMT'] +=1;
+                            $data['OP']['DT'] +=1;
+                        }
+                        else{
+                            $data['OP']['DF55'] +=1;
+                            $data['OP']['DFT'] +=1;
+                            $data['OP']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==3){
+                        if($result->sex == 'Male'){
+                            $data['OP']['DM66'] +=1;
+                            $data['OP']['DMT'] +=1;
+                            $data['OP']['DT'] +=1;
+                        }
+                        else{
+                            $data['OP']['DF66'] +=1;
+                            $data['OP']['DFT'] +=1;
+                            $data['OP']['DT'] +=1;
                         }
                     }
                     ///end of oral prophylaxis
-                    // start of extraction
-                    if($result->age>=18 && $result->age <=24 && $test->id==4){
+                    // start of EX
+                    if($result->age>=0 && $result->age <=4 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['SM18'] +=1;
-                            $data['extraction']['SMT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['DM0'] +=1;
+                            $data['EX']['DMT'] +=1;
+                            $data['EX']['DT'] +=1;
                         }
                         else{
-                            $data['extraction']['SF18'] +=1;
-                            $data['extraction']['SFT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['DF0'] +=1;
+                            $data['EX']['DFT'] +=1;
+                            $data['EX']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==4){
+                        if($result->sex == 'Male'){
+                            $data['EX']['DM5'] +=1;
+                            $data['EX']['DMT'] +=1;
+                            $data['EX']['DT'] +=1;
+                        }
+                        else{
+                            $data['EX']['DF5'] +=1;
+                            $data['EX']['DFT'] +=1;
+                            $data['EX']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==4){
+                        if($result->sex == 'Male'){
+                            $data['EX']['DM13'] +=1;
+                            $data['EX']['DMT'] +=1;
+                            $data['EX']['DT'] +=1;
+                        }
+                        else{
+                            $data['EX']['DF13'] +=1;
+                            $data['EX']['DFT'] +=1;
+                            $data['EX']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==4){
+                        if($result->sex == 'Male'){
+                            $data['EX']['DM18'] +=1;
+                            $data['EX']['DMT'] +=1;
+                            $data['EX']['DT'] +=1;
+                        }
+                        else{
+                            $data['EX']['DF18'] +=1;
+                            $data['EX']['DFT'] +=1;
+                            $data['EX']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['SM25'] +=1;
-                            $data['extraction']['SMT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['DM25'] +=1;
+                            $data['EX']['DMT'] +=1;
+                            $data['EX']['DT'] +=1;
                         }
                         else{
-                            $data['extraction']['SF25'] +=1;
-                            $data['extraction']['SFT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['DF25'] +=1;
+                            $data['EX']['DFT'] +=1;
+                            $data['EX']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['SM35'] +=1;
-                            $data['extraction']['SMT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['DM35'] +=1;
+                            $data['EX']['DMT'] +=1;
+                            $data['EX']['DT'] +=1;
                         }
                         else{
-                            $data['extraction']['SF35'] +=1;
-                            $data['extraction']['SFT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['DF35'] +=1;
+                            $data['EX']['DFT'] +=1;
+                            $data['EX']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['extraction']['SM45'] +=1;
-                            $data['extraction']['SMT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['DM45'] +=1;
+                            $data['EX']['DMT'] +=1;
+                            $data['EX']['DT'] +=1;
                         }
                         else{
-                            $data['extraction']['SF45'] +=1;
-                            $data['extraction']['SFT'] +=1;
-                            $data['extraction']['ST'] +=1;
+                            $data['EX']['DF45'] +=1;
+                            $data['EX']['DFT'] +=1;
+                            $data['EX']['DT'] +=1;
                         }
                     }
-                    ///end of extraction
-                    // start of permanent tooth
-                    if($result->age>=18 && $result->age <=24 && $test->id==5){
+                    if($result->age>=55 && $result->age <=65 && $test->id==4){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['SM18'] +=1;
-                            $data['permanent_tooth']['SMT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['EX']['DM55'] +=1;
+                            $data['EX']['DMT'] +=1;
+                            $data['EX']['DT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['SF18'] +=1;
-                            $data['permanent_tooth']['SFT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['EX']['DF55'] +=1;
+                            $data['EX']['DFT'] +=1;
+                            $data['EX']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==4){
+                        if($result->sex == 'Male'){
+                            $data['EX']['DM66'] +=1;
+                            $data['EX']['DMT'] +=1;
+                            $data['EX']['DT'] +=1;
+                        }
+                        else{
+                            $data['EX']['DF66'] +=1;
+                            $data['EX']['DFT'] +=1;
+                            $data['EX']['DT'] +=1;
+                        }
+                    }
+
+                    ///end of EX
+                    // start of permanent tooth
+                    if($result->age>=0 && $result->age <=4 && $test->id==5){
+                        if($result->sex == 'Male'){
+                            $data['PTO']['DM0'] +=1;
+                            $data['PTO']['DMT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                        else{
+                            $data['PTO']['DF0'] +=1;
+                            $data['PTO']['DFT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==5){
+                        if($result->sex == 'Male'){
+                            $data['PTO']['DM5'] +=1;
+                            $data['PTO']['DMT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                        else{
+                            $data['PTO']['DF5'] +=1;
+                            $data['PTO']['DFT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==5){
+                        if($result->sex == 'Male'){
+                            $data['PTO']['DM13'] +=1;
+                            $data['PTO']['DMT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                        else{
+                            $data['PTO']['DF13'] +=1;
+                            $data['PTO']['DFT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==5){
+                        if($result->sex == 'Male'){
+                            $data['PTO']['DM18'] +=1;
+                            $data['PTO']['DMT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                        else{
+                            $data['PTO']['DF18'] +=1;
+                            $data['PTO']['DFT'] +=1;
+                            $data['PTO']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['SM25'] +=1;
-                            $data['permanent_tooth']['SMT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['DM25'] +=1;
+                            $data['PTO']['DMT'] +=1;
+                            $data['PTO']['DT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['SF25'] +=1;
-                            $data['permanent_tooth']['SFT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['DF25'] +=1;
+                            $data['PTO']['DFT'] +=1;
+                            $data['PTO']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['SM35'] +=1;
-                            $data['permanent_tooth']['SMT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['DM35'] +=1;
+                            $data['PTO']['DMT'] +=1;
+                            $data['PTO']['DT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['SF35'] +=1;
-                            $data['permanent_tooth']['SFT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['DF35'] +=1;
+                            $data['PTO']['DFT'] +=1;
+                            $data['PTO']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==5){
                         if($result->sex == 'Male'){
-                            $data['permanent_tooth']['SM45'] +=1;
-                            $data['permanent_tooth']['SMT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['DM45'] +=1;
+                            $data['PTO']['DMT'] +=1;
+                            $data['PTO']['DT'] +=1;
                         }
                         else{
-                            $data['permanent_tooth']['SF45'] +=1;
-                            $data['permanent_tooth']['SFT'] +=1;
-                            $data['permanent_tooth']['ST'] +=1;
+                            $data['PTO']['DF45'] +=1;
+                            $data['PTO']['DFT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=55 && $result->age <=65 && $test->id==5){
+                        if($result->sex == 'Male'){
+                            $data['PTO']['DM55'] +=1;
+                            $data['PTO']['DMT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                        else{
+                            $data['PTO']['DF55'] +=1;
+                            $data['PTO']['DFT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==5){
+                        if($result->sex == 'Male'){
+                            $data['PTO']['DM66'] +=1;
+                            $data['PTO']['DMT'] +=1;
+                            $data['PTO']['DT'] +=1;
+                        }
+                        else{
+                            $data['PTO']['DF66'] +=1;
+                            $data['PTO']['DFT'] +=1;
+                            $data['PTO']['DT'] +=1;
                         }
                     }
                     ///end of permanent tooth
                     // start of temporary tooth
-                    if($result->age>=18 && $result->age <=24 && $test->id==6){
+                    if($result->age>=0 && $result->age <=4 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['SM18'] +=1;
-                            $data['temporary_tooth']['SMT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['DM0'] +=1;
+                            $data['TTO']['DMT'] +=1;
+                            $data['TTO']['DT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['SF18'] +=1;
-                            $data['temporary_tooth']['SFT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['DF0'] +=1;
+                            $data['TTO']['DFT'] +=1;
+                            $data['TTO']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==6){
+                        if($result->sex == 'Male'){
+                            $data['TTO']['DM5'] +=1;
+                            $data['TTO']['DMT'] +=1;
+                            $data['TTO']['DT'] +=1;
+                        }
+                        else{
+                            $data['TTO']['DF5'] +=1;
+                            $data['TTO']['DFT'] +=1;
+                            $data['TTO']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==6){
+                        if($result->sex == 'Male'){
+                            $data['TTO']['DM13'] +=1;
+                            $data['TTO']['DMT'] +=1;
+                            $data['TTO']['DT'] +=1;
+                        }
+                        else{
+                            $data['TTO']['DF13'] +=1;
+                            $data['TTO']['DFT'] +=1;
+                            $data['TTO']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==6){
+                        if($result->sex == 'Male'){
+                            $data['TTO']['DM18'] +=1;
+                            $data['TTO']['DMT'] +=1;
+                            $data['TTO']['DT'] +=1;
+                        }
+                        else{
+                            $data['TTO']['DF18'] +=1;
+                            $data['TTO']['DFT'] +=1;
+                            $data['TTO']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['SM25'] +=1;
-                            $data['temporary_tooth']['SMT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['DM25'] +=1;
+                            $data['TTO']['DMT'] +=1;
+                            $data['TTO']['DT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['SF25'] +=1;
-                            $data['temporary_tooth']['SFT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['DF25'] +=1;
+                            $data['TTO']['DFT'] +=1;
+                            $data['TTO']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['SM35'] +=1;
-                            $data['temporary_tooth']['SMT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['DM35'] +=1;
+                            $data['TTO']['DMT'] +=1;
+                            $data['TTO']['DT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['SF35'] +=1;
-                            $data['temporary_tooth']['SFT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['DF35'] +=1;
+                            $data['TTO']['DFT'] +=1;
+                            $data['TTO']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['temporary_tooth']['SM45'] +=1;
-                            $data['temporary_tooth']['SMT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['DM45'] +=1;
+                            $data['TTO']['DMT'] +=1;
+                            $data['TTO']['DT'] +=1;
                         }
                         else{
-                            $data['temporary_tooth']['SF45'] +=1;
-                            $data['temporary_tooth']['SFT'] +=1;
-                            $data['temporary_tooth']['ST'] +=1;
+                            $data['TTO']['DF45'] +=1;
+                            $data['TTO']['DFT'] +=1;
+                            $data['TTO']['DT'] +=1;
                         }
                     }
-                    ///end of temporary tooth
-                    // start of filling/restoration
-                    if($result->age>=18 && $result->age <=24 && $test->id==7){
+                    if($result->age>=55 && $result->age <=65 && $test->id==6){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['SM18'] +=1;
-                            $data['filling_restoration']['SMT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['TTO']['DM55'] +=1;
+                            $data['TTO']['DMT'] +=1;
+                            $data['TTO']['DT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['SF18'] +=1;
-                            $data['filling_restoration']['SFT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['TTO']['DF55'] +=1;
+                            $data['TTO']['DFT'] +=1;
+                            $data['TTO']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66  && $test->id==6){
+                        if($result->sex == 'Male'){
+                            $data['TTO']['DM66'] +=1;
+                            $data['TTO']['DMT'] +=1;
+                            $data['TTO']['DT'] +=1;
+                        }
+                        else{
+                            $data['TTO']['DF66'] +=1;
+                            $data['TTO']['DFT'] +=1;
+                            $data['TTO']['DT'] +=1;
+                        }
+                    }
+
+                    ///end of temporary tooth
+                    // start of filling/restoration
+                    if($result->age>=0 && $result->age <=4 && $test->id==7){
+                        if($result->sex == 'Male'){
+                            $data['FR']['DM0'] +=1;
+                            $data['FR']['DMT'] +=1;
+                            $data['FR']['DT'] +=1;
+                        }
+                        else{
+                            $data['FR']['DF0'] +=1;
+                            $data['FR']['DFT'] +=1;
+                            $data['FR']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==7){
+                        if($result->sex == 'Male'){
+                            $data['FR']['DM5'] +=1;
+                            $data['FR']['DMT'] +=1;
+                            $data['FR']['DT'] +=1;
+                        }
+                        else{
+                            $data['FR']['DF5'] +=1;
+                            $data['FR']['DFT'] +=1;
+                            $data['FR']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==7){
+                        if($result->sex == 'Male'){
+                            $data['FR']['DM13'] +=1;
+                            $data['FR']['DMT'] +=1;
+                            $data['FR']['DT'] +=1;
+                        }
+                        else{
+                            $data['FR']['DF13'] +=1;
+                            $data['FR']['DFT'] +=1;
+                            $data['FR']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==7){
+                        if($result->sex == 'Male'){
+                            $data['FR']['DM18'] +=1;
+                            $data['FR']['DMT'] +=1;
+                            $data['FR']['DT'] +=1;
+                        }
+                        else{
+                            $data['FR']['DF18'] +=1;
+                            $data['FR']['DFT'] +=1;
+                            $data['FR']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['SM25'] +=1;
-                            $data['filling_restoration']['SMT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['DM25'] +=1;
+                            $data['FR']['DMT'] +=1;
+                            $data['FR']['DT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['SF25'] +=1;
-                            $data['filling_restoration']['SFT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['DF25'] +=1;
+                            $data['FR']['DFT'] +=1;
+                            $data['FR']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['SM35'] +=1;
-                            $data['filling_restoration']['SMT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['DM35'] +=1;
+                            $data['FR']['DMT'] +=1;
+                            $data['FR']['DT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['SF35'] +=1;
-                            $data['filling_restoration']['SFT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['DF35'] +=1;
+                            $data['FR']['DFT'] +=1;
+                            $data['FR']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['filling_restoration']['SM45'] +=1;
-                            $data['filling_restoration']['SMT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['DM45'] +=1;
+                            $data['FR']['DMT'] +=1;
+                            $data['FR']['DT'] +=1;
                         }
                         else{
-                            $data['filling_restoration']['SF45'] +=1;
-                            $data['filling_restoration']['SFT'] +=1;
-                            $data['filling_restoration']['ST'] +=1;
+                            $data['FR']['DF45'] +=1;
+                            $data['FR']['DFT'] +=1;
+                            $data['FR']['DT'] +=1;
                         }
                     }
-                    ///end of filling/restoration
-                    // start of teeth filled with comp
-                    if($result->age>=18 && $result->age <=24 && $test->id==8){
+                    if($result->age>=55 && $result->age <=65 && $test->id==7){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['SM18'] +=1;
-                            $data['tooth_filled_comp']['SMT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['FR']['DM55'] +=1;
+                            $data['FR']['DMT'] +=1;
+                            $data['FR']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['SF18'] +=1;
-                            $data['tooth_filled_comp']['SFT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['FR']['DF55'] +=1;
+                            $data['FR']['DFT'] +=1;
+                            $data['FR']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66  && $test->id==7){
+                        if($result->sex == 'Male'){
+                            $data['FR']['DM66'] +=1;
+                            $data['FR']['DMT'] +=1;
+                            $data['FR']['DT'] +=1;
+                        }
+                        else{
+                            $data['FR']['DF66'] +=1;
+                            $data['FR']['DFT'] +=1;
+                            $data['FR']['DT'] +=1;
+                        }
+                    }
+
+                    ///end of filling/restoration
+                    // start of teeth filled with comp
+                    if($result->age>=0 && $result->age <=4 && $test->id==8){
+                        if($result->sex == 'Male'){
+                            $data['TFC']['DM0'] +=1;
+                            $data['TFC']['DMT'] +=1;
+                            $data['TFC']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFC']['DF0'] +=1;
+                            $data['TFC']['DFT'] +=1;
+                            $data['TFC']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==8){
+                        if($result->sex == 'Male'){
+                            $data['TFC']['DM5'] +=1;
+                            $data['TFC']['DMT'] +=1;
+                            $data['TFC']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFC']['DF5'] +=1;
+                            $data['TFC']['DFT'] +=1;
+                            $data['TFC']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==8){
+                        if($result->sex == 'Male'){
+                            $data['TFC']['DM13'] +=1;
+                            $data['TFC']['DMT'] +=1;
+                            $data['TFC']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFC']['DF13'] +=1;
+                            $data['TFC']['DFT'] +=1;
+                            $data['TFC']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==8){
+                        if($result->sex == 'Male'){
+                            $data['TFC']['DM18'] +=1;
+                            $data['TFC']['DMT'] +=1;
+                            $data['TFC']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFC']['DF18'] +=1;
+                            $data['TFC']['DFT'] +=1;
+                            $data['TFC']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['SM25'] +=1;
-                            $data['tooth_filled_comp']['SMT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['DM25'] +=1;
+                            $data['TFC']['DMT'] +=1;
+                            $data['TFC']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['SF25'] +=1;
-                            $data['tooth_filled_comp']['SFT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['DF25'] +=1;
+                            $data['TFC']['DFT'] +=1;
+                            $data['TFC']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['SM35'] +=1;
-                            $data['tooth_filled_comp']['SMT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['DM35'] +=1;
+                            $data['TFC']['DMT'] +=1;
+                            $data['TFC']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['SF35'] +=1;
-                            $data['tooth_filled_comp']['SFT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['DF35'] +=1;
+                            $data['TFC']['DFT'] +=1;
+                            $data['TFC']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_comp']['SM45'] +=1;
-                            $data['tooth_filled_comp']['SMT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['DM45'] +=1;
+                            $data['TFC']['DMT'] +=1;
+                            $data['TFC']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_comp']['SF45'] +=1;
-                            $data['tooth_filled_comp']['SFT'] +=1;
-                            $data['tooth_filled_comp']['ST'] +=1;
+                            $data['TFC']['DF45'] +=1;
+                            $data['TFC']['DFT'] +=1;
+                            $data['TFC']['DT'] +=1;
                         }
                     }
-                    ///end of teeth filled with comp
-                    // start of teeth filled with gic
-                    if($result->age>=18 && $result->age <=24 && $test->id==9){
+                    if($result->age>=55 && $result->age <=65 && $test->id==8){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['SM18'] +=1;
-                            $data['tooth_filled_gic']['SMT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFC']['DM55'] +=1;
+                            $data['TFC']['DMT'] +=1;
+                            $data['TFC']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['SF18'] +=1;
-                            $data['tooth_filled_gic']['SFT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFC']['DF55'] +=1;
+                            $data['TFC']['DFT'] +=1;
+                            $data['TFC']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==8){
+                        if($result->sex == 'Male'){
+                            $data['TFC']['DM66'] +=1;
+                            $data['TFC']['DMT'] +=1;
+                            $data['TFC']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFC']['DF66'] +=1;
+                            $data['TFC']['DFT'] +=1;
+                            $data['TFC']['DT'] +=1;
+                        }
+                    }
+
+                    ///end of teeth filled with comp
+                    // start of teeth filled with gic
+                    if($result->age>=0 && $result->age <=4 && $test->id==9){
+                        if($result->sex == 'Male'){
+                            $data['TFG']['DM0'] +=1;
+                            $data['TFG']['DMT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFG']['DF0'] +=1;
+                            $data['TFG']['DFT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==9){
+                        if($result->sex == 'Male'){
+                            $data['TFG']['DM5'] +=1;
+                            $data['TFG']['DMT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFG']['DF5'] +=1;
+                            $data['TFG']['DFT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==9){
+                        if($result->sex == 'Male'){
+                            $data['TFG']['DM13'] +=1;
+                            $data['TFG']['DMT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFG']['DF13'] +=1;
+                            $data['TFG']['DFT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==9){
+                        if($result->sex == 'Male'){
+                            $data['TFG']['DM18'] +=1;
+                            $data['TFG']['DMT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFG']['DF18'] +=1;
+                            $data['TFG']['DFT'] +=1;
+                            $data['TFG']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['SM25'] +=1;
-                            $data['tooth_filled_gic']['SMT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['DM25'] +=1;
+                            $data['TFG']['DMT'] +=1;
+                            $data['TFG']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['SF25'] +=1;
-                            $data['tooth_filled_gic']['SFT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['DF25'] +=1;
+                            $data['TFG']['DFT'] +=1;
+                            $data['TFG']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['SM35'] +=1;
-                            $data['tooth_filled_gic']['SMT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['DM35'] +=1;
+                            $data['TFG']['DMT'] +=1;
+                            $data['TFG']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['SF35'] +=1;
-                            $data['tooth_filled_gic']['SFT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['DF35'] +=1;
+                            $data['TFG']['DFT'] +=1;
+                            $data['TFG']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==9){
                         if($result->sex == 'Male'){
-                            $data['tooth_filled_gic']['SM45'] +=1;
-                            $data['tooth_filled_gic']['SMT'] +=1;
-                            $data['tooth_filled_gic']['ST'] +=1;
+                            $data['TFG']['DM45'] +=1;
+                            $data['TFG']['DMT'] +=1;
+                            $data['TFG']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_filled_gic']['SF45'] +=1;
-                            $data['tooth_filled_gic']['SFT'] +=1;
+                            $data['TFG']['DF45'] +=1;
+                            $data['TFG']['DFT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=55 && $result->age <=65 && $test->id==9){
+                        if($result->sex == 'Male'){
+                            $data['TFG']['DM55'] +=1;
+                            $data['TFG']['DMT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFG']['DF55'] +=1;
+                            $data['TFG']['DFT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==9){
+                        if($result->sex == 'Male'){
+                            $data['TFG']['DM66'] +=1;
+                            $data['TFG']['DMT'] +=1;
+                            $data['TFG']['DT'] +=1;
+                        }
+                        else{
+                            $data['TFG']['DF66'] +=1;
+                            $data['TFG']['DFT'] +=1;
+                            $data['TFG']['DT'] +=1;
                         }
                     }
                     ///end of teeth filled with gic
-                    // start of Sealant
-                    if($result->age>=18 && $result->age <=24 && $test->id==10){
+                    // start of SE
+                    if($result->age>=0 && $result->age <=4 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['SM18'] +=1;
-                            $data['sealant']['SMT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['DM0'] +=1;
+                            $data['SE']['DMT'] +=1;
+                            $data['SE']['DT'] +=1;
                         }
                         else{
-                            $data['sealant']['SF18'] +=1;
-                            $data['sealant']['SFT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['DF0'] +=1;
+                            $data['SE']['DFT'] +=1;
+                            $data['SE']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==10){
+                        if($result->sex == 'Male'){
+                            $data['SE']['DM5'] +=1;
+                            $data['SE']['DMT'] +=1;
+                            $data['SE']['DT'] +=1;
+                        }
+                        else{
+                            $data['SE']['DF5'] +=1;
+                            $data['SE']['DFT'] +=1;
+                            $data['SE']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==10){
+                        if($result->sex == 'Male'){
+                            $data['SE']['DM13'] +=1;
+                            $data['SE']['DMT'] +=1;
+                            $data['SE']['DT'] +=1;
+                        }
+                        else{
+                            $data['SE']['DF13'] +=1;
+                            $data['SE']['DFT'] +=1;
+                            $data['SE']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==10){
+                        if($result->sex == 'Male'){
+                            $data['SE']['DM18'] +=1;
+                            $data['SE']['DMT'] +=1;
+                            $data['SE']['DT'] +=1;
+                        }
+                        else{
+                            $data['SE']['DF18'] +=1;
+                            $data['SE']['DFT'] +=1;
+                            $data['SE']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['SM25'] +=1;
-                            $data['sealant']['SMT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['DM25'] +=1;
+                            $data['SE']['DMT'] +=1;
+                            $data['SE']['DT'] +=1;
                         }
                         else{
-                            $data['sealant']['SF25'] +=1;
-                            $data['sealant']['SFT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['DF25'] +=1;
+                            $data['SE']['DFT'] +=1;
+                            $data['SE']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['SM35'] +=1;
-                            $data['sealant']['SMT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['DM35'] +=1;
+                            $data['SE']['DMT'] +=1;
+                            $data['SE']['DT'] +=1;
                         }
                         else{
-                            $data['sealant']['SF35'] +=1;
-                            $data['sealant']['SFT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['DF35'] +=1;
+                            $data['SE']['DFT'] +=1;
+                            $data['SE']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['sealant']['SM45'] +=1;
-                            $data['sealant']['SMT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['DM45'] +=1;
+                            $data['SE']['DMT'] +=1;
+                            $data['SE']['DT'] +=1;
                         }
                         else{
-                            $data['sealant']['SF45'] +=1;
-                            $data['sealant']['SFT'] +=1;
-                            $data['sealant']['ST'] +=1;
+                            $data['SE']['DF45'] +=1;
+                            $data['SE']['DFT'] +=1;
+                            $data['SE']['DT'] +=1;
                         }
                     }
-                    ///end of Sealant
-                    // start of Tooth Applied w/ sealant
-                    if($result->age>=18 && $result->age <=24 && $test->id==11){
+                    if($result->age>=55 && $result->age <=65 && $test->id==10){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['SM18'] +=1;
-                            $data['tooth_applied_sealant']['SMT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['SE']['DM55'] +=1;
+                            $data['SE']['DMT'] +=1;
+                            $data['SE']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['SF18'] +=1;
-                            $data['tooth_applied_sealant']['SFT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['SE']['DF55'] +=1;
+                            $data['SE']['DFT'] +=1;
+                            $data['SE']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==10){
+                        if($result->sex == 'Male'){
+                            $data['SE']['DM66'] +=1;
+                            $data['SE']['DMT'] +=1;
+                            $data['SE']['DT'] +=1;
+                        }
+                        else{
+                            $data['SE']['DF66'] +=1;
+                            $data['SE']['DFT'] +=1;
+                            $data['SE']['DT'] +=1;
+                        }
+                    }
+                    ///end of SE
+                    // start of Tooth Applied w/ SE
+                    if($result->age>=0 && $result->age <=4 && $test->id==11){
+                        if($result->sex == 'Male'){
+                            $data['TAS']['DM0'] +=1;
+                            $data['TAS']['DMT'] +=1;
+                            $data['TAS']['DT'] +=1;
+                        }
+                        else{
+                            $data['TAS']['DF0'] +=1;
+                            $data['TAS']['DFT'] +=1;
+                            $data['TAS']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==11){
+                        if($result->sex == 'Male'){
+                            $data['TAS']['DM5'] +=1;
+                            $data['TAS']['DMT'] +=1;
+                            $data['TAS']['DT'] +=1;
+                        }
+                        else{
+                            $data['TAS']['DF5'] +=1;
+                            $data['TAS']['DFT'] +=1;
+                            $data['TAS']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==11){
+                        if($result->sex == 'Male'){
+                            $data['TAS']['DM13'] +=1;
+                            $data['TAS']['DMT'] +=1;
+                            $data['TAS']['DT'] +=1;
+                        }
+                        else{
+                            $data['TAS']['DF13'] +=1;
+                            $data['TAS']['DFT'] +=1;
+                            $data['TAS']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==11){
+                        if($result->sex == 'Male'){
+                            $data['TAS']['DM18'] +=1;
+                            $data['TAS']['DMT'] +=1;
+                            $data['TAS']['DT'] +=1;
+                        }
+                        else{
+                            $data['TAS']['DF18'] +=1;
+                            $data['TAS']['DFT'] +=1;
+                            $data['TAS']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['SM25'] +=1;
-                            $data['tooth_applied_sealant']['SMT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['DM25'] +=1;
+                            $data['TAS']['DMT'] +=1;
+                            $data['TAS']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['SF25'] +=1;
-                            $data['tooth_applied_sealant']['SFT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['DF25'] +=1;
+                            $data['TAS']['DFT'] +=1;
+                            $data['TAS']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['SM35'] +=1;
-                            $data['tooth_applied_sealant']['SMT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['DM35'] +=1;
+                            $data['TAS']['DMT'] +=1;
+                            $data['TAS']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['SF35'] +=1;
-                            $data['tooth_applied_sealant']['SFT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['DF35'] +=1;
+                            $data['TAS']['DFT'] +=1;
+                            $data['TAS']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['tooth_applied_sealant']['SM45'] +=1;
-                            $data['tooth_applied_sealant']['SMT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['DM45'] +=1;
+                            $data['TAS']['DMT'] +=1;
+                            $data['TAS']['DT'] +=1;
                         }
                         else{
-                            $data['tooth_applied_sealant']['SF45'] +=1;
-                            $data['tooth_applied_sealant']['SFT'] +=1;
-                            $data['tooth_applied_sealant']['ST'] +=1;
+                            $data['TAS']['DF45'] +=1;
+                            $data['TAS']['DFT'] +=1;
+                            $data['TAS']['DT'] +=1;
                         }
                     }
-                    ///end of Tooth Applied w/ sealant
-                    // start of Other Treatment
-                    if($result->age>=18 && $result->age <=24 && $test->id==12){
+                    if($result->age>=55 && $result->age <=65 && $test->id==11){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['SM18'] +=1;
-                            $data['other_treatment']['SMT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['TAS']['DM55'] +=1;
+                            $data['TAS']['DMT'] +=1;
+                            $data['TAS']['DT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['SF18'] +=1;
-                            $data['other_treatment']['SFT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['TAS']['DF55'] +=1;
+                            $data['TAS']['DFT'] +=1;
+                            $data['TAS']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==11){
+                        if($result->sex == 'Male'){
+                            $data['TAS']['DM66'] +=1;
+                            $data['TAS']['DMT'] +=1;
+                            $data['TAS']['DT'] +=1;
+                        }
+                        else{
+                            $data['TAS']['DF66'] +=1;
+                            $data['TAS']['DFT'] +=1;
+                            $data['TAS']['DT'] +=1;
+                        }
+                    }
+                    ///end of Tooth Applied w/ SE
+                    // start of Other Treatment
+                    if($result->age>=0 && $result->age <=4 && $test->id==12){
+                        if($result->sex == 'Male'){
+                            $data['OT']['DM0'] +=1;
+                            $data['OT']['DMT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                        else{
+                            $data['OT']['DF0'] +=1;
+                            $data['OT']['DFT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==12){
+                        if($result->sex == 'Male'){
+                            $data['OT']['DM5'] +=1;
+                            $data['OT']['DMT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                        else{
+                            $data['OT']['DF5'] +=1;
+                            $data['OT']['DFT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==12){
+                        if($result->sex == 'Male'){
+                            $data['OT']['DM13'] +=1;
+                            $data['OT']['DMT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                        else{
+                            $data['OT']['DF13'] +=1;
+                            $data['OT']['DFT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==12){
+                        if($result->sex == 'Male'){
+                            $data['OT']['DM18'] +=1;
+                            $data['OT']['DMT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                        else{
+                            $data['OT']['DF18'] +=1;
+                            $data['OT']['DFT'] +=1;
+                            $data['OT']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['SM25'] +=1;
-                            $data['other_treatment']['SMT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['DM25'] +=1;
+                            $data['OT']['DMT'] +=1;
+                            $data['OT']['DT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['SF25'] +=1;
-                            $data['other_treatment']['SFT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['DF25'] +=1;
+                            $data['OT']['DFT'] +=1;
+                            $data['OT']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['SM35'] +=1;
-                            $data['other_treatment']['SMT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['DM35'] +=1;
+                            $data['OT']['DMT'] +=1;
+                            $data['OT']['DT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['SF35'] +=1;
-                            $data['other_treatment']['SFT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['DF35'] +=1;
+                            $data['OT']['DFT'] +=1;
+                            $data['OT']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==12){
                         if($result->sex == 'Male'){
-                            $data['other_treatment']['SM45'] +=1;
-                            $data['other_treatment']['SMT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['DM45'] +=1;
+                            $data['OT']['DMT'] +=1;
+                            $data['OT']['DT'] +=1;
                         }
                         else{
-                            $data['other_treatment']['SF45'] +=1;
-                            $data['other_treatment']['SFT'] +=1;
-                            $data['other_treatment']['ST'] +=1;
+                            $data['OT']['DF45'] +=1;
+                            $data['OT']['DFT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=55 && $result->age <=65 && $test->id==12){
+                        if($result->sex == 'Male'){
+                            $data['OT']['DM55'] +=1;
+                            $data['OT']['DMT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                        else{
+                            $data['OT']['DF55'] +=1;
+                            $data['OT']['DFT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==12){
+                        if($result->sex == 'Male'){
+                            $data['OT']['DM66'] +=1;
+                            $data['OT']['DMT'] +=1;
+                            $data['OT']['DT'] +=1;
+                        }
+                        else{
+                            $data['OT']['DF66'] +=1;
+                            $data['OT']['DFT'] +=1;
+                            $data['OT']['DT'] +=1;
                         }
                     }
                     ///end of Other Treatment
                     // start of Oral Health Instruction
-                    if($result->age>=18 && $result->age <=24 && $test->id==13){
+                    if($result->age>=0 && $result->age <=4 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['SM18'] +=1;
-                            $data['oral_health_instruction']['SMT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['DM0'] +=1;
+                            $data['OHI']['DMT'] +=1;
+                            $data['OHI']['DT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['SF18'] +=1;
-                            $data['oral_health_instruction']['SFT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['DF0'] +=1;
+                            $data['OHI']['DFT'] +=1;
+                            $data['OHI']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==13){
+                        if($result->sex == 'Male'){
+                            $data['OHI']['DM5'] +=1;
+                            $data['OHI']['DMT'] +=1;
+                            $data['OHI']['DT'] +=1;
+                        }
+                        else{
+                            $data['OHI']['DF5'] +=1;
+                            $data['OHI']['DFT'] +=1;
+                            $data['OHI']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==13){
+                        if($result->sex == 'Male'){
+                            $data['OHI']['DM13'] +=1;
+                            $data['OHI']['DMT'] +=1;
+                            $data['OHI']['DT'] +=1;
+                        }
+                        else{
+                            $data['OHI']['DF13'] +=1;
+                            $data['OHI']['DFT'] +=1;
+                            $data['OHI']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==13){
+                        if($result->sex == 'Male'){
+                            $data['OHI']['DM18'] +=1;
+                            $data['OHI']['DMT'] +=1;
+                            $data['OHI']['DT'] +=1;
+                        }
+                        else{
+                            $data['OHI']['DF18'] +=1;
+                            $data['OHI']['DFT'] +=1;
+                            $data['OHI']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['SM25'] +=1;
-                            $data['oral_health_instruction']['SMT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['DM25'] +=1;
+                            $data['OHI']['DMT'] +=1;
+                            $data['OHI']['DT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['SF25'] +=1;
-                            $data['oral_health_instruction']['SFT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['DF25'] +=1;
+                            $data['OHI']['DFT'] +=1;
+                            $data['OHI']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['SM35'] +=1;
-                            $data['oral_health_instruction']['SMT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['DM35'] +=1;
+                            $data['OHI']['DMT'] +=1;
+                            $data['OHI']['DT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['SF35'] +=1;
-                            $data['oral_health_instruction']['SFT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['DF35'] +=1;
+                            $data['OHI']['DFT'] +=1;
+                            $data['OHI']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==13){
                         if($result->sex == 'Male'){
-                            $data['oral_health_instruction']['SM45'] +=1;
-                            $data['oral_health_instruction']['SMT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['DM45'] +=1;
+                            $data['OHI']['DMT'] +=1;
+                            $data['OHI']['DT'] +=1;
                         }
                         else{
-                            $data['oral_health_instruction']['SF45'] +=1;
-                            $data['oral_health_instruction']['SFT'] +=1;
-                            $data['oral_health_instruction']['ST'] +=1;
+                            $data['OHI']['DF45'] +=1;
+                            $data['OHI']['DFT'] +=1;
+                            $data['OHI']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=55 && $result->age <=65 && $test->id==13){
+                        if($result->sex == 'Male'){
+                            $data['OHI']['DM55'] +=1;
+                            $data['OHI']['DMT'] +=1;
+                            $data['OHI']['DT'] +=1;
+                        }
+                        else{
+                            $data['OHI']['DF55'] +=1;
+                            $data['OHI']['DFT'] +=1;
+                            $data['OHI']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==13){
+                        if($result->sex == 'Male'){
+                            $data['OHI']['DM66'] +=1;
+                            $data['OHI']['DMT'] +=1;
+                            $data['OHI']['DT'] +=1;
+                        }
+                        else{
+                            $data['OHI']['DF66'] +=1;
+                            $data['OHI']['DFT'] +=1;
+                            $data['OHI']['DT'] +=1;
                         }
                     }
                     ///end of Oral Health Instruction
                     // start of Referral
-                    if($result->age>=18 && $result->age <=24 && $test->id==14){
+                    if($result->age>=0 && $result->age <=4 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['SM18'] +=1;
-                            $data['patients_referred']['SMT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['DM0'] +=1;
+                            $data['PR']['DMT'] +=1;
+                            $data['PR']['DT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['SF18'] +=1;
-                            $data['patients_referred']['SFT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['DF0'] +=1;
+                            $data['PR']['DFT'] +=1;
+                            $data['PR']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==14){
+                        if($result->sex == 'Male'){
+                            $data['PR']['DM5'] +=1;
+                            $data['PR']['DMT'] +=1;
+                            $data['PR']['DT'] +=1;
+                        }
+                        else{
+                            $data['PR']['DF5'] +=1;
+                            $data['PR']['DFT'] +=1;
+                            $data['PR']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==14){
+                        if($result->sex == 'Male'){
+                            $data['PR']['DM13'] +=1;
+                            $data['PR']['DMT'] +=1;
+                            $data['PR']['DT'] +=1;
+                        }
+                        else{
+                            $data['PR']['DF13'] +=1;
+                            $data['PR']['DFT'] +=1;
+                            $data['PR']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==14){
+                        if($result->sex == 'Male'){
+                            $data['PR']['DM18'] +=1;
+                            $data['PR']['DMT'] +=1;
+                            $data['PR']['DT'] +=1;
+                        }
+                        else{
+                            $data['PR']['DF18'] +=1;
+                            $data['PR']['DFT'] +=1;
+                            $data['PR']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['SM25'] +=1;
-                            $data['patients_referred']['SMT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['DM25'] +=1;
+                            $data['PR']['DMT'] +=1;
+                            $data['PR']['DT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['SF25'] +=1;
-                            $data['patients_referred']['SFT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['DF25'] +=1;
+                            $data['PR']['DFT'] +=1;
+                            $data['PR']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['SM35'] +=1;
-                            $data['patients_referred']['SMT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['DM35'] +=1;
+                            $data['PR']['DMT'] +=1;
+                            $data['PR']['DT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['SF35'] +=1;
-                            $data['patients_referred']['SFT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['DF35'] +=1;
+                            $data['PR']['DFT'] +=1;
+                            $data['PR']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==14){
                         if($result->sex == 'Male'){
-                            $data['patients_referred']['SM45'] +=1;
-                            $data['patients_referred']['SMT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['DM45'] +=1;
+                            $data['PR']['DMT'] +=1;
+                            $data['PR']['DT'] +=1;
                         }
                         else{
-                            $data['patients_referred']['SF45'] +=1;
-                            $data['patients_referred']['SFT'] +=1;
-                            $data['patients_referred']['ST'] +=1;
+                            $data['PR']['DF45'] +=1;
+                            $data['PR']['DFT'] +=1;
+                            $data['PR']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=55 && $result->age <=65 && $test->id==14){
+                        if($result->sex == 'Male'){
+                            $data['PR']['DM55'] +=1;
+                            $data['PR']['DMT'] +=1;
+                            $data['PR']['DT'] +=1;
+                        }
+                        else{
+                            $data['PR']['DF55'] +=1;
+                            $data['PR']['DFT'] +=1;
+                            $data['PR']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==14){
+                        if($result->sex == 'Male'){
+                            $data['PR']['DM66'] +=1;
+                            $data['PR']['DMT'] +=1;
+                            $data['PR']['DT'] +=1;
+                        }
+                        else{
+                            $data['PR']['DF66'] +=1;
+                            $data['PR']['DFT'] +=1;
+                            $data['PR']['DT'] +=1;
                         }
                     }
                     ///end of Referral
                     // start of Issuance of Med Cert
-                    if($result->age>=18 && $result->age <=24 && $test->id==15){
+                    if($result->age>=0 && $result->age <=4 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['SM18'] +=1;
-                            $data['issued_certificate']['SMT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['DM0'] +=1;
+                            $data['IC']['DMT'] +=1;
+                            $data['IC']['DT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['SF18'] +=1;
-                            $data['issued_certificate']['SFT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['DF0'] +=1;
+                            $data['IC']['DFT'] +=1;
+                            $data['IC']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=5 && $result->age <=12 && $test->id==15){
+                        if($result->sex == 'Male'){
+                            $data['IC']['DM5'] +=1;
+                            $data['IC']['DMT'] +=1;
+                            $data['IC']['DT'] +=1;
+                        }
+                        else{
+                            $data['IC']['DF5'] +=1;
+                            $data['IC']['DFT'] +=1;
+                            $data['IC']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==15){
+                        if($result->sex == 'Male'){
+                            $data['IC']['DM13'] +=1;
+                            $data['IC']['DMT'] +=1;
+                            $data['IC']['DT'] +=1;
+                        }
+                        else{
+                            $data['IC']['DF13'] +=1;
+                            $data['IC']['DFT'] +=1;
+                            $data['IC']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=18 && $result->age <=24 && $test->id==15){
+                        if($result->sex == 'Male'){
+                            $data['IC']['DM18'] +=1;
+                            $data['IC']['DMT'] +=1;
+                            $data['IC']['DT'] +=1;
+                        }
+                        else{
+                            $data['IC']['DF18'] +=1;
+                            $data['IC']['DFT'] +=1;
+                            $data['IC']['DT'] +=1;
                         }
                     }
                     if($result->age>=25 && $result->age <=34 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['SM25'] +=1;
-                            $data['issued_certificate']['SMT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['DM25'] +=1;
+                            $data['IC']['DMT'] +=1;
+                            $data['IC']['DT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['SF25'] +=1;
-                            $data['issued_certificate']['SFT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['DF25'] +=1;
+                            $data['IC']['DFT'] +=1;
+                            $data['IC']['DT'] +=1;
                         }
                     }
                     if($result->age>=35 && $result->age <=44 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['SM35'] +=1;
-                            $data['issued_certificate']['SMT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['DM35'] +=1;
+                            $data['IC']['DMT'] +=1;
+                            $data['IC']['DT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['SF35'] +=1;
-                            $data['issued_certificate']['SFT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['DF35'] +=1;
+                            $data['IC']['DFT'] +=1;
+                            $data['IC']['DT'] +=1;
                         }
                     }
                     if($result->age>=45 && $result->age <=54 && $test->id==15){
                         if($result->sex == 'Male'){
-                            $data['issued_certificate']['SM45'] +=1;
-                            $data['issued_certificate']['SMT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['DM45'] +=1;
+                            $data['IC']['DMT'] +=1;
+                            $data['IC']['DT'] +=1;
                         }
                         else{
-                            $data['issued_certificate']['SF45'] +=1;
-                            $data['issued_certificate']['SFT'] +=1;
-                            $data['issued_certificate']['ST'] +=1;
+                            $data['IC']['DF45'] +=1;
+                            $data['IC']['DFT'] +=1;
+                            $data['IC']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=55 && $result->age <=65 && $test->id==15){
+                        if($result->sex == 'Male'){
+                            $data['IC']['DM55'] +=1;
+                            $data['IC']['DMT'] +=1;
+                            $data['IC']['DT'] +=1;
+                        }
+                        else{
+                            $data['IC']['DF55'] +=1;
+                            $data['IC']['DFT'] +=1;
+                            $data['IC']['DT'] +=1;
+                        }
+                    }
+                    if($result->age>=66 && $test->id==15){
+                        if($result->sex == 'Male'){
+                            $data['IC']['DM66'] +=1;
+                            $data['IC']['DMT'] +=1;
+                            $data['IC']['DT'] +=1;
+                        }
+                        else{
+                            $data['IC']['DF66'] +=1;
+                            $data['IC']['DFT'] +=1;
+                            $data['IC']['DT'] +=1;
                         }
                     }
                     ///end of Issuance of Med Cert
@@ -3998,7 +5454,7 @@ class PrintablesController extends Controller
             }
 
 
-            return $data;
+            return response()->json($data);
             // return $result->age;
 
         }

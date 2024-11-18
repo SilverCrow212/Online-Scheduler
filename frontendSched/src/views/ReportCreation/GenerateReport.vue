@@ -9,6 +9,7 @@
       <button @click="getData">Download DOCX</button>
     </div>
 </div>
+<!-- {{ templateData }} -->
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -20,15 +21,24 @@ import { saveAs } from 'file-saver';
 
 async function getData (){
 
-  fetchDataReport();
+  const data= await fetchDataReport();
+  console.log('data',data)
+  if(data){
+    templateData.value = data;
+    console.log(templateData.value)
+    downloadDocx();
+  }
+  
 }
 
 
-const templateData = {
-  name: '1',
-};
+const templateData = ref(null);
+const TestOnly = {
+  name: {testname:'TestingOnly'}
+}
 // Function to handle DOCX download
 const downloadDocx = async () => {
+  console.log('testData',templateData.value)
   try {
     // Fetch the DOCX template (ensure the template is in your public directory or accessible path)
     const response = await fetch('/reports/reports.docx'); // Use the correct path, e.g., '/reports/reports.docx' if it's in the public folder
@@ -41,7 +51,7 @@ const downloadDocx = async () => {
     // Initialize docxtemplater with the PizZip instance
     const doc = new Docxtemplater(zip, { paragraphLoop: true, lineBreaks: true });
     // Set the data to replace in the template
-    doc.setData(templateData);
+    doc.setData(templateData.value);
     // Render the document (replace the placeholders with the actual data)
     doc.render();
     // Generate the final document (output as a binary .docx file)
