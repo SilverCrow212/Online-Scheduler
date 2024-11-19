@@ -14,8 +14,8 @@ const selectedPatientId = ref(user_details);
 const holiday = ref([]);
 onMounted(async () => {
 
-    informedConsentStore.resetData();
-    appointmentStore.resetAppointmentDetails();
+    // informedConsentStore.resetData();
+    // appointmentStore.resetAppointmentDetails();
     const data = await fetchAllPatient(); // Fetch the patient records
     const disabled = await fetchAppointmentOngoing(minDate.value);
     const holidays = await fetchHoliday();
