@@ -283,52 +283,132 @@ const finalconsent = informedConsentStore.data.finalconsent;
             <div class="treatment-section">
                 <span class="font-bold">TREATMENT TO BE DONE:</span>
                 <p class="justify">I understand and consent to have any treatment done by the dentist after the procedure, risks, benefits and costs have been fully explained. These treatments include, but are not limited to, oral prophylaxis (scaling and polishing), tooth restoration (filling), tooth extraction, local anesthesia, and other dental treatments that may arise during treatment or are necessary for my oral health.</p>
-                <div class="signature">Signature:<InputText type="text" v-model="preconsent.treatment"/></div>
+                <div class="signature">
+                    <span class="mr-3">
+                        <RadioButton v-model="preconsent.treatment" name="disagree" value="0" />
+                        <label for="agree" class="ml-2">I Do Not Agree</label>
+                    </span>
+                    <span>
+                        <RadioButton v-model="preconsent.treatment" name="agree" value="1" />
+                        <label for="agree" class="ml-2">I Agree</label>
+                    </span>
+                <!-- Signature:<InputText type="text" v-model="preconsent.treatment"/> -->
+                </div>
             </div>
 
             <div class="treatment-section">
                 <span class="font-bold">DRUGS AND MEDICATIONS:</span>
                 <p class="justify">I understand that antibiotics, analgesics, local anesthesia, and other medications can cause allergic reactions like redness and swelling of tissues, pain, itching, vomiting, and/or anaphylactic shock.</p>
-                <div class="signature">Signature:<InputText type="text" v-model="preconsent.drugs"/></div>
+                <div class="signature">
+                    <span class="mr-3">
+                        <RadioButton v-model="preconsent.drugs" name="disagree" value="0" />
+                        <label for="agree" class="ml-2">I Do Not Agree</label>
+                    </span>
+                    <span>
+                        <RadioButton v-model="preconsent.drugs" name="agree" value="1" />
+                        <label for="agree" class="ml-2">I Agree</label>
+                    </span>
+                <!-- Signature:<InputText type="text" v-model="preconsent.drugs"/> -->
+                </div>
             </div>
 
             <div class="treatment-section">
                 <span class="font-bold">CHANGES IN TREATMENT PLAN:</span>
                 <p class="justify">I understand that during treatment, it may be necessary to change/add procedures because of conditions that may arise or were not discovered during examination while working on the tooth (for example, root canal therapy may be needed following routine restorative procedure). I give my permission to the dentist to make any/all changes and additions or he/she may refer me to private practitioners to do the necessary treatment.</p>
-                <div class="signature">Signature:<InputText type="text" v-model="preconsent.treatmentPlan"/></div>
+                <div class="signature">
+                    <span class="mr-3">
+                        <RadioButton v-model="preconsent.treatmentPlan" name="disagree" value="0" />
+                        <label for="agree" class="ml-2">I Do Not Agree</label>
+                    </span>
+                    <span>
+                        <RadioButton v-model="preconsent.treatmentPlan" name="agree" value="1" />
+                        <label for="agree" class="ml-2">I Agree</label>
+                    </span>
+                <!-- Signature:<InputText type="text" v-model="preconsent.treatmentPlan"/> -->
+                </div>
             </div>
 
             <div class="treatment-section">
                 <span class="font-bold">RADIOGRAPH:</span>
                 <p class="justify">I understand that an x-ray shot or a radiograph may be necessary as part of the diagnostic aid to come up with a tentative diagnosis of my dental problem and to make a good treatment plan, but this will not give me a 100% assurance for the accuracy of the treatment since all dental treatments are subject to unpredictable complications that may later lead to sudden change of treatment and subject to new charges.</p>
-                <div class="signature">Signature:<InputText type="text" v-model="preconsent.radiograph"/></div>
+                <div class="signature">
+                    <span class="mr-3">
+                        <RadioButton v-model="preconsent.radiograph" name="disagree" value="0" />
+                        <label for="agree" class="ml-2">I Do Not Agree</label>
+                    </span>
+                    <span>
+                        <RadioButton v-model="preconsent.radiograph" name="agree" value="1" />
+                        <label for="agree" class="ml-2">I Agree</label>
+                    </span>
+                <!-- Signature:<InputText type="text" v-model="preconsent.radiograph"/> -->
+                </div>
             </div>
 
             <div class="treatment-section">
                 <span class="font-bold">REMOVAL OF TEETH:</span>
                 <p class="justify">I understand there are alternatives to tooth removal (root canal therapy, crowns, and periodontal surgery, etc.) and I completely understand these alternatives, including their risks and benefits prior to authorizing the dentist to remove teeth and any other structures necessary for reasons above. I understand that removing teeth does not always remove all the infections, if present, and it may be necessary to have further treatment. I understand the risks involved in having teeth removed, such as pain, swelling, spread of infection, dry socket, fractured jaw, loss of feeling on the teeth, lips, tongue, surrounding tissues that can last for an indefinite period of time. I understand that I may need further treatment under a specialist if complications arise during or following treatment.</p>
-                <div class="signature">Signature:<InputText type="text" v-model="preconsent.removal"/></div>
+                <div class="signature">
+                    <span class="mr-3">
+                        <RadioButton v-model="preconsent.removal" name="disagree" value="0" />
+                        <label for="agree" class="ml-2">I Do Not Agree</label>
+                    </span>
+                    <span>
+                        <RadioButton v-model="preconsent.removal" name="agree" value="1" />
+                        <label for="agree" class="ml-2">I Agree</label>
+                    </span>
+                <!-- Signature:<InputText type="text" v-model="preconsent.removal"/> -->
+                </div>
             </div>
 
             <div class="treatment-section">
                 <span class="font-bold">PERIODONTAL DISEASE:</span>
                 <p class="justify">I understand that periodontal disease is a serious condition causing gum and bone inflammation and/or loss and that can eventually lead to the loss of my teeth. I understand the alternative treatment plans to correct periodontal disease, including gum surgery, tooth extraction with or without replacement. I understand that undertaking any dental procedures may have future adverse effects on my periodontal conditions.</p>
-                <div class="signature">Signature:<InputText type="text" v-model="preconsent.periodontal"/></div>
+                <div class="signature">
+                    <span class="mr-3">
+                        <RadioButton v-model="preconsent.periodontal" name="disagree" value="0" />
+                        <label for="agree" class="ml-2">I Do Not Agree</label>
+                    </span>
+                    <span>
+                        <RadioButton v-model="preconsent.periodontal" name="agree" value="1" />
+                        <label for="agree" class="ml-2">I Agree</label>
+                    </span>
+                <!-- Signature:<InputText type="text" v-model="preconsent.periodontal"/> -->
+                </div>
             </div>
 
             <div class="treatment-section">
                 <span class="font-bold">FILLINGS:</span>
                 <p class="justify">I understand that care must be exercised in chewing on fillings, especially during the first 24 hours to avoid breakage. I understand that an extensive filling or a crown may be required, as additional decay or fracture may become evident after initial excavation. I understand that significant sensitivity is a common, but usually temporary, after-effect of a newly placed filling. I further understand that filling a tooth may irritate the nerve tissue, creating sensitivity, and treating such sensitivity could require root canal therapy or extractions.</p>
-                <div class="signature">Signature:<InputText type="text" v-model="preconsent.fillings"/></div>
+                <div class="signature">
+                    <span class="mr-3">
+                        <RadioButton v-model="preconsent.fillings" name="disagree" value="0" />
+                        <label for="agree" class="ml-2">I Do Not Agree</label>
+                    </span>
+                    <span>
+                        <RadioButton v-model="preconsent.fillings" name="agree" value="1" />
+                        <label for="agree" class="ml-2">I Agree</label>
+                    </span>
+                <!-- Signature:<InputText type="text" v-model="preconsent.fillings"/> -->
+                </div>
             </div>
 
             <div class="font-bold underline">I understand that dentistry is not an exact science and that no dentist can properly guarantee accurate results all the time.</div>
             <div class="justify">I hereby authorize the dentist to proceed with and perform dental treatment/s as explained to me. I understand that these are subject to modifications on undiagnosable circumstances that may arise during the course of treatment. The treatments were properly explained to me and any untoward circumstances that may arise during the procedure, the attending dentist will not be held liable since it is my free will, with full trust and confidence in him/her, to undergo dental treatment under his/her care.</div>
 
             <div class="signatures">
-                <div>Patient Signature:<InputText type="text" v-model="finalconsent.patient"/></div>
+                <div>E-Signature:
+                <span class="mr-3">
+                        <RadioButton v-model="finalconsent.patient" name="disagree" value="0" />
+                        <label for="agree" class="ml-2">I Do Not Agree</label>
+                    </span>
+                    <span>
+                        <RadioButton v-model="finalconsent.patient" name="agree" value="1" />
+                        <label for="agree" class="ml-2">I Agree</label>
+                    </span>
+                    <!-- <InputText type="text" v-model="finalconsent.patient"/> -->
+                </div>
                 <div>Date:<InputText type="text" v-model="finalconsent.date"/></div>
-                <div>Dentist Signature:<InputText type="text" v-model="finalconsent.dentist"/></div>
+                <!-- <div>Dentist Signature:<InputText type="text" v-model="finalconsent.dentist"/></div> -->
             </div>
             <!-- <Button class="mt-4" label="Finish" @click="closeTab"/> -->
         </div>
