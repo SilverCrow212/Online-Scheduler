@@ -47,6 +47,7 @@ async function clickSave(){
 }
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    'user_details.school_id_number': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'user_details.lastname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'user_details.firstname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'user_details.middlename': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -112,7 +113,7 @@ const statusOptions = computed(() => {
                         </div>
                     </div>
                 </div>
-                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['user_details.department_program','user_details.lastname','user_details.firstname','user_details.middlename']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
+                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['user_details.school_id_number','user_details.department_program','user_details.lastname','user_details.firstname','user_details.middlename']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
                     <template #header>
                         <div class="flex justify-content-end">
                             <IconField iconPosition="left">
@@ -124,6 +125,11 @@ const statusOptions = computed(() => {
                         </div>
                     </template>
                     <template #empty> No patients found. </template>
+                    <Column header="Patient Name">
+                        <template #body="slotProps">
+                            <span>{{ slotProps.data.user_details?.school_id_number }}</span>
+                        </template>
+                    </Column>
                     <Column field="name" header="Patient Name">
                         <template #body="slotProps">
                             <span>{{ slotProps.data.user_details?.lastname }}, {{ slotProps.data.user_details?.firstname }} {{ slotProps.data.user_details?.middlename }}</span>

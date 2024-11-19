@@ -46,6 +46,7 @@ function openProfile(){
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    'school_id_number': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'user_details.lastname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'user_details.firstname': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     'user_details.middlename': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -92,7 +93,7 @@ const typeOptions = computed(() => {
                         />
                     </div>
                 </div>
-                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['user_details.lastname','user_details.firstname','user_details.middlename']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" paginator :rows="10" @row-click="dialogOpen">
+                <DataTable v-model:selection="selectedPatient" v-model:filters="filters"  :globalFilterFields="['school_id_number','user_details.lastname','user_details.firstname','user_details.middlename','user_details.department_program']" :value="patients" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" paginator :rows="10" @row-click="dialogOpen">
                     <template #header>
                         <div class="flex justify-content-end">
                             <IconField iconPosition="left">
@@ -104,6 +105,11 @@ const typeOptions = computed(() => {
                         </div>
                     </template>
                     <template #empty> No patients found. </template>
+                    <Column header="ID Number">
+                        <template #body="slotProps">
+                            <span>{{ slotProps.data.school_id_number}}</span>
+                        </template>
+                    </Column>
                     <Column header="Patient Name">
                         <template #body="slotProps">
                             <span>{{ slotProps.data?.user_details?.lastname}}, {{ slotProps.data?.user_details?.firstname}} {{ slotProps.data?.user_details?.middlename}}</span>
