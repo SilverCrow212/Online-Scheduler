@@ -54,7 +54,7 @@ class PrintablesController extends Controller
         // }
         $data = [
             //not yet placed
-            'patients_examined' =>
+            'PE' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -93,9 +93,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -116,7 +116,7 @@ class PrintablesController extends Controller
                     'DFT'=>0,
                     'DT'=>0,
                 ],
-            'enrollees_examined' =>
+            'EE' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -155,9 +155,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -179,7 +179,7 @@ class PrintablesController extends Controller
                     'DT'=>0,
                 ],
 
-            'patients_treated' =>
+            'PT' =>
                 [
                     'SM18' => 0,
                     'SM25' => 0,
@@ -218,9 +218,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -281,9 +281,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -343,9 +343,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -405,9 +405,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -467,9 +467,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -529,9 +529,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -591,9 +591,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -653,9 +653,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -715,9 +715,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -777,9 +777,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -839,9 +839,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -901,9 +901,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -963,9 +963,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -1025,9 +1025,9 @@ class PrintablesController extends Controller
                     'HT'=>0,
                     'EM5'=>0,
                     'EM13'=>0,
+                    'EF5'=>0,
                     'EMT'=>0,
                     'EF13'=>0,
-                    'EF18'=>0,
                     'EFT'=>0,
                     'ET'=>0,
                     'DM0'=>0,
@@ -3021,6 +3021,18 @@ class PrintablesController extends Controller
                     // start of oral prophylaxis
                     if($result->age>=5 && $result->age <=12 && $test->id==3){
                         if($result->sex == 'Male'){
+                            $data['OP']['EM5'] +=1;
+                            $data['OP']['EMT'] +=1;
+                            $data['OP']['ET'] +=1;
+                        }
+                        else{
+                            $data['OP']['EF5'] +=1;
+                            $data['OP']['EFT'] +=1;
+                            $data['OP']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==3){
+                        if($result->sex == 'Male'){
                             $data['OP']['EM13'] +=1;
                             $data['OP']['EMT'] +=1;
                             $data['OP']['ET'] +=1;
@@ -3031,22 +3043,22 @@ class PrintablesController extends Controller
                             $data['OP']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==3){
-                        if($result->sex == 'Male'){
-                            $data['OP']['EM18'] +=1;
-                            $data['OP']['EMT'] +=1;
-                            $data['OP']['ET'] +=1;
-                        }
-                        else{
-                            $data['OP']['EF18'] +=1;
-                            $data['OP']['EFT'] +=1;
-                            $data['OP']['ET'] +=1;
-                        }
-                    }
 
                     // end of oral prophylaxis
                     // start of EX
                     if($result->age>=5 && $result->age <=12 && $test->id==4){
+                        if($result->sex == 'Male'){
+                            $data['EX']['EM5'] +=1;
+                            $data['EX']['EMT'] +=1;
+                            $data['EX']['ET'] +=1;
+                        }
+                        else{
+                            $data['EX']['EF5'] +=1;
+                            $data['EX']['EFT'] +=1;
+                            $data['EX']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==4){
                         if($result->sex == 'Male'){
                             $data['EX']['EM13'] +=1;
                             $data['EX']['EMT'] +=1;
@@ -3058,21 +3070,21 @@ class PrintablesController extends Controller
                             $data['EX']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==4){
-                        if($result->sex == 'Male'){
-                            $data['EX']['EM18'] +=1;
-                            $data['EX']['EMT'] +=1;
-                            $data['EX']['ET'] +=1;
-                        }
-                        else{
-                            $data['EX']['EF18'] +=1;
-                            $data['EX']['EFT'] +=1;
-                            $data['EX']['ET'] +=1;
-                        }
-                    }
                     // end of EX
                     // start of Permanent Tooth
                     if($result->age>=5 && $result->age <=12 && $test->id==5){
+                        if($result->sex == 'Male'){
+                            $data['PTO']['EM5'] +=1;
+                            $data['PTO']['EMT'] +=1;
+                            $data['PTO']['ET'] +=1;
+                        }
+                        else{
+                            $data['PTO']['EF5'] +=1;
+                            $data['PTO']['EFT'] +=1;
+                            $data['PTO']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==5){
                         if($result->sex == 'Male'){
                             $data['PTO']['EM13'] +=1;
                             $data['PTO']['EMT'] +=1;
@@ -3084,22 +3096,22 @@ class PrintablesController extends Controller
                             $data['PTO']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==5){
-                        if($result->sex == 'Male'){
-                            $data['PTO']['EM18'] +=1;
-                            $data['PTO']['EMT'] +=1;
-                            $data['PTO']['ET'] +=1;
-                        }
-                        else{
-                            $data['PTO']['EF18'] +=1;
-                            $data['PTO']['EFT'] +=1;
-                            $data['PTO']['ET'] +=1;
-                        }
-                    }
 
                     // end of Permanent Tooth
                     // start of Temporary Tooth
                     if($result->age>=5 && $result->age <=12 && $test->id==6){
+                        if($result->sex == 'Male'){
+                            $data['TTO']['EM5'] +=1;
+                            $data['TTO']['EMT'] +=1;
+                            $data['TTO']['ET'] +=1;
+                        }
+                        else{
+                            $data['TTO']['EF5'] +=1;
+                            $data['TTO']['EFT'] +=1;
+                            $data['TTO']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==6){
                         if($result->sex == 'Male'){
                             $data['TTO']['EM13'] +=1;
                             $data['TTO']['EMT'] +=1;
@@ -3111,21 +3123,21 @@ class PrintablesController extends Controller
                             $data['TTO']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==6){
-                        if($result->sex == 'Male'){
-                            $data['TTO']['EM18'] +=1;
-                            $data['TTO']['EMT'] +=1;
-                            $data['TTO']['ET'] +=1;
-                        }
-                        else{
-                            $data['TTO']['EF18'] +=1;
-                            $data['TTO']['EFT'] +=1;
-                            $data['TTO']['ET'] +=1;
-                        }
-                    }
                     // end of Temporary Tooth
                     // start of Filling/Restoration
                     if($result->age>=5 && $result->age <=12 && $test->id==7){
+                        if($result->sex == 'Male'){
+                            $data['FR']['EM5'] +=1;
+                            $data['FR']['EMT'] +=1;
+                            $data['FR']['ET'] +=1;
+                        }
+                        else{
+                            $data['FR']['EF5'] +=1;
+                            $data['FR']['EFT'] +=1;
+                            $data['FR']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==7){
                         if($result->sex == 'Male'){
                             $data['FR']['EM13'] +=1;
                             $data['FR']['EMT'] +=1;
@@ -3137,21 +3149,21 @@ class PrintablesController extends Controller
                             $data['FR']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==7){
-                        if($result->sex == 'Male'){
-                            $data['FR']['EM18'] +=1;
-                            $data['FR']['EMT'] +=1;
-                            $data['FR']['ET'] +=1;
-                        }
-                        else{
-                            $data['FR']['EF18'] +=1;
-                            $data['FR']['EFT'] +=1;
-                            $data['FR']['ET'] +=1;
-                        }
-                    }
                     // end of Filling/Restoration
                     // start of Tooth filled w/ Comp
                     if($result->age>=5 && $result->age <=12 && $test->id==8){
+                        if($result->sex == 'Male'){
+                            $data['TFC']['EM5'] +=1;
+                            $data['TFC']['EMT'] +=1;
+                            $data['TFC']['ET'] +=1;
+                        }
+                        else{
+                            $data['TFC']['EF5'] +=1;
+                            $data['TFC']['EFT'] +=1;
+                            $data['TFC']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==8){
                         if($result->sex == 'Male'){
                             $data['TFC']['EM13'] +=1;
                             $data['TFC']['EMT'] +=1;
@@ -3163,21 +3175,21 @@ class PrintablesController extends Controller
                             $data['TFC']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==8){
-                        if($result->sex == 'Male'){
-                            $data['TFC']['EM18'] +=1;
-                            $data['TFC']['EMT'] +=1;
-                            $data['TFC']['ET'] +=1;
-                        }
-                        else{
-                            $data['TFC']['EF18'] +=1;
-                            $data['TFC']['EFT'] +=1;
-                            $data['TFC']['ET'] +=1;
-                        }
-                    }
                     // end of Tooth filled w/ Comp
                     // start of Tooth filled w/ GIC
                     if($result->age>=5 && $result->age <=12 && $test->id==9){
+                        if($result->sex == 'Male'){
+                            $data['TFG']['EM5'] +=1;
+                            $data['TFG']['EMT'] +=1;
+                            $data['TFG']['ET'] +=1;
+                        }
+                        else{
+                            $data['TFG']['EF5'] +=1;
+                            $data['TFG']['EFT'] +=1;
+                            $data['TFG']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==9){
                         if($result->sex == 'Male'){
                             $data['TFG']['EM13'] +=1;
                             $data['TFG']['EMT'] +=1;
@@ -3189,21 +3201,21 @@ class PrintablesController extends Controller
                             $data['TFG']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==9){
-                        if($result->sex == 'Male'){
-                            $data['TFG']['EM18'] +=1;
-                            $data['TFG']['EMT'] +=1;
-                            $data['TFG']['ET'] +=1;
-                        }
-                        else{
-                            $data['TFG']['EF18'] +=1;
-                            $data['TFG']['EFT'] +=1;
-                            $data['TFG']['ET'] +=1;
-                        }
-                    }
                     // end of Tooth filled w/ GIC
                     // start of SE
                     if($result->age>=5 && $result->age <=12 && $test->id==10){
+                        if($result->sex == 'Male'){
+                            $data['SE']['EM5'] +=1;
+                            $data['SE']['EMT'] +=1;
+                            $data['SE']['ET'] +=1;
+                        }
+                        else{
+                            $data['SE']['EF5'] +=1;
+                            $data['SE']['EFT'] +=1;
+                            $data['SE']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==10){
                         if($result->sex == 'Male'){
                             $data['SE']['EM13'] +=1;
                             $data['SE']['EMT'] +=1;
@@ -3215,21 +3227,21 @@ class PrintablesController extends Controller
                             $data['SE']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==10){
-                        if($result->sex == 'Male'){
-                            $data['SE']['EM18'] +=1;
-                            $data['SE']['EMT'] +=1;
-                            $data['SE']['ET'] +=1;
-                        }
-                        else{
-                            $data['SE']['EF18'] +=1;
-                            $data['SE']['EFT'] +=1;
-                            $data['SE']['ET'] +=1;
-                        }
-                    }
                     // end of SE
                     // start of Tooth Applied w/ SE
                     if($result->age>=5 && $result->age <=12 && $test->id==11){
+                        if($result->sex == 'Male'){
+                            $data['TAS']['EM5'] +=1;
+                            $data['TAS']['EMT'] +=1;
+                            $data['TAS']['ET'] +=1;
+                        }
+                        else{
+                            $data['TAS']['EF5'] +=1;
+                            $data['TAS']['EFT'] +=1;
+                            $data['TAS']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==11){
                         if($result->sex == 'Male'){
                             $data['TAS']['EM13'] +=1;
                             $data['TAS']['EMT'] +=1;
@@ -3241,22 +3253,22 @@ class PrintablesController extends Controller
                             $data['TAS']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==11){
-                        if($result->sex == 'Male'){
-                            $data['TAS']['EM18'] +=1;
-                            $data['TAS']['EMT'] +=1;
-                            $data['TAS']['ET'] +=1;
-                        }
-                        else{
-                            $data['TAS']['EF18'] +=1;
-                            $data['TAS']['EFT'] +=1;
-                            $data['TAS']['ET'] +=1;
-                        }
-                    }
 
                     // end of Tooth Applied w/ SE
                     // start of Other Treatment
                     if($result->age>=5 && $result->age <=12 && $test->id==12){
+                        if($result->sex == 'Male'){
+                            $data['OT']['EM5'] +=1;
+                            $data['OT']['EMT'] +=1;
+                            $data['OT']['ET'] +=1;
+                        }
+                        else{
+                            $data['OT']['EF5'] +=1;
+                            $data['OT']['EFT'] +=1;
+                            $data['OT']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==12){
                         if($result->sex == 'Male'){
                             $data['OT']['EM13'] +=1;
                             $data['OT']['EMT'] +=1;
@@ -3268,21 +3280,21 @@ class PrintablesController extends Controller
                             $data['OT']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==12){
-                        if($result->sex == 'Male'){
-                            $data['OT']['EM18'] +=1;
-                            $data['OT']['EMT'] +=1;
-                            $data['OT']['ET'] +=1;
-                        }
-                        else{
-                            $data['OT']['EF18'] +=1;
-                            $data['OT']['EFT'] +=1;
-                            $data['OT']['ET'] +=1;
-                        }
-                    }
                     // end of Other Treatment
                     // start of Oral Health Instruction
                     if($result->age>=5 && $result->age <=12 && $test->id==13){
+                        if($result->sex == 'Male'){
+                            $data['OHI']['EM5'] +=1;
+                            $data['OHI']['EMT'] +=1;
+                            $data['OHI']['ET'] +=1;
+                        }
+                        else{
+                            $data['OHI']['EF5'] +=1;
+                            $data['OHI']['EFT'] +=1;
+                            $data['OHI']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==13){
                         if($result->sex == 'Male'){
                             $data['OHI']['EM13'] +=1;
                             $data['OHI']['EMT'] +=1;
@@ -3294,21 +3306,21 @@ class PrintablesController extends Controller
                             $data['OHI']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==13){
-                        if($result->sex == 'Male'){
-                            $data['OHI']['EM18'] +=1;
-                            $data['OHI']['EMT'] +=1;
-                            $data['OHI']['ET'] +=1;
-                        }
-                        else{
-                            $data['OHI']['EF18'] +=1;
-                            $data['OHI']['EFT'] +=1;
-                            $data['OHI']['ET'] +=1;
-                        }
-                    }
                     // end of Oral Health Instruction
                     // start of Referral
                     if($result->age>=5 && $result->age <=12 && $test->id==14){
+                        if($result->sex == 'Male'){
+                            $data['PR']['EM5'] +=1;
+                            $data['PR']['EMT'] +=1;
+                            $data['PR']['ET'] +=1;
+                        }
+                        else{
+                            $data['PR']['EF5'] +=1;
+                            $data['PR']['EFT'] +=1;
+                            $data['PR']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==14){
                         if($result->sex == 'Male'){
                             $data['PR']['EM13'] +=1;
                             $data['PR']['EMT'] +=1;
@@ -3320,21 +3332,21 @@ class PrintablesController extends Controller
                             $data['PR']['ET'] +=1;
                         }
                     }
-                    if($result->age>=13 && $result->age <=17 && $test->id==14){
-                        if($result->sex == 'Male'){
-                            $data['PR']['EM18'] +=1;
-                            $data['PR']['EMT'] +=1;
-                            $data['PR']['ET'] +=1;
-                        }
-                        else{
-                            $data['PR']['EF18'] +=1;
-                            $data['PR']['EFT'] +=1;
-                            $data['PR']['ET'] +=1;
-                        }
-                    }
                     // end of Referral
                     // start of Issuance of Med Cert
                     if($result->age>=5 && $result->age <=12 && $test->id==15){
+                        if($result->sex == 'Male'){
+                            $data['IC']['EM5'] +=1;
+                            $data['IC']['EMT'] +=1;
+                            $data['IC']['ET'] +=1;
+                        }
+                        else{
+                            $data['IC']['EF5'] +=1;
+                            $data['IC']['EFT'] +=1;
+                            $data['IC']['ET'] +=1;
+                        }
+                    }
+                    if($result->age>=13 && $result->age <=17 && $test->id==15){
                         if($result->sex == 'Male'){
                             $data['IC']['EM13'] +=1;
                             $data['IC']['EMT'] +=1;
@@ -3342,18 +3354,6 @@ class PrintablesController extends Controller
                         }
                         else{
                             $data['IC']['EF13'] +=1;
-                            $data['IC']['EFT'] +=1;
-                            $data['IC']['ET'] +=1;
-                        }
-                    }
-                    if($result->age>=13 && $result->age <=17 && $test->id==15){
-                        if($result->sex == 'Male'){
-                            $data['IC']['EM18'] +=1;
-                            $data['IC']['EMT'] +=1;
-                            $data['IC']['ET'] +=1;
-                        }
-                        else{
-                            $data['IC']['EF18'] +=1;
                             $data['IC']['EFT'] +=1;
                             $data['IC']['ET'] +=1;
                         }
@@ -5453,8 +5453,109 @@ class PrintablesController extends Controller
                 }
             }
 
+        function transformDataGrouped($section, $prefixes) {
+            $result = [];
+            $currentGroup = [];
 
-            return response()->json($data);
+            foreach ($section as $key => $value) {
+                // Include keys that start with any of the provided prefixes
+                foreach ($prefixes as $prefix) {
+                    if (substr($key, 0, 1) === $prefix) {
+                        $currentGroup[$key] = $value;
+                    }
+                }
+            }
+
+            // If there are any remaining items in the group, add it to the result
+            if (!empty($currentGroup)) {
+                $result[] = $currentGroup;
+            }
+
+            return $result;
+        }
+
+        // Create the final result structure
+        $response = [
+            'PESC' => transformDataGrouped($data['PE'], ['S', 'C']),
+            // 'PEC' => transformDataGrouped($data['PE'], 'C'),
+            'PEH' => transformDataGrouped($data['PE'], ['H','E','D']),
+            // 'PEE' => transformDataGrouped($data['PE'], 'E'),
+            // 'PED' => transformDataGrouped($data['PE'], 'D'),
+            'EES' => transformDataGrouped($data['EE'], ['S', 'C']),
+            // 'EEC' => transformDataGrouped($data['EE'], 'C'),
+            'EEH' => transformDataGrouped($data['EE'], ['H','E','D']),
+            // 'EEE' => transformDataGrouped($data['EE'], 'E'),
+            // 'EED' => transformDataGrouped($data['EE'], 'D'),
+            'OPS' => transformDataGrouped($data['OP'], ['S', 'C']),
+            // 'OPC' => transformDataGrouped($data['OP'], 'C'),
+            'OPH' => transformDataGrouped($data['OP'], ['H','E','D']),
+            // 'OPE' => transformDataGrouped($data['OP'], 'E'),
+            // 'OPD' => transformDataGrouped($data['OP'], 'D'),
+            'EXS' => transformDataGrouped($data['EX'], ['S', 'C']),
+            // 'EXC' => transformDataGrouped($data['EX'], 'C'),
+            'EXH' => transformDataGrouped($data['EX'], ['H','E','D']),
+            // 'EXE' => transformDataGrouped($data['EX'], 'E'),
+            // 'EXD' => transformDataGrouped($data['EX'], 'D'),
+            'PTOS' => transformDataGrouped($data['PTO'], ['S', 'C']),
+            // 'PTOC' => transformDataGrouped($data['PTO'], 'C'),
+            'PTOH' => transformDataGrouped($data['PTO'], ['H','E','D']),
+            // 'PTOE' => transformDataGrouped($data['PTO'], 'E'),
+            // 'PTOD' => transformDataGrouped($data['PTO'], 'D'),
+            'TTOS' => transformDataGrouped($data['TTO'], ['S', 'C']),
+            // 'TTOC' => transformDataGrouped($data['TTO'], 'C'),
+            'TTOH' => transformDataGrouped($data['TTO'], ['H','E','D']),
+            // 'TTOE' => transformDataGrouped($data['TTO'], 'E'),
+            // 'TTOD' => transformDataGrouped($data['TTO'], 'D'),
+            'FRS' => transformDataGrouped($data['FR'], ['S', 'C']),
+            // 'FRC' => transformDataGrouped($data['FR'], 'C'),
+            'FRH' => transformDataGrouped($data['FR'], ['H','E','D']),
+            // 'FRE' => transformDataGrouped($data['FR'], 'E'),
+            // 'FRD' => transformDataGrouped($data['FR'], 'D'),
+            'TFCS' => transformDataGrouped($data['TFC'], ['S', 'C']),
+            // 'TFCC' => transformDataGrouped($data['TFC'], 'C'),
+            'TFCH' => transformDataGrouped($data['TFC'], ['H','E','D']),
+            // 'TFCE' => transformDataGrouped($data['TFC'], 'E'),
+            // 'TFCD' => transformDataGrouped($data['TFC'], 'D'),
+            'TFGS' => transformDataGrouped($data['TFG'], ['S', 'C']),
+            // 'TFGC' => transformDataGrouped($data['TFG'], 'C'),
+            'TFGH' => transformDataGrouped($data['TFG'], ['H','E','D']),
+            // 'TFGE' => transformDataGrouped($data['TFG'], 'E'),
+            // 'TFGD' => transformDataGrouped($data['TFG'], 'D'),
+            'SES' => transformDataGrouped($data['SE'], ['S', 'C']),
+            // 'SEC' => transformDataGrouped($data['SE'], 'C'),
+            'SEH' => transformDataGrouped($data['SE'], ['H','E','D']),
+            // 'SEE' => transformDataGrouped($data['SE'], 'E'),
+            // 'SED' => transformDataGrouped($data['SE'], 'D'),
+            'TASS' => transformDataGrouped($data['TAS'], ['S', 'C']),
+            // 'TASC' => transformDataGrouped($data['TAS'], 'C'),
+            'TASH' => transformDataGrouped($data['TAS'], ['H','E','D']),
+            // 'TASE' => transformDataGrouped($data['TAS'], 'E'),
+            // 'TASD' => transformDataGrouped($data['TAS'], 'D'),
+            'OTS' => transformDataGrouped($data['OT'], ['S', 'C']),
+            // 'OTC' => transformDataGrouped($data['OT'], 'C'),
+            'OTH' => transformDataGrouped($data['OT'], ['H','E','D']),
+            // 'OTE' => transformDataGrouped($data['OT'], 'E'),
+            // 'OTD' => transformDataGrouped($data['OT'], 'D'),
+            'OHIS' => transformDataGrouped($data['OHI'], ['S', 'C']),
+            // 'OHIC' => transformDataGrouped($data['OHI'], 'C'),
+            'OHIH' => transformDataGrouped($data['OHI'], ['H','E','D']),
+            // 'OHIE' => transformDataGrouped($data['OHI'], 'E'),
+            // 'OHID' => transformDataGrouped($data['OHI'], 'D'),
+            'PRS' => transformDataGrouped($data['PR'], ['S', 'C']),
+            // 'PRC' => transformDataGrouped($data['PR'], 'C'),
+            'PRH' => transformDataGrouped($data['PR'], ['H','E','D']),
+            // 'PRE' => transformDataGrouped($data['PR'], 'E'),
+            // 'PRD' => transformDataGrouped($data['PR'], 'D'),
+            'ICS' => transformDataGrouped($data['IC'], ['S', 'C']),
+            // 'ICC' => transformDataGrouped($data['IC'], 'C'),
+            'ICH' => transformDataGrouped($data['IC'], ['H','E','D']),
+            // 'ICE' => transformDataGrouped($data['IC'], 'E'),
+            // 'ICD' => transformDataGrouped($data['IC'], 'D'),
+        ];
+            return response()->json(
+                $response
+
+            );
             // return $result->age;
 
         }
