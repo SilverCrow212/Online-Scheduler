@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import { createacc } from '@/store/createacc';
-import { departmentChoices, sexChoices } from '@/store/choices';
+import { departmentChoices, sexChoices, civilStatusChoices } from '@/store/choices';
 import { EditAcc, EditEmail, EditPassword, EditSecurity, SecurityQuestions  } from '@/api/ApiLogin';
 import { fetchUserData } from '@/api/ApiUser';
 import { useToast } from 'primevue/usetoast';
@@ -11,11 +11,13 @@ import { useToast } from 'primevue/usetoast';
 const toast = useToast();
 const departmentStore = departmentChoices();
 const createAccStore = createacc();
+const civilStore = civilStatusChoices();
 const sexStore = sexChoices();
 const sexchoices = sexStore.legend;
 const createaccount = createAccStore.accDetails;
 const typeChoice = departmentStore.type;
 const departmentChoice = departmentStore.department;
+const civilStatusChoice = civilStore.legend
 
 const security_questions = ref([]);
 onMounted(async () => {
@@ -42,6 +44,7 @@ onMounted(async () => {
             createaccount.department_program = data[0].user_details.department_program;
             createaccount.contact_no = data[0].user_details.contact_no;
             createaccount.civil_status = data[0].user_details.civil_status;
+            // console.log(createaccount.civil_status)
             createaccount.guardian = data[0].user_details.guardian;
             createaccount.guardian_no = data[0].user_details.guardian_no;
             createaccount.permanent_address = data[0].user_details.permanent_address;
@@ -326,7 +329,15 @@ const validatePasswordForm = async () => {
                     </div>
                     <div class="field col-12 md:col-4">
                         <label>Civil Status</label>
-                        <InputText v-model="createaccount.civil_status" type="text" :class="{'p-invalid': validationErrors.civil_status}" />
+                        <!-- <InputText v-model="createaccount.civil_status" type="text" :class="{'p-invalid': validationErrors.civil_status}" /> -->
+                         <Dropdown 
+                            v-model="createaccount.civil_status" 
+                            :options="civilStatusChoice" 
+                            optionLabel="name" 
+                            optionValue="id" 
+                            placeholder="Select One" 
+                            :class="{'p-invalid': validationErrors.civil_status}" 
+                        />
                         <small v-if="validationErrors.civil_status" class="p-error">{{ validationErrors.civil_status }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
@@ -336,7 +347,8 @@ const validatePasswordForm = async () => {
                     </div>
                     <div class="field col-12 md:col-4">
                         <label>Guardian Contact Number</label>
-                        <InputText v-model="createaccount.guardian_no" type="text" :class="{'p-invalid': validationErrors.guardian_no}" />
+                        <!-- <InputText v-model="createaccount.guardian_no" type="text" :class="{'p-invalid': validationErrors.guardian_no}" /> -->
+                        <InputMask  v-model="createaccount.guardian_no" mask="99999999999" placeholder="09090909090" :class="{'p-invalid': validationErrors.guardian_no}"/>
                         <small v-if="validationErrors.guardian_no" class="p-error">{{ validationErrors.guardian_no }}</small>
                     </div>
                     <div class="field col-12">

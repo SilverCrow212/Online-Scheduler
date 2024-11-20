@@ -34,7 +34,7 @@ const goBack = async () => {
     console.log("GoBack triggered"); // Debug if this log appears
     router.go(-1);
     createAccStore.resetAccDetails();  // Reset store data here
-    await nextTick(); // Ensure reactivity is handled properly
+    // await nextTick(); // Ensure reactivity is handled properly
 };
 
 if (localStorage.getItem('user_details')) {
@@ -120,7 +120,11 @@ const validateForm = async () => {
         if(create==='received'){
             createAccStore.resetAccDetails();
             console.log('Form submitted:', createaccount);
+            const delay = 3000;
+
+            setTimeout(() => {
             goBack();
+            }, delay);
         }
     }
 };
@@ -192,7 +196,7 @@ const visible = ref(null);
                 </div>
                 <div class="field col-12 md:col-4">
                     <label>Age</label>
-                    <InputText v-model="createaccount.age" type="text" :class="{'p-invalid': validationErrors.age}" />
+                    <InputText v-model="createaccount.age" type="number" :class="{'p-invalid': validationErrors.age}" />
                     <small v-if="validationErrors.age" class="p-error">{{ validationErrors.age }}</small>
                 </div>
                 <div class="field col-12 md:col-4">
@@ -299,7 +303,8 @@ const visible = ref(null);
                 </div>
                 <div class="field col-12 md:col-4">
                     <label>Guardian Contact Number</label>
-                    <InputText v-model="createaccount.guardian_no" type="text" :class="{'p-invalid': validationErrors.guardian_no}" />
+                    <!-- <InputText v-model="createaccount.guardian_no" type="text" :class="{'p-invalid': validationErrors.guardian_no}" /> -->
+                    <InputMask  v-model="createaccount.guardian_no" mask="99999999999" placeholder="09090909090" :class="{'p-invalid': validationErrors.guardian_no}"/>
                     <small v-if="validationErrors.guardian_no" class="p-error">{{ validationErrors.guardian_no }}</small>
                 </div>
                 <div class="field col-12">

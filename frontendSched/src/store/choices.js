@@ -77,6 +77,7 @@ export const toothTreatment = defineStore('toothTreatment', () => {
 export const serviceRendered = defineStore('serviceRendered', () => {
     const legend = ref([
         {id:1, name: 'Examination'},
+        {id:16, name: 'Enrollees Examined'},
         {id:2, name: 'Treatment'},
         {id:3, name: 'Oral Prophylaxis/Scaling'},
         {id:4, name: 'Extraction'},
@@ -91,9 +92,8 @@ export const serviceRendered = defineStore('serviceRendered', () => {
         {id:13, name: 'Oral Health Instruction'},
         {id:14, name: 'Referral'},
         {id:15, name: 'Issuance of Med Cert'},
-        {id:16, name: 'Examined Patient'},
-        {id:17, name: 'Enrollees Examined'},
-        {id:18, name: 'Patient Treated'},
+        // {id:16, name: 'Examined Patient'},
+        // {id:18, name: 'Patient Treated'},
     ]);
     return { legend };
 });

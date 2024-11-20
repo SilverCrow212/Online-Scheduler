@@ -369,7 +369,7 @@ CREATE TABLE `user_details` (
   `age` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `contact_no` varchar(45) DEFAULT NULL,
-  `civil_status` varchar(45) DEFAULT NULL,
+  `civil_status` int(11) DEFAULT NULL,
   `guardian` varchar(45) DEFAULT NULL,
   `guardian_no` varchar(45) DEFAULT NULL,
   `permanent_address` varchar(45) DEFAULT NULL,

@@ -2,7 +2,8 @@
     <div class="card">
     Select Date(Based on Month)
     <div class="mb-4">
-      <Calendar v-model="date" dateFormat="mm/dd/yy" />
+      <Calendar v-model="date" view="month" dateFormat="mm/dd/yy" />
+      <!-- {{ date }} -->
     </div>
     <div>
       <!-- <button @click="downloadDocx">Download DOCX</button> -->
@@ -12,16 +13,21 @@
 <!-- {{ templateData }} -->
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { fetchDataReport } from '@/api/ApiExportReport';
 import Docxtemplater from 'docxtemplater';
 import PizZip from 'pizzip';
 import { saveAs } from 'file-saver';
 // Sample data to replace in the template
-
+const date = ref();
+const formattedDate = computed(() => {
+    if (!date.value) return '';
+    const inputDate = new Date(date.value);
+    return `${inputDate.getMonth() + 1}/${inputDate.getDate()}/${inputDate.getFullYear()}`;
+});
 async function getData (){
 
-  const data= await fetchDataReport();
+  const data= await fetchDataReport(formattedDate.value);
   console.log('data',data)
   if(data){
     templateData.value = data;
