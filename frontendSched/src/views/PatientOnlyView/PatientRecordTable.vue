@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { fetchAppointmentPatient, storeAppointment } from '@/api/ApiAppointment';
+import { informedConsent } from '@/store/informedconsent';
 import { appointment } from '@/store/appointmentenc';
 import AppointmentPopup from '@/views/PatientOnlyView/AppointmentPopup.vue';
 import { statusChoices } from '@/store/choices'
@@ -16,13 +17,15 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
 const visibleSetAppointment = ref(false);
 const appointmentStore = appointment();
 const useAppoinment =  appointmentStore.appointmentDetails;
-
+const informedConsentStore= informedConsent();
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 
 const toast = useToast();
 
 onMounted(async () => {
+    informedConsentStore.resetData();
+    appointmentStore.resetAppointmentDetails();
     const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
     records.value = data;
     
@@ -42,12 +45,13 @@ function dialogOpen(event) {
 }
 
 async function clickSave(){
-    // console.log('sent to backend', useAppoinment)
     if(useAppoinment.user_details_id!== null&& useAppoinment.appointment_date!==null && useAppoinment.appointment_time!==null && useAppoinment.consent_form!== null){
         console.log('sent to backend', useAppoinment);
         await storeAppointment(useAppoinment,toast);
         // patients.value = await fetchAppointment(formattedDate.value);
         const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
+        informedConsentStore.resetData();
+        appointmentStore.resetAppointmentDetails();
         records.value = data;
         visibleSetAppointment.value = false
     }
