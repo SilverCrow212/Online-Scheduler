@@ -81,7 +81,7 @@ const popdelete = ref(false);
             <div class="card">
                 <div class="flex justify-content-between align-items-center">
                     <div>
-                        <Button label="Add Holiday" @click="visibleSetHoliday = true" />
+                        <Button label="Add Leave" @click="visibleSetHoliday = true" />
                     </div>
                 </div>
                 <DataTable v-model:selection="selectedHoliday" v-model:filters="filters"  :globalFilterFields="['name']" :value="holiday" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
@@ -95,7 +95,7 @@ const popdelete = ref(false);
                             </IconField>
                         </div>
                     </template> -->
-                    <template #empty> No holidays found. </template>
+                    <template #empty> No entries found. </template>
                     <Column header="Date">
                         <template #body="slotProps">
                             <span>{{ slotProps.data.date }}</span>
@@ -108,7 +108,7 @@ const popdelete = ref(false);
     </div>
 
 
-    <Dialog v-model:visible="visibleSetHoliday" modal header="Set Holiday" :style="{ width: '35rem' }" :dismissableMask="true">
+    <Dialog v-model:visible="visibleSetHoliday" modal header="Set Leave" :style="{ width: '35rem' }" :dismissableMask="true">
         <HolidayAddPopup/>
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Cancel" severity="secondary" @click="visibleSetHoliday = false"></Button>
@@ -116,7 +116,7 @@ const popdelete = ref(false);
         </div>
     </Dialog>
 
-    <Dialog v-model:visible="visibleUpdateHoliday" modal header="Set Holiday" :style="{ width: '35rem' }" :dismissableMask="true">
+    <Dialog v-model:visible="visibleUpdateHoliday" modal header="Set Leave" :style="{ width: '35rem' }" :dismissableMask="true">
         <HolidayUpdatePopup/>
         <div class="flex justify-content-end gap-2">
             <!-- {{ useHoliday }} -->
@@ -128,7 +128,7 @@ const popdelete = ref(false);
 
 
 
-    <Dialog v-model:visible="popsave" modal header="Save Holiday" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+    <Dialog v-model:visible="popsave" modal header="Save Leave" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
         <div class="field col-12 md:col-12">
             <label>Are you sure you entered the correct Details?</label>
         </div>
@@ -137,9 +137,9 @@ const popdelete = ref(false);
             <Button type="button" label="Save" @click="clickSave"></Button>
         </div>
     </Dialog>
-    <Dialog v-model:visible="popdelete" modal header="Delete Holiday" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+    <Dialog v-model:visible="popdelete" modal header="Delete Leave" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
         <div class="field col-12 md:col-12">
-            <label>Are you sure you want to delete this holiday?</label>
+            <label>Are you sure you want to delete this entry?</label>
         </div>
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Cancel" severity="secondary" @click="popdelete = false"></Button>
