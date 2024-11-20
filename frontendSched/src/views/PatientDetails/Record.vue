@@ -161,7 +161,7 @@ const visibleCancel = ref(null);
                     <!-- <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" /> -->
                     <Button v-if="buttonSelecter && user_details.user_type !== 'user'" label="Update" icon="pi pi-save" iconPos="right" @click="visibleUpdate = true" :disabled="user_details.user_type === 'user'"/>
                     <Button v-else-if="!buttonSelecter && user_details.user_type !== 'user'" label="Save" icon="pi pi-save" iconPos="right" @click="visibleSave = true" :disabled="user_details.user_type === 'user'"/>
-                    <Button v-else-if="!buttonSelecter && user_details.user_type === 'user'" label="Cancel Appointment" icon="pi pi-save" iconPos="right" @click="visibleCancel = false"/>
+                    <Button v-else-if="!buttonSelecter && user_details.user_type === 'user'" label="Cancel Appointment" icon="pi pi-save" iconPos="right" @click="visibleCancel = true"/>
                 </div>
             </template>
         </StepperPanel>

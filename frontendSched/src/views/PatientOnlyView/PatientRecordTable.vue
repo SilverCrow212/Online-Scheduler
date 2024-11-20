@@ -50,8 +50,8 @@ async function clickSave(){
         await storeAppointment(useAppoinment,toast);
         // patients.value = await fetchAppointment(formattedDate.value);
         const data = await fetchAppointmentPatient(user_details.user_details.user_id); // Fetch the patient records
-        informedConsentStore.resetData();
-        appointmentStore.resetAppointmentDetails();
+        // informedConsentStore.resetData();
+        // appointmentStore.resetAppointmentDetails();
         records.value = data;
         visibleSetAppointment.value = false
     }
