@@ -366,7 +366,7 @@ CREATE TABLE `user_details` (
   `office_level` varchar(45) DEFAULT NULL,
   `department_program` varchar(45) DEFAULT NULL,
   `sex` varchar(45) DEFAULT NULL,
-  `age` varchar(45) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `contact_no` varchar(45) DEFAULT NULL,
   `civil_status` int(11) DEFAULT NULL,

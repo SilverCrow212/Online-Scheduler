@@ -30,6 +30,7 @@ class PrintablesController extends Controller
 
         // Parse the input date using Carbon
         $carbonDate = Carbon::parse($inputDate);
+        $monthName = strtoupper($carbonDate->format('F'));
         // return $carbonDate->year;
         // return Holidays::all();
         $results = DB::table('user_details')
@@ -518,6 +519,7 @@ class PrintablesController extends Controller
 
         // Create the final result structure
         $response = [
+            'DATE' => $monthName . ' ' .$carbonDate->year,
             'PES' => transformDataGrouped($data['1'], ['S', 'C']),
             'PEH' => transformDataGrouped($data['1'], ['H','E','D']),
             'PET' => transformDataGrouped($data['1'], ['T']),
