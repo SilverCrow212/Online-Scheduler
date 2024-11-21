@@ -57,6 +57,11 @@ const routes = [
                 name: 'logs',
                 component: () => import('@/views/Logs/Logs.vue')
             },
+            {
+                path: 'backuprestore',
+                name: 'backuprestore',
+                component: () => import('@/views/BackupRestore/BackupRestore.vue')
+            },
         ]
     },
     {

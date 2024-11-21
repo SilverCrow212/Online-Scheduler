@@ -123,7 +123,7 @@ const visibleCancel = ref(null);
 </script>   
 <template>
   <Toast />
-  <div class="content-wrapper">
+  <div>
     <div class="sticky-card card">
       <div>
         <span class="font-bold">Patient Name:</span>
@@ -216,7 +216,7 @@ const visibleCancel = ref(null);
 .sticky-card {
   
   position: sticky;
-  top: 0; 
+  top: 80px; 
   z-index: 10;
   padding: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
