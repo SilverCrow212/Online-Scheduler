@@ -22,11 +22,8 @@ const logoUrl = computed(() => {
 });
 
 const onTopBarMenuButton = () => {
-    if (localStorage.getItem('user_details')) {
-        const user_details = JSON.parse(localStorage.getItem('user_details'));
-        router.push({ name: 'editprofile', params: { id: user_details.user_details.id } });
-        topbarMenuActive.value = !topbarMenuActive.value;
-    }
+    topbarMenuActive.value = !topbarMenuActive.value;
+    
 };
 const onLogout = async () => {
     try {
@@ -77,6 +74,19 @@ const isOutsideClicked = (event) => {
 
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 };
+const userManual = () => {
+    const manualUrl = '/User-Manual.pdf';  // Adjust the path to your file
+    window.open(manualUrl, '_blank')
+};
+const userProfile = () => {
+    if (localStorage.getItem('user_details')) {
+        const user_details = JSON.parse(localStorage.getItem('user_details'));
+        router.push({ name: 'editprofile', params: { id: user_details.user_details.id } });
+        topbarMenuActive.value = !topbarMenuActive.value;
+    }
+};
+
+
 </script>
 
 <template>
@@ -95,11 +105,11 @@ const isOutsideClicked = (event) => {
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <!-- <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-calendar"></i>
-                <span>Calendar</span>
-            </button> -->
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
+            <button @click="userManual()" class="p-link layout-topbar-button">
+                <i class="pi pi-book"></i>
+                <span>Manual</span>
+            </button>
+            <button @click="userProfile()" class="p-link layout-topbar-button">
                 <i class="pi pi-user"></i>
                 <span>Profile</span>
             </button>
