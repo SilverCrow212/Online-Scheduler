@@ -125,7 +125,7 @@ const statusOptions = computed(() => {
                         </div>
                     </template>
                     <template #empty> No patients found. </template>
-                    <Column header="Patient Name">
+                    <Column header="ID Number">
                         <template #body="slotProps">
                             <span>{{ slotProps.data.user_details?.school_id_number }}</span>
                         </template>
