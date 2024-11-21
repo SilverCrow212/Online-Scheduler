@@ -15,7 +15,8 @@ if (localStorage.getItem('user_details')) {
                 { label: 'Appointments', icon: 'pi pi-calendar-plus', to: '/appointment' },
                 // { label: 'Create New Account', icon: 'pi pi-user-plus', to: '/create-account' },
                 { label: 'Add a Leave', icon: 'pi pi-bookmark', to: '/holiday' },
-                { label: 'Export Report', icon: 'pi pi-download', to: '/reports' }
+                { label: 'Export Report', icon: 'pi pi-download', to: '/reports' },
+                { label: 'Logs', icon: 'pi pi-align-justify', to: '/logs' }
                 ],
                 
             },

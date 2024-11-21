@@ -19,8 +19,8 @@ class LogsController extends Controller
     }
 
     public function showLogs(Request $r){
-        $date  = $r->date ?? Carbon::now()->format('Y-m-d');
-        $logs = Logs::whereDate('created_at', $date)->get();
+        // $date  = $r->date ?? Carbon::now()->format('Y-m-d');
+        $logs = Logs::get();
 
         return $logs;
         // ADD CONDITIONS IF NEEDED
