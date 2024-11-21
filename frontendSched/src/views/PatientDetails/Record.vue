@@ -71,6 +71,7 @@ async function clickSave() {
     };
     const response = await storeClinicalDetails(appointmentId, patientData, toast);
     await fetchingDetails();
+    window.location.reload();
     visibleSave.value=false;
     console.log('Data saved successfully:', response);
   } catch (error) {
@@ -88,6 +89,7 @@ async function clickUpdate() {
     };
     const response = await updateClinicalDetails(appointmentId, patientData, toast);
     await fetchingDetails();
+    window.location.reload();
     visibleUpdate.value=false;
     console.log('Data saved successfully:', response);
   } catch (error) {
@@ -106,6 +108,7 @@ async function clickSaveUser() {
     };
     const response = await storeClinicalDetails(appointmentId, patientData, toast);
     await fetchingDetails();
+    window.location.reload();
     visibleCancel.value=false;
 
     console.log('Data saved successfully:', response);
