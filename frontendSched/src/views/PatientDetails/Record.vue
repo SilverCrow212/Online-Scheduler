@@ -215,7 +215,6 @@ const visibleCancel = ref(null);
   position: sticky;
   top: 0; 
   z-index: 10;
-  background-color: white;
   padding: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px; 
