@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\LogsController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\TeethController;
@@ -52,8 +53,6 @@ Route::post('/login', function (Request $request) {
 Route::prefix('user')->group(function () {
     Route::post('register', [UserManagementController::class, 'register']);
 });
-
-Route::get('security-question', [SecurityQuestionController::class, 'getSecurityQuestion']);
 
 
 Route::middleware('auth:sanctum')->group (function (){
@@ -139,8 +138,26 @@ Route::middleware('auth:sanctum')->group (function (){
     // UPDATE SECURITY QUESTION
     Route::post('/update-security-question', [UserManagementController::class, 'updateSecurityQuestion']);
 
+    // BACKUP / RESTORE
+    // Route::get('database/backup', [BackupController::class, 'backup']);
+    // Route::post('database/restore', [BackupController::class, 'restore']);
+
+    Route::get('/test-mysqldump', function () {
+        $process = new Symfony\Component\Process\Process(['mysqldump', '--version']);
+        $process->run();
+
+        return $process->getOutput() ?: $process->getErrorOutput();
+    });
+
+    // BACKUP / RESTORE
+    Route::get('database/backup', [BackupController::class, 'backup']);
+    Route::post('database/restore', [BackupController::class, 'restore']);
+
 });
 
+
+// SECURITY QUESTIONS
+Route::get('security-question', [SecurityQuestionController::class, 'getSecurityQuestion']);
 
 // FORGOT PASSWORD
 Route::post('/verify-security-question', [SecurityQuestionController::class, 'verifySecurityAnswer']);
