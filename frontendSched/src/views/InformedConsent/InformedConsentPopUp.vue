@@ -2,9 +2,16 @@
 // import { onBeforeUnmount, onMounted } from 'vue';
 import { informedConsent } from '@/store/informedconsent';
 import { medicalHistoryChoices } from '@/store/choices';
-
+const props = defineProps({
+  consentForm: {
+    type: Object,
+    required: true
+  }
+});
 const informedConsentStore = informedConsent();
 const medicalHistoryChoicesStore = medicalHistoryChoices();
+
+informedConsentStore.data = props.consentForm
 
 const questions = medicalHistoryChoicesStore.legend;
 const q8Choices = medicalHistoryChoicesStore.q8Choices;
@@ -20,6 +27,7 @@ const finalconsent = informedConsentStore.data.finalconsent;
 <template>
 <div class="grid">
     <div class="col-12">
+        <!-- {{consentForm }} -->
         <div class="card">
             <h5>Informed Consent</h5>
             <div class="p-fluid formgrid grid">

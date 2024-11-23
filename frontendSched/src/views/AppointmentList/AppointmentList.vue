@@ -9,6 +9,7 @@ import { appointment } from '@/store/appointmentenc';
 import { departmentChoices, statusChoices } from '@/store/choices'
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import InformedConsentPopUp from '@/views/InformedConsent/InformedConsentPopUp.vue';
 
 const toast = useToast();
 const departmentStore = departmentChoices();
@@ -91,6 +92,13 @@ const statusOptions = computed(() => {
         value: status.id     // ID of the status (used for filtering)
     }));
 });
+
+const selectedConsentForm = ref(null);
+const visibleInformedConsentPopUp = ref(false);
+function viewConsentForm(consentForm) {
+    selectedConsentForm.value = JSON.parse(consentForm);
+    visibleInformedConsentPopUp.value = true;
+}
 </script>
 
 <template>
@@ -150,7 +158,12 @@ const statusOptions = computed(() => {
                         <template #body="slotProps">
                             <span>{{ getStatusName(slotProps.data.status) }}</span>
                         </template>
-                        
+                    </Column>
+                    <Column  header="Consent Form">
+                        <template #body="slotProps">
+                            <!-- <span>{{ getStatusName(slotProps.data.status) }}</span> -->
+                            <Button type="button" label="View Consent Form" severity="primary" @click="viewConsentForm(slotProps.data.consent_form)"></Button>
+                        </template>
                     </Column>
                 </DataTable>
             </div>
@@ -163,6 +176,13 @@ const statusOptions = computed(() => {
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Cancel" severity="secondary" @click="visibleSetAppointment = false"></Button>
             <Button type="button" label="Save" @click="clickSave()"></Button>
+        </div>
+    </Dialog>
+
+    <Dialog v-model:visible="visibleInformedConsentPopUp" modal header="Dental Health Record - Informed Consent" :style="{ width: '75%' }" :dismissableMask="true">
+        <InformedConsentPopUp :consent-form="selectedConsentForm"/>
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Close" @click="visibleInformedConsentPopUp=false"></Button>
         </div>
     </Dialog>
 </template>
