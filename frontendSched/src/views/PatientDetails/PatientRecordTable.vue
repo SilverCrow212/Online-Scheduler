@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { fetchAppointmentPatient } from '@/api/ApiAppointment';
 import { statusChoices } from '@/store/choices'
+import InformedConsentPopUp from '@/views/InformedConsent/InformedConsentPopUp.vue';
 const statusStore = statusChoices();
 const useStatus = statusStore.legend;
 
@@ -40,6 +41,12 @@ function dialogOpen(event) {
         console.warn('No patient selected');
     }
 }
+const selectedConsentForm = ref(null);
+const visibleInformedConsentPopUp = ref(false);
+function viewConsentForm(consentForm) {
+    selectedConsentForm.value = JSON.parse(consentForm);
+    visibleInformedConsentPopUp.value = true;
+}
 </script>
 
 
@@ -53,8 +60,22 @@ function dialogOpen(event) {
             <span>{{ getStatusName(slotProps.data.status)}}</span>
         </template>
     </Column>
+    <Column  header="Consent Form">
+        <template #body="slotProps">
+            <!-- {{ slotProps.data.consent_form }} -->
+            <!-- <span>{{ getStatusName(slotProps.data.status) }}</span> -->
+            <Button type="button" label="View Consent Form" severity="primary" @click="viewConsentForm(slotProps.data.consent_form)"></Button>
+        </template>
+    </Column>
     <!-- <Column field="toothno" header="Tooth No."></Column>
     <Column field="medicine" header="Medicine Given / Prescribed"></Column>
     <Column field="remark" header="Remarks"></Column> -->
 </DataTable>
+
+<Dialog v-model:visible="visibleInformedConsentPopUp" modal header="Dental Health Record - Informed Consent" :style="{ width: '75%' }" :dismissableMask="true">
+        <InformedConsentPopUp :consent-form="selectedConsentForm"/>
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Close" @click="visibleInformedConsentPopUp=false"></Button>
+        </div>
+    </Dialog>
 </template>
