@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted,ref } from 'vue';
+import { onMounted,ref,computed } from 'vue';
 import { useRoute } from 'vue-router';
 import PageOne from '@/views/PatientDetails/PageOne.vue';
 import PageTwo from '@/views/PatientDetails/PageTwo.vue';
@@ -120,9 +120,42 @@ async function clickSaveUser() {
 const visibleUpdate = ref(null);
 const visibleSave = ref(null);
 const visibleCancel = ref(null);
+const currentDate = new Date();
+const isCancelButtonDisabled = computed(() => {
+    if (userData.value && userData.value.appointment_date) {
+        const appointmentDate = new Date(userData.value.appointment_date);
+        const currentDate = new Date();
+
+        // Reset time part to ensure we are only comparing the date portion
+        appointmentDate.setHours(0, 0, 0, 0);  // Set appointment date to midnight
+        currentDate.setHours(0, 0, 0, 0);  // Set current date to midnight
+
+        // Calculate the difference in time between the two dates in milliseconds
+        const diffTime = appointmentDate - currentDate;
+
+        // Convert the difference from milliseconds to days
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+        console.log('Difference in days:', diffDays);
+
+        // Disable the button if the appointment is exactly 1 day away (tomorrow)
+        return diffDays === 1;  // Disable the button only if the appointment is 1 day away
+    }
+    return false;  // Enable button if there is no appointment date
+});
+
+
+// function formatDate(date) {
+//   const year = date.getFullYear();
+//   const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, so add 1
+//   const day = date.getDate().toString().padStart(2, '0'); // Ensure day is 2 digits
+  
+//   return `${year}-${month}-${day}`;
+// }
 </script>   
 <template>
   <Toast />
+  <!-- {{ currentDate }} -->
   <div>
     <div class="sticky-card card">
       <div>
@@ -164,11 +197,13 @@ const visibleCancel = ref(null);
                     <!-- <Button label="Next" icon="pi pi-arrow-right" iconPos="right" @click="nextCallback" /> -->
                     <Button v-if="buttonSelecter && user_details.user_type !== 'patient'" label="Update" icon="pi pi-save" iconPos="right" @click="visibleUpdate = true" :disabled="user_details.user_type === 'patient'"/>
                     <Button v-else-if="!buttonSelecter && user_details.user_type !== 'patient'" label="Save" icon="pi pi-save" iconPos="right" @click="visibleSave = true" :disabled="user_details.user_type === 'patient'"/>
-                    <Button v-else-if="!buttonSelecter && user_details.user_type === 'patient'" label="Cancel Appointment" icon="pi pi-save" iconPos="right" @click="visibleCancel = true"/>
+                    <Button v-else-if="!buttonSelecter && user_details.user_type === 'patient'" label="Cancel Appointment" icon="pi pi-save" iconPos="right" @click="visibleCancel = true" :disabled="isCancelButtonDisabled"/>
+                    <!-- {{ isCancelButtonDisabled }} -->
                 </div>
             </template>
         </StepperPanel>
     </Stepper>
+    
   </div>
 
 <!-- Update -->

@@ -110,17 +110,17 @@ const saveSelectionBotBox = () => {
   <!-- {{ conditionChoices }} -->
   <div>
     <div class="input-container">
-      <Button @click="treatmentDialog=true" severity="secondary" :label="treatmentChoices.find(choice => choice.id === tooth.topBox)?.key" class="small-input" :disabled="user_details.user_type === 'user'"/>
-      <Button @click="conditionDialog=true" severity="secondary" :label="conditionChoices.find(choice => choice.id === tooth.botBox)?.key" class="small-input" :disabled="user_details.user_type === 'user'"/>
+      <Button @click="treatmentDialog=true" severity="secondary" :label="treatmentChoices.find(choice => choice.id === tooth.topBox)?.key" class="small-input" :disabled="user_details.user_type === 'patient'"/>
+      <Button @click="conditionDialog=true" severity="secondary" :label="conditionChoices.find(choice => choice.id === tooth.botBox)?.key" class="small-input" :disabled="user_details.user_type === 'patient'"/>
 
     </div>
     <div class="px-1 py-1" color="indigo lighten-4">
       <div class="circle" role="button">
-        <div :class="['double_arc', 'arc_top', arcColors.top]" @click="user_details.user_type !== 'user' ? toggleArcColor('top') : null"></div>
-        <div :class="['double_arc', 'arc_right', arcColors.right]" @click="user_details.user_type !== 'user' ? toggleArcColor('right') : null"></div>
-        <div :class="['double_arc', 'arc_bot', arcColors.bottom]" @click="user_details.user_type !== 'user' ? toggleArcColor('bottom') : null"></div>
-        <div :class="['double_arc', 'arc_left', arcColors.left]" @click="user_details.user_type !== 'user' ? toggleArcColor('left') : null"></div>
-        <div :class="['double_arc', 'center', centerColor]"  @click="user_details.user_type !== 'user' ? toggleCenterColor() : null"></div>
+        <div :class="['double_arc', 'arc_top', arcColors.top]" @click="user_details.user_type !== 'patient' ? toggleArcColor('top') : null"></div>
+        <div :class="['double_arc', 'arc_right', arcColors.right]" @click="user_details.user_type !== 'patient' ? toggleArcColor('right') : null"></div>
+        <div :class="['double_arc', 'arc_bot', arcColors.bottom]" @click="user_details.user_type !== 'patient' ? toggleArcColor('bottom') : null"></div>
+        <div :class="['double_arc', 'arc_left', arcColors.left]" @click="user_details.user_type !== 'patient' ? toggleArcColor('left') : null"></div>
+        <div :class="['double_arc', 'center', centerColor]"  @click="user_details.user_type !== 'patient' ? toggleCenterColor() : null"></div>
       </div>
     </div>
     <span class="input-container font-bold border-1">{{ tooth.id }}</span>
