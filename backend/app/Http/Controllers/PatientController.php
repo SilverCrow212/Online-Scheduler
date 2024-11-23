@@ -11,7 +11,7 @@ class PatientController extends Controller
 {
     public function total_patients()
     {
-        $total_patients = User::where('user_type', 'user')->count();
+        $total_patients = User::where('user_type', 'patient')->count();
 
         $total_appointments_today = Appointment::where('appointment_date',Carbon::parse(now())->format('Y-m-d'))->count();
 
@@ -28,6 +28,6 @@ class PatientController extends Controller
     }
 
     public function all_patients(){
-        return User::with('userDetails')->where('user_type','user')->get();
+        return User::with('userDetails')->where('user_type','patient')->get();
     }
 }

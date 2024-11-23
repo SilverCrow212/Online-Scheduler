@@ -29,7 +29,7 @@ const civilStatusChoice = civilStore.legend
 
 const router = useRouter();
 const validationErrors = ref({});
-const userTypeChoice = ['user'];
+const userTypeChoice = ['patient'];
 const goBack = async () => {
     console.log("GoBack triggered"); // Debug if this log appears
     router.go(-1);

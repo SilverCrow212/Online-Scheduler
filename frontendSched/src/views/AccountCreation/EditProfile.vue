@@ -55,7 +55,7 @@ onMounted(async () => {
     }
 });
 const validationErrors = ref({});
-const userTypeChoice = ['user'];
+const userTypeChoice = ['patient'];
 // const goBack = () => {
 //     router.push({ name: 'login' }); // Adjust the route name as needed
 // };

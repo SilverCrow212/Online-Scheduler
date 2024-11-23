@@ -40,7 +40,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                         v-model="useOthers.periodicalScreening"
                         name="category"
                         :value="category.id"
-                        :disabled="user_details.user_type === 'user'"
+                        :disabled="user_details.user_type === 'patient'"
                     />
                     <label :for="category.id">{{ category.name }}</label>
                 </div>
@@ -54,7 +54,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                         v-model="useOthers.occlusion"
                         name="category"
                         :value="category.id"
-                        :disabled="user_details.user_type === 'user'"
+                        :disabled="user_details.user_type === 'patient'"
                     />
                     <label :for="category.id">{{ category.name }}</label>
                 </div>
@@ -68,7 +68,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                         v-model="useOthers.appliances"
                         name="category"
                         :value="category.id"
-                        :disabled="user_details.user_type === 'user'"
+                        :disabled="user_details.user_type === 'patient'"
                     />
                     <label :for="category.id">{{ category.name }}</label>
 
@@ -86,12 +86,12 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                         v-model="useOthers.tmd"
                         name="category"
                         :value="category.id"
-                        :disabled="category.id===1 || user_details.user_type === 'user'"
+                        :disabled="category.id===1 || user_details.user_type === 'patient'"
                     />
                     <label :for="category.id">{{ category.name }}</label>
 
                     <div v-if="category.id === 7 && useOthers.tmd.includes(category.id)">
-                        <InputText type="text" v-model="useOthers.tmdOthers" :disabled="user_details.user_type === 'user'"/>
+                        <InputText type="text" v-model="useOthers.tmdOthers" :disabled="user_details.user_type === 'patient'"/>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
             <h5>Others</h5>
             <div class="col-12 p-0 m-0">
                 <div class="field col-12 md:col-12">
-                    <InputText v-model="useOthers.others" type="text" class="w-full" :disabled="user_details.user_type === 'user'"/>
+                    <InputText v-model="useOthers.others" type="text" class="w-full" :disabled="user_details.user_type === 'patient'"/>
                 </div>
             </div>
         </div>
@@ -116,7 +116,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                   :disabled-dates="disabledDates"
                   :disabledDays="[0, 6]"
                   :manualInput="false"
-                  :disabled="user_details.user_type === 'user'"
+                  :disabled="user_details.user_type === 'patient'"
                 />
             <div class="oral-hygiene-status">
                 <div v-for="category in oralHygieneChoice" :key="category.id" class="mb-1">
@@ -125,7 +125,7 @@ const user_details = JSON.parse(localStorage.getItem('user_details'));
                         :inputId="`oralHygieneStatus1-${category.id}`"
                         name="oralHygieneStatus1"
                         :value="category.id"
-                        :disabled="user_details.user_type === 'user'"
+                        :disabled="user_details.user_type === 'patient'"
                     />
                     <label :for="`oralHygieneStatus1-${category.id}`">{{ category.name }}</label>
                 </div>
