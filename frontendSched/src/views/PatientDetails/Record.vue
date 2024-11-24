@@ -99,7 +99,7 @@ async function clickUpdate() {
 
 async function clickSaveUser() {
   try {
-    appointmentStore.appointmentDetails.status= 4;
+    appointmentStore.appointmentDetails.status= 5;
     const patientData = {
       teethData: teethData,
       firstPageData: otherInputsStore.firstPage,
