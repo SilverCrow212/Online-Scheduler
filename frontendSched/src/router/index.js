@@ -55,7 +55,7 @@ const routes = [
             {
                 path: 'logs',
                 name: 'logs',
-                component: () => import('@/views/Logs/Logs.vue')
+                component: () => import('@/views/SystemLogs/Logs.vue')
             },
             {
                 path: 'backuprestore',
