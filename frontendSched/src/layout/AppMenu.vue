@@ -17,7 +17,7 @@ if (localStorage.getItem('user_details')) {
                 { label: 'Add a Leave', icon: 'pi pi-bookmark', to: '/holiday' },
                 { label: 'Export Report', icon: 'pi pi-download', to: '/reports' },
                 { label: 'Logs', icon: 'pi pi-align-justify', to: '/logs' },
-                { label: 'Backup and Restore', icon: 'pi pi-align-justify', to: '/backuprestore' },
+                // { label: 'Backup and Restore', icon: 'pi pi-align-justify', to: '/backuprestore' },
                 ],
                 
             },
