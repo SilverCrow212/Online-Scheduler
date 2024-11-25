@@ -173,6 +173,20 @@ function viewConsentForm(consentForm) {
 
     <Dialog v-model:visible="visibleSetAppointment" modal header="Set Appointment" :style="{ width: '35rem' }" :dismissableMask="true">
         <AppointmentPopup/>
+        <div class="my-4">
+            <h6 class="font-bold mb-2">1. PLEASE READ THE DENTAL CLINIC APPOINTMENT POLICY</h6>
+            <ul class="pl-4 text-sm">
+                <li>Failure to come on your appointment or being late for more than ten minutes is considered a broken appointment.</li>
+                <li>Please arrive 15 minutes or earlier before your appointment.</li>
+            </ul>
+            <h6 class="font-bold mb-2">2. Please follow these guidelines:</h6>
+            <ul class="pl-4 text-sm">
+                <li>Remove pens or pointed objects from your back pocket.</li>
+                <li>Avoid heavy makeup (mascara, lipstick, etc.).</li>
+                <li>No ponytail or jaw/claw clips at the back of the head.</li>
+                <li>No validated ID card, no appointment slip, no treatment.</li>
+            </ul>
+        </div>
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Cancel" severity="secondary" @click="visibleSetAppointment = false"></Button>
             <Button type="button" label="Save" @click="clickSave()"></Button>

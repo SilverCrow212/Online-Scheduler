@@ -86,7 +86,7 @@ const userProfile = () => {
     }
 };
 
-
+const logout = ref(false);
 </script>
 
 <template>
@@ -113,12 +113,23 @@ const userProfile = () => {
                 <i class="pi pi-user"></i>
                 <span>Profile</span>
             </button>
-            <button @click="onLogout()" class="p-link layout-topbar-button">
+            <button @click="logout =true" class="p-link layout-topbar-button">
                 <i class="pi pi-sign-out"></i>
                 <span>Sign Out</span>
             </button>
         </div>
     </div>
+    
+    <Dialog v-model:visible="logout" modal header="Confirmation" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+      <div class="field col-12 md:col-12">
+          <label>Are you sure you want to logout?</label>
+      </div>
+      <div class="flex justify-content-end gap-2">
+          <Button type="button" label="Cancel" severity="secondary" @click="logout = false"></Button>
+          <Button type="button" label="Confirm" @click="onLogout()"></Button>
+      </div>
+  </Dialog>
+
 </template>
 
 <style lang="scss" scoped></style>

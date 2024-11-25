@@ -253,6 +253,7 @@ export const departmentChoices = defineStore('departmentChoices', () => {
     ]);
 
     const studentType = ref([
+        { name: 'Graduate School', id:4 },
         { name: 'College', id:1 },
         { name: 'Highschool', id:2 },
         { name: 'Elementary', id:3 },

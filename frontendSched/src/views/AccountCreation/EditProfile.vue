@@ -124,6 +124,9 @@ const validateForm = async () => {
     if (!createaccount.contact_no) {
         validationErrors.value.contact_no = 'Contact number is required.';
     }
+    if (createaccount.contact_no==createaccount.guardian_no) {
+        validationErrors.value.same_no = 'Contact number should not be the same.';
+    }
     if (!createaccount.civil_status) {
         validationErrors.value.civil_status = 'Civil status is required.';
     }
@@ -191,13 +194,15 @@ const password = ref(null);
 const validatePasswordForm = async () => {
   validationErrorsPassword.value = {};
 
-  if (!password.value) {
-    validationErrorsPassword.value.password = 'Password is required.';
-  } 
-
-  if (password.value !== confirmPassword.value) {
-    validationErrorsPassword.value.confirmPassword = 'Passwords do not match.';
-  }
+    if (!password.value || password.value.trim() === '') {
+        validationErrorsPassword.value.password = 'Password is required.';
+    } 
+    else if (password.value.length < 8 || password.value.length > 16) {
+        validationErrorsPassword.value.password = 'Password must be between 8 and 16 characters.';
+    }
+    if (password.value !== confirmPassword.value) {
+        validationErrorsPassword.value.confirmPassword = 'Passwords do not match.';
+    }
 
   if (Object.keys(validationErrorsPassword.value).length === 0) {
     try {
@@ -219,6 +224,7 @@ const validatePasswordForm = async () => {
         <div class="col-12">
             <div class="card">
                 <h5>Edit Profile</h5>
+                <Fieldset legend="Personal Profile">
                 <div class="p-fluid formgrid grid" >
                     <div class="field col-12 md:col-4">
                         <label>ID number</label>
@@ -323,11 +329,12 @@ const validatePasswordForm = async () => {
                     </div>
                     <div class="field col-12 md:col-4">
                         <label>Contact Number</label>
-                        <InputMask  v-model="createaccount.contact_no" mask="99999999999" placeholder="09090909090" :class="{'p-invalid': validationErrors.contact_no}"/>
+                        <InputMask  v-model="createaccount.contact_no" mask="09999999999" placeholder="09090909090" :class="{'p-invalid': validationErrors.contact_no,'p-invalid': validationErrors.same_no}"/>
                         <!-- <InputText v-model="createaccount.contact_no" type="text" :class="{'p-invalid': validationErrors.contact_no}" /> -->
                         <small v-if="validationErrors.contact_no" class="p-error">{{ validationErrors.contact_no }}</small>
+                        <small v-if="validationErrors.same_no" class="p-error">{{ validationErrors.same_no }}</small>
                     </div>
-                    <div class="field col-12 md:col-4">
+                    <div class="field col-12 md:col-12">
                         <label>Civil Status</label>
                         <!-- <InputText v-model="createaccount.civil_status" type="text" :class="{'p-invalid': validationErrors.civil_status}" /> -->
                          <Dropdown 
@@ -340,17 +347,7 @@ const validatePasswordForm = async () => {
                         />
                         <small v-if="validationErrors.civil_status" class="p-error">{{ validationErrors.civil_status }}</small>
                     </div>
-                    <div class="field col-12 md:col-4">
-                        <label>Parent/Guardian</label>
-                        <InputText v-model="createaccount.guardian" type="text" :class="{'p-invalid': validationErrors.guardian}" />
-                        <small v-if="validationErrors.guardian" class="p-error">{{ validationErrors.guardian }}</small>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <label>Guardian Contact Number</label>
-                        <!-- <InputText v-model="createaccount.guardian_no" type="text" :class="{'p-invalid': validationErrors.guardian_no}" /> -->
-                        <InputMask  v-model="createaccount.guardian_no" mask="99999999999" placeholder="09090909090" :class="{'p-invalid': validationErrors.guardian_no}"/>
-                        <small v-if="validationErrors.guardian_no" class="p-error">{{ validationErrors.guardian_no }}</small>
-                    </div>
+                    
                     <div class="field col-12">
                         <label>Permanent Address</label>
                         <Textarea v-model="createaccount.permanent_address" rows="3" />
@@ -361,9 +358,27 @@ const validatePasswordForm = async () => {
                     </div>
                     <div class="field col-12 flex justify-content-end gap-2">
                         <!-- <Button label="Back" @click="goBack" /> -->
-                        <Button label="Update" @click="validateForm" />
+                        
                     </div>
                 </div>
+                </Fieldset>
+                <Fieldset legend="Emergency Contact Information">
+                    <div class="p-fluid formgrid grid" >
+                        <div class="field col-12 md:col-6">
+                            <label>Contact Person</label>
+                            <InputText v-model="createaccount.guardian" type="text" :class="{'p-invalid': validationErrors.guardian}" />
+                            <small v-if="validationErrors.guardian" class="p-error">{{ validationErrors.guardian }}</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Contact Number</label>
+                            <!-- <InputText v-model="createaccount.guardian_no" type="text" :class="{'p-invalid': validationErrors.guardian_no}" /> -->
+                            <InputMask  v-model="createaccount.guardian_no" mask="09999999999" placeholder="09090909090" :class="{'p-invalid': validationErrors.guardian_no,'p-invalid': validationErrors.same_no}"/>
+                            <small v-if="validationErrors.guardian_no" class="p-error">{{ validationErrors.guardian_no }}</small>
+                            <small v-if="validationErrors.same_no" class="p-error">{{ validationErrors.same_no }}</small>
+                        </div>
+                        <Button label="Update" @click="validateForm" />
+                    </div>
+                </Fieldset>
             </div>
         </div>
         <div class="col-4">
