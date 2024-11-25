@@ -4,13 +4,13 @@
 
   const token = localStorage.getItem('token')
   const backupFile = ref(null) // Store the uploaded file
-
+  console.log(token);
   const backupDatabase = async () => {
     console.log(token);
     
     try {
       // Send request to backend to backup the database
-      const response = await axios.get('/database/backup', {}, {
+      const response = await axios.get('/database/backup', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
