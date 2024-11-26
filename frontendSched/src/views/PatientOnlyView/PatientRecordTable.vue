@@ -2,10 +2,14 @@
 import { ref, onMounted,computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { fetchAppointmentPatient, storeAppointment } from '@/api/ApiAppointment';
+import { storeClinicalDetails } from '@/api/ApiStoreClinicalDetails';
 import { informedConsent } from '@/store/informedconsent';
 import { appointment } from '@/store/appointmentenc';
 import AppointmentPopup from '@/views/PatientOnlyView/AppointmentPopup.vue';
 import { statusChoices } from '@/store/choices'
+import { teeth } from '@/store/teeth';
+import { otherInputs } from '@/store/teethothers';
+
 const statusStore = statusChoices();
 const useStatus = statusStore.legend;
 const router = useRouter();
@@ -68,13 +72,72 @@ const getStatusName = (statusId) => {
 const isAppointmentDisabled = computed(() => {
       return records.value.some(record => record.status === 2);
     });
+
+    
+const teethStore = teeth();
+const otherInputsStore = otherInputs();
+const teethData = teethStore.teethData;
+
+const visibleCancel = ref(false);
+async function clickCancel(appointmentId) {
+  try {
+    appointmentStore.appointmentDetails.status= 5;
+    const patientData = {
+        teethData: teethData,
+        firstPageData: otherInputsStore.firstPage,
+        secondPageData: otherInputsStore.servicesRendered,
+        appointment: appointmentStore.appointmentDetails.status
+    };
+    const response = await storeClinicalDetails(appointmentId, patientData, toast);
+    // await fetchingDetails();
+    window.location.reload();
+    visibleCancel.value=false;
+
+    console.log('Data saved successfully:', response);
+  } catch (error) {
+    console.error('Error saving clinical details:', error);
+  }
+}
+const selectedAppointmentId = ref(null);
+
+function isCancelButtonDisabled (appointment){
+
+
+        const appointmentDate = new Date(appointment.appointment_date);
+        const currentDate = new Date();
+
+        // Reset time part to ensure we are only comparing the date portion
+        appointmentDate.setHours(0, 0, 0, 0);  // Set appointment date to midnight
+        currentDate.setHours(0, 0, 0, 0);  // Set current date to midnight
+
+        // Calculate the difference in time between the two dates in milliseconds
+        const diffTime = appointmentDate - currentDate;
+
+        // Convert the difference from milliseconds to days
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+        console.log('Difference in days:', diffDays);
+        // return diffDays
+        // Disable the button if the appointment is exactly 1 day away (tomorrow)
+        if(diffDays === 1 || diffDays <= 0){
+            return true
+
+        }  // Disable the button only if the appointment is 1 day away
+        else{
+            return false
+        }
+        
+    
+
+};
 </script>
 <template>
     <Toast/>
-<DataTable v-model:selection="selectedPatients" :value="records" selectionMode="single" :metaKeySelection="metaKey" dataKey="id" tableStyle="min-width: 50rem" @row-click="dialogOpen">
+    
+    <!-- @row-click="dialogOpen" -->
+<DataTable v-model:selection="selectedPatients" :value="records" selectionMode="single" tableStyle="min-width: 50rem" >
     <template #header>
         <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-            
             <Button icon="pi pi-plus" label="Add New Appointment" raised @click="visibleSetAppointment=true" :disabled="isAppointmentDisabled" />
         </div>
     </template>
@@ -85,7 +148,14 @@ const isAppointmentDisabled = computed(() => {
             <span>{{ getStatusName(slotProps.data.status) }}</span>
         </template>
     </Column>
-
+    <Column field="medicine_prescribed" header="Prescribed Medicine"></Column>
+    <Column field="remarks" header="Remarks"></Column>
+    <Column header="Action">
+        <template #body="slotProps">
+            <Button label="Cancel Appointment" @click="visibleCancel=true; selectedAppointmentId = slotProps.data.id" :disabled="slotProps.data.status !==2 || isCancelButtonDisabled(slotProps.data)"/>
+            <!-- {{ isCancelButtonDisabled(slotProps.data) }} -->
+        </template>
+    </Column>
 </DataTable>
 <Dialog v-model:visible="visibleSetAppointment" modal header="Set Appointment" :style="{ width: '35rem' }" :dismissableMask="true">
     <AppointmentPopup/>
@@ -108,4 +178,14 @@ const isAppointmentDisabled = computed(() => {
         <Button type="button" label="Save" @click="clickSave()"></Button>
     </div>
 </Dialog>
+
+<Dialog v-model:visible="visibleCancel" modal header="Confirmation" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+      <div class="field col-12 md:col-12">
+          <label>Are you sure you want to cancel the appointment?</label>
+      </div>
+      <div class="flex justify-content-end gap-2">
+          <Button type="button" label="Cancel" severity="secondary" @click="visibleCancel = false"></Button>
+          <Button type="button" label="Confirm" @click="clickCancel(selectedAppointmentId)"></Button>
+      </div>
+  </Dialog>
 </template>

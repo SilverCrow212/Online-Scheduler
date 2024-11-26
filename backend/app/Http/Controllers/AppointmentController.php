@@ -49,10 +49,38 @@ class AppointmentController extends Controller
      */
     public function show_all(Request $r)
     {
-        return Appointment::where([
-            // 'status'=> 'A',
-            'user_details_id'=> $r->user_details_id
-        ])->get();
+
+        // return Appointment::where([
+        //     // 'status'=> 'A',
+        //     'user_details_id'=> $r->user_details_id
+        // ])->get();
+        $results = DB::table('appointment')
+    ->leftJoin('clinical_details', 'clinical_details.appointment_id', '=', 'appointment.id')
+    ->where('appointment.user_details_id', '=', $r->user_details_id)
+    ->select(
+        'appointment.id', // explicitly select the appointment id
+        'appointment.user_details_id',
+        'appointment.consent_form',
+        'appointment.enccode',
+        'appointment.appointment_date',
+        'appointment.appointment_time',
+        'appointment.status',
+        'appointment.created_at',
+        'appointment.updated_at',
+        'clinical_details.appointment_id',
+        'clinical_details.firstPage',
+        'clinical_details.services_rendered',
+        'clinical_details.tooth_number',
+        'clinical_details.medicine_prescribed',
+        'clinical_details.remarks'
+    )
+    ->get();
+
+
+
+
+
+    return response()->json($results);
     }
     public function show_all_by_date(Request $r)
     {
