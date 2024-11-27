@@ -357,7 +357,7 @@ INSERT INTO `users` (`id`, `school_id_number`, `user_type`, `email`, `email_veri
 CREATE TABLE `user_details` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `school_id_number` int(11) NOT NULL,
+  `school_id_number` varchar(45) NOT NULL,
   `firstname` varchar(100) DEFAULT NULL,
   `lastname` varchar(100) DEFAULT NULL,
   `middlename` varchar(100) DEFAULT NULL,
@@ -367,6 +367,7 @@ CREATE TABLE `user_details` (
   `department_program` varchar(45) DEFAULT NULL,
   `sex` varchar(45) DEFAULT NULL,
   `age` int(11) DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `contact_no` varchar(45) DEFAULT NULL,
   `civil_status` int(11) DEFAULT NULL,
