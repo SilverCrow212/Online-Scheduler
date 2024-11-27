@@ -249,7 +249,7 @@ export const departmentChoices = defineStore('departmentChoices', () => {
     const type = ref([
         { name: 'Student', id:1 },
         { name: 'Employee', id:2 },
-        { name: 'Dependent', id:3 },
+        // { name: 'Dependent', id:3 },
     ]);
 
     const studentType = ref([
@@ -265,7 +265,17 @@ export const departmentChoices = defineStore('departmentChoices', () => {
         // { name: 'Elementary', id:3 },
 
     ]);
-    return { department, type, studentType, employmentType };
+
+    const employmentClassification = ref([
+        { name: 'COS', id:1 },
+        { name: 'Plantilla', id:2 },
+        { name: 'Casual', id:3 },
+        { name: 'Substitute', id:4 },
+        // { name: 'Elementary', id:3 },
+
+    ]);
+    
+    return { department, type, studentType, employmentType, employmentClassification };
 });
 
 

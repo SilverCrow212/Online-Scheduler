@@ -136,6 +136,9 @@ const validateForm = async () => {
     if (!createaccount.guardian_no) {
         validationErrors.value.guardian_no = 'Guardian contact number is required.';
     }
+    if(createaccount.type == 2 && !createaccount.employment_classification){
+        validationErrors.value.employment_classification = 'Classification is required.';
+    }
     
 
     // Check if there are any validation errors
@@ -301,6 +304,17 @@ const validatePasswordForm = async () => {
                                 placeholder="Select One"
                                 :class="{'p-invalid': validationErrors.employee_student_type}" />
                         <small v-if="validationErrors.employee_student_type" class="p-error">{{ validationErrors.employee_student_type }}</small>
+                    </div>
+                    <div v-if="createaccount.type === 2" class="field col-12 md:col-4">
+                        <label>Employment Classification</label>
+                        <!-- <InputText v-model="createaccount.employee_student_type" type="text" :class="{'p-invalid': validationErrors.employee_student_type}" /> -->
+                        <Dropdown v-model="createaccount.employment_classification" 
+                                :options="employmentClassificationChoice" 
+                                optionLabel="name" 
+                                optionValue="id" 
+                                placeholder="Select One"
+                                :class="{'p-invalid': validationErrors.employment_classification}" />
+                        <small v-if="validationErrors.employment_classification" class="p-error">{{ validationErrors.employment_classification }}</small>
                     </div>
                     <div v-if="createaccount.type === 1" class="field col-12 md:col-4">
                         <label>Level</label>

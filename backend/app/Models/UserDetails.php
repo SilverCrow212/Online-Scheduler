@@ -19,6 +19,7 @@ class UserDetails extends Model
         'middlename',
         'type',
         'employee_student_type',
+        'employment_classification',
         'office_level',
         'department_program',
         'sex',

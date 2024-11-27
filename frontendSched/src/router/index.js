@@ -74,6 +74,11 @@ const routes = [
                 component: () => import('@/views/AccountCreation/CreateAcc.vue')
             },
             {
+                path: 'create-account-dependent',
+                name: 'createaccdependent',
+                component: () => import('@/views/AccountCreation/CreateAccDependent.vue')
+            },
+            {
                 path: 'print/record',
                 name: 'printrecord',
                 component: () => import('@/views/printouts/PatientRecord.vue')
