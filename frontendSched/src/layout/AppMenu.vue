@@ -24,6 +24,17 @@ if (localStorage.getItem('user_details')) {
             },
         ];
     }
+    else if(user_details.user_details.type==2){
+        model.value = [
+            {
+                label: 'Menu',
+                items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
+                // { label: 'Appointments/Records', icon: 'pi pi-calendar-plus', to: '/appointment' },
+                { label: 'Create Account For Dependent', icon: 'pi pi-user-plus', to: '/create-account-dependent' },
+                ],  
+            },
+        ];
+    }
     else{
         model.value = [
             {
