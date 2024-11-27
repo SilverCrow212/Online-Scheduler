@@ -10,7 +10,7 @@ use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\PrintablesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use Carbon\Carbon;
 use App\Http\Controllers\Auth\SecurityQuestionController;
 
 /*
@@ -42,7 +42,11 @@ Route::post('/login', function (Request $request) {
 
     if (Auth::attempt($credentials)) {
         $user = Auth::user();
-        $token = $user->createToken('my-token');
+
+        $expiration = Carbon::now()->addMinutes(60);
+
+        $token = $user->createToken('my-token', ['*'], $expiration);
+
         return ['token' => $token->plainTextToken];
     }
 
