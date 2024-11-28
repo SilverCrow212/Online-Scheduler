@@ -40,11 +40,17 @@ Route::post('/tokens/create', function (Request $request) {
 Route::post('/login', function (Request $request) {
     $credentials = $request->only('school_id_number', 'password');
 
+    // Check if the user exists with the provided credentials
     if (Auth::attempt($credentials)) {
         $user = Auth::user();
 
-        $expiration = Carbon::now()->addMinutes(60);
+        // Check if the user's status is 0
+        if ($user->status == 0) {
+            return response()->json(['message' => 'Your account is inactive'], 403); // Forbidden
+        }
 
+        // If the status is not 0, proceed to create a token
+        $expiration = Carbon::now()->addMinutes(60);
         $token = $user->createToken('my-token', ['*'], $expiration);
 
         return ['token' => $token->plainTextToken];
@@ -87,6 +93,10 @@ Route::middleware('auth:sanctum')->group (function (){
 
         // UPDATE EMAIL
         Route::post('change_email', [UserManagementController::class,'change_email']);
+        // DEACTIVATE ACCOUNT
+        Route::post('activate_account', [UserManagementController::class,'activateAccount']);
+        // REACTIVATE ACCOUNT
+        Route::post('deactivate_account', [UserManagementController::class,'deactivateAccount']);
     });
 
     // TEETH

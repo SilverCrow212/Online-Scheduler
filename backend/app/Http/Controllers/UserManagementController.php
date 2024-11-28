@@ -22,7 +22,8 @@ class UserManagementController extends Controller
                     'user_type' => $r->user_type,
                     'password' => Hash::make($r->password),
                     'security_question' => $r->security_question,
-                    'security_answer' => Hash::make($r->security_answer)
+                    'security_answer' => Hash::make($r->security_answer),
+                    'status' => 1,
                 ]);
                 // THIS WILL CREATE A USER DETAILS RELATED TO THE USER RECORD
                 UserDetails::create([
@@ -172,6 +173,55 @@ class UserManagementController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
+        }
+    }
+
+    public function activateAccount(Request $r){
+        try {
+            foreach ($r->input('data') as $forUpdate) {
+                if (isset($forUpdate['id'])) {
+                    DB::table('users')
+                        ->where('id', $forUpdate['id'])
+                        ->update(['status' => 1]);
+                }
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User account(s) activated successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            \Log::error('Error activating account: ' . $th->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An unexpected error occurred while activating the account.',
+                'error' => $th->getMessage(),
+            ], 500);
+        }
+    }
+    public function deactivateAccount(Request $r) {
+        try {
+            foreach ($r->input('data') as $forUpdate) {
+                if (isset($forUpdate['id'])) {
+                    DB::table('users')
+                        ->where('id', $forUpdate['id'])
+                        ->update(['status' => 0]);
+                }
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User account(s) deactivated successfully',
+            ], 200);
+        } catch (\Throwable $th) {
+            \Log::error('Error deactivating account: ' . $th->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An unexpected error occurred while deactivating the account.',
+                'error' => $th->getMessage(),
+            ], 500);
         }
     }
 }
