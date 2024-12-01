@@ -38,6 +38,11 @@ const routes = [
                 component: () => import('@/views/AccountCreation/EditProfile.vue')
             },
             {
+                path: 'editprofilepatient/:id',
+                name: 'editprofilepatient',
+                component: () => import('@/views/AccountCreation/EditProfilePatient.vue')
+            },
+            {
                 path: 'record/:id',
                 name: 'record',
                 component: () => import('@/views/PatientDetails/Record.vue')

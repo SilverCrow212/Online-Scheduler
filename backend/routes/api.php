@@ -84,6 +84,8 @@ Route::middleware('auth:sanctum')->group (function (){
     Route::prefix('user')->group(function () {
         // FETCH DETAILS
         Route::get('user_details', [UserManagementController::class, 'user_details']);
+        //FETCH DETAILS PATIENT
+        Route::get('user_details_patient', [UserManagementController::class, 'user_details_patient']);
 
         // UPDATE DETAILS
         Route::put('user_details_update', [UserManagementController::class, 'user_details_update']);

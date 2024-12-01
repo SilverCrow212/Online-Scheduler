@@ -9,81 +9,96 @@ const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
 const router = useRouter();
 
+// Reactive user_details
+const userDetails = ref(null);
+
 onMounted(() => {
-    bindOutsideClickListener();
+  bindOutsideClickListener();
+  loadUserDetails();
 });
 
 onBeforeUnmount(() => {
-    unbindOutsideClickListener();
+  unbindOutsideClickListener();
 });
 
+// Load user details from localStorage
+const loadUserDetails = () => {
+  const storedUserDetails = localStorage.getItem('user_details');
+  if (storedUserDetails) {
+    userDetails.value = JSON.parse(storedUserDetails);
+  }
+};
+
 const logoUrl = computed(() => {
-    return `/layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
+  return `/layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
 });
 
 const onTopBarMenuButton = () => {
-    topbarMenuActive.value = !topbarMenuActive.value;
-    
+  topbarMenuActive.value = !topbarMenuActive.value;
 };
+
 const onLogout = async () => {
-    try {
-        // Optionally send a logout request to the server
-        await axios.post('logout', login.value);
-        console.log('Logged out successfully');
-    } catch (err) {
-        console.error('Error during logout:', err);
-    } finally {
-        // Remove the token from local storage
-        localStorage.removeItem('token');
-        localStorage.removeItem('user_details');
-        // Redirect to the login page
-        router.push({ name: 'login' });
-        
-        // Optional: Reset any other state as needed
-        topbarMenuActive.value = false;
-    }
+  try {
+    // Optionally send a logout request to the server
+    await axios.post('logout', login.value);
+    console.log('Logged out successfully');
+  } catch (err) {
+    console.error('Error during logout:', err);
+  } finally {
+    // Remove the token from local storage
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_details');
+    // Redirect to the login page
+    router.push({ name: 'login' });
+
+    // Optional: Reset any other state as needed
+    topbarMenuActive.value = false;
+  }
 };
 
 const topbarMenuClasses = computed(() => {
-    return {
-        'layout-topbar-menu-mobile-active': topbarMenuActive.value
-    };
+  return {
+    'layout-topbar-menu-mobile-active': topbarMenuActive.value
+  };
 });
 
 const bindOutsideClickListener = () => {
-    if (!outsideClickListener.value) {
-        outsideClickListener.value = (event) => {
-            if (isOutsideClicked(event)) {
-                topbarMenuActive.value = false;
-            }
-        };
-        document.addEventListener('click', outsideClickListener.value);
-    }
+  if (!outsideClickListener.value) {
+    outsideClickListener.value = (event) => {
+      if (isOutsideClicked(event)) {
+        topbarMenuActive.value = false;
+      }
+    };
+    document.addEventListener('click', outsideClickListener.value);
+  }
 };
+
 const unbindOutsideClickListener = () => {
-    if (outsideClickListener.value) {
-        document.removeEventListener('click', outsideClickListener);
-        outsideClickListener.value = null;
-    }
+  if (outsideClickListener.value) {
+    document.removeEventListener('click', outsideClickListener);
+    outsideClickListener.value = null;
+  }
 };
+
 const isOutsideClicked = (event) => {
-    if (!topbarMenuActive.value) return;
+  if (!topbarMenuActive.value) return;
 
-    const sidebarEl = document.querySelector('.layout-topbar-menu');
-    const topbarEl = document.querySelector('.layout-topbar-menu-button');
+  const sidebarEl = document.querySelector('.layout-topbar-menu');
+  const topbarEl = document.querySelector('.layout-topbar-menu-button');
 
-    return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
+  return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
 };
+
 const userManual = () => {
-    const manualUrl = '/User-Manual.pdf';  // Adjust the path to your file
-    window.open(manualUrl, '_blank')
+  const manualUrl = '/User-Manual.pdf';  // Adjust the path to your file
+  window.open(manualUrl, '_blank')
 };
+
 const userProfile = () => {
-    if (localStorage.getItem('user_details')) {
-        const user_details = JSON.parse(localStorage.getItem('user_details'));
-        router.push({ name: 'editprofile', params: { id: user_details.user_details.id } });
-        topbarMenuActive.value = !topbarMenuActive.value;
-    }
+  if (userDetails.value) {
+    router.push({ name: 'editprofile', params: { id: userDetails.value.user_details.id } });
+    topbarMenuActive.value = !topbarMenuActive.value;
+  }
 };
 
 const logout = ref(false);
@@ -109,7 +124,7 @@ const logout = ref(false);
                 <i class="pi pi-book"></i>
                 <span>Manual</span>
             </button>
-            <button @click="userProfile()" class="p-link layout-topbar-button">
+            <button v-if="userDetails && userDetails.user_type === 'admin'" @click="userProfile()" class="p-link layout-topbar-button">
                 <i class="pi pi-user"></i>
                 <span>Profile</span>
             </button>

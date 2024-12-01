@@ -15,6 +15,24 @@ export async function fetchUserData() {
     console.error('Error fetching User Data:', error);
   }
 };
+export async function fetchUserDataPatient(appointmentid) {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await axios.get('/user/user_details_patient',  {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        appointmentid: appointmentid, 
+      },
+    });
+    console.log('this is the response',response.data[0].school_id_number)
+    return response;
+  } catch (error) {
+    console.error('Error fetching User Data:', error);
+  }
+};
 
 export async function activateUserData(data, toast) {
   try {

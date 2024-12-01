@@ -40,7 +40,7 @@ function dialogOpen(event){
 
 const router = useRouter();
 function openProfile(){
-    router.push({ name: 'editprofile', params: { id: selectedPatient.value.id } });
+    router.push({ name: 'editprofilepatient', params: { id: selectedPatient.value.id } });
     console.log(selectedPatient.value);
 }
 
@@ -137,9 +137,9 @@ const typeOptions = computed(() => {
     <Dialog v-model:visible="visible" modal :header="selectedPatient?.name" :style="{ width: '70rem' }" :dismissableMask="true">
         <div class="flex justify-content-end gap-4">
             <!-- {{selectedPatient.id}} -->
-            <!-- <span class="p-text-secondary mr-2">
+            <span class="p-text-secondary mr-2">
                 <Button type="button" label="View Profile" icon="pi pi-profile" size="small" @click="openProfile()" />
-            </span> -->
+            </span>
             <span class="p-text-secondary">
                 <Button type="button" label="Add Appointment" icon="pi pi-profile" size="small" @click="openProfileWindow(selectedPatient)" />
             </span>

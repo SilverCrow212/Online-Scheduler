@@ -46,6 +46,7 @@ if (localStorage.getItem('user_details')) {
 }
 const confirmPassword = ref('');
 const validateForm = async () => {
+    visibleDataPrivacy.value=false
     visible.value = false 
     validationErrors.value = {};
 
@@ -147,6 +148,7 @@ const security_questions = ref([]);
 
 
 const visible = ref(null);
+const visibleDataPrivacy = ref(false)
 </script>
 
 <template>
@@ -357,11 +359,21 @@ const visible = ref(null);
                 </Fieldset>
             <div class="field col-12 flex justify-content-end gap-2">
                 <Button label="Back" @click="goBack()" />
-                <Button label="Submit" @click="visible=true" />
+                <Button label="Submit" @click="visibleDataPrivacy=true" />
             </div>
         </div>
     </div>
 
+
+    <Dialog v-model:visible="visibleDataPrivacy" modal header="Data Privacy" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label>I acknowledge that I have read and fully understood the terms outlined in this Data Privacy Consent Form. I voluntarily grant my consent to the Benguet State University Dental Clinic, located at Km6, La Trinidad, Benguet, to collect, process, and store my personal data, including my full name, address, contact details, and other pertinent information, solely for the purpose of maintaining accurate and comprehensive dental health records. I understand that my personal information will only be used for legitimate purposes and will not be shared with third parties without my explicit consent, except as required by law. Furthermore, I am aware of my rights under the Data Privacy Act of 2012 (RA 10173), which include the right to access, update, or correct my personal data, withdraw my consent at any time, and file a complaint with the National Privacy Commission should there be any violations of my data privacy.</label>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="visibleDataPrivacy = false"></Button>
+            <Button type="button" label="I agree" @click="visible=true"></Button>
+        </div>
+    </Dialog>
 
     <Dialog v-model:visible="visible" modal header="Confirmation" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
         <div class="field col-12 md:col-12">

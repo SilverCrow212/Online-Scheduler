@@ -74,6 +74,16 @@ class UserManagementController extends Controller
         return $userDetails;
     }
 
+    // RETRIEVE USER DETAILS PATIENT
+    public function user_details_patient(Request $r){
+        $id =  $r['appointmentid'];
+        $userDetails = DB::table('users')
+        ->join('user_details', 'users.id', '=', 'user_details.user_id')
+        ->where('users.id', $id)
+        ->get();
+        return $userDetails;
+    }
+
     // UPDATE USER DETAILS
     public function user_details_update(Request $r){
         // return $r;
@@ -86,7 +96,7 @@ class UserManagementController extends Controller
                     'middlename' => $r->middlename,
                     'type' => $r->type,
                     'employee_student_type' => $r->employee_student_type,
-                    'employment_classification' => $r->emplyment_classification,
+                    'employment_classification' => $r->employment_classification,
                     'office_level' => $r->office_level,
                     'department_program' => $r->department_program,
                     'sex' => $r->sex,
