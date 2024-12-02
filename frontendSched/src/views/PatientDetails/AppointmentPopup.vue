@@ -1,5 +1,5 @@
 <script setup>
-import { ref,computed,watch,onMounted } from 'vue';
+import { ref,computed,watch,onMounted, defineProps } from 'vue';
 import axios from 'axios';
 import InformedConsent from '@/views/InformedConsent/InformedConsent.vue';
 import { appointment } from '@/store/appointmentenc';
@@ -10,7 +10,14 @@ const patients = ref(null);
 const selectedPatientId = ref(null);
 const filteredPatient = ref();
 // compute the school_id_number into the id number input below 
+const props = defineProps({
+  patientDetails: {
+    type: Object,
+    required: true,
+  },
+});
 
+selectedPatientId.value = props.patientDetails.school_id_number;
 
 const search = (event) => {
   setTimeout(() => {
@@ -109,8 +116,9 @@ watch(selectedDate, () => {
   useAppoinment.appointment_date = formatDate(selectedDate.value);
 });
 ////
+useAppoinment.user_details_id = props.patientDetails.user_details.user_id
 watch(selectedPatientId, () => {
-  useAppoinment.user_details_id = selectedPatientId.value?.user_details?.user_id; // Set the user ID in the appointment details
+  useAppoinment.user_details_id = props.patientDetails.school_id_number; // Set the user ID in the appointment details
 });
 
 
@@ -145,6 +153,7 @@ const clickClose = () => {
                     optionLabel="school_id_number" 
                     :suggestions="filteredPatient" 
                     @complete="search"
+                    disabled
                     />
               </div>
 

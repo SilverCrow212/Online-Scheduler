@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
 use App\Http\Controllers\Auth\SecurityQuestionController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MyEmail;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +68,22 @@ Route::prefix('user')->group(function () {
 
 
 Route::middleware('auth:sanctum')->group (function (){
+
+    Route::post('/sendemail', function (Request $request) {
+        // return $request->details['email'];
+        // Ensure 'details' is passed correctly as an array or object
+        $appointmentDate = $request->details['appointment_date'] ?? 'Unknown date';
+        $appointmentTime = $request->details['appointment_time'] ?? 'Unknown time';
+        $name = $request->details['firstname'] .' '. $request->details['lastname'];
+        // Construct the message with the passed data
+        $name = "Good Day! {$name} Your appointment for {$appointmentDate} at {$appointmentTime} is cancelled. \nDue to the doctor's cancellation, I encourage you to visit the university dental clinic or set another appointment. \n This is an automated email. Please do not reply.";
+        // I encourage you to visit the university dental clinic or set another appointment
+        // This is an automated email. Please do not reply
+        // Send the email using the Mailable class
+        Mail::to($request->details['email'])->send(new MyEmail($name));
+
+        return response()->json(['message' => 'Email sent successfully']);
+    });
 
     // USER LOGOUT
     Route::post('/logout', function (Request $request) {

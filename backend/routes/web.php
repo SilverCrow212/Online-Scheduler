@@ -1,7 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MyEmail;
 
+
+Route::get('/sendemail',function(){
+    $name = 'Funny Coder';
+    //send appointment time and date
+    //Due to doctors cancellation, visit the clinic or reset another appointment
+
+    Mail::to('th3sisitpancit@gmail.com')->send(new myEmail($name));
+});
 /*
 |--------------------------------------------------------------------------
 | Web Routes

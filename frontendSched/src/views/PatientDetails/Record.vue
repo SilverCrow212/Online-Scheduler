@@ -7,7 +7,7 @@ import { statusChoices } from '@/store/choices';
 import { createacc } from '@/store/createacc';
 import { teeth } from '@/store/teeth';
 import { otherInputs } from '@/store/teethothers';
-import { storeClinicalDetails, updateClinicalDetails, fetchClinicalDetails, fetchClinicalDetailsUser } from '@/api/ApiStoreClinicalDetails';
+import { storeClinicalDetails, updateClinicalDetails, fetchClinicalDetails, fetchClinicalDetailsUser, sendEmail } from '@/api/ApiStoreClinicalDetails';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import { appointment } from '@/store/appointmentenc'
@@ -69,6 +69,9 @@ async function clickSave() {
       secondPageData: otherInputsStore.servicesRendered,
       appointment: appointmentStore.appointmentDetails.status
     };
+    if(patientData.appointment === 4){
+      console.log('send email')
+    }
     const response = await storeClinicalDetails(appointmentId, patientData, toast);
     await fetchingDetails();
     window.location.reload();
@@ -87,9 +90,13 @@ async function clickUpdate() {
       secondPageData: otherInputsStore.servicesRendered,
       appointment: appointmentStore.appointmentDetails.status
     };
+    if(patientData.appointment === 4){
+      console.log('send email',userData)
+      await sendEmail(userData.value);
+    }
     const response = await updateClinicalDetails(appointmentId, patientData, toast);
     await fetchingDetails();
-    window.location.reload();
+    // window.location.reload();
     visibleUpdate.value=false;
     console.log('Data saved successfully:', response);
   } catch (error) {
@@ -106,6 +113,10 @@ async function clickSaveUser() {
       secondPageData: otherInputsStore.servicesRendered,
       appointment: appointmentStore.appointmentDetails.status
     };
+    if(patientData.appointment === 4){
+      console.log('send email',userData)
+      await sendEmail(userData.value);
+    }
     const response = await storeClinicalDetails(appointmentId, patientData, toast);
     await fetchingDetails();
     window.location.reload();

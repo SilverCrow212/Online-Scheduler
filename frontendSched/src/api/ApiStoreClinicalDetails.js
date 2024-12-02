@@ -83,3 +83,17 @@ export async function storeClinicalDetails(appointmentId,patientData,toast) {
       console.error('Error updating clinical details:', error);
     }
   }
+
+  export async function sendEmail(details) {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post('/sendemail',{details:details},  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching all patient data:', error);
+    }
+  };

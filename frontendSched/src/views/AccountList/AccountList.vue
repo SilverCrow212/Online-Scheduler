@@ -51,13 +51,13 @@ const typeOptions = computed(() => {
 async function deactivateUser(){
     await deactivateUserData(selectedPatient.value,toast);
     // window.location.reload();
-    await fetchAllPatient();
+    patients.value = await fetchAllPatient();
     showDeactivate.value=false
 }
 async function activateUser(){
     await activateUserData(selectedPatient.value,toast);
     // window.location.reload();
-    await fetchAllPatient();
+    patients.value = await fetchAllPatient();
     showActivate.value=false
 }
 
