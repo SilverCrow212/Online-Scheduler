@@ -86,15 +86,6 @@ const validateForm = async () => {
     if (!createaccount.type) {
         validationErrors.value.type = 'Type is required.';
     }
-    if (!createaccount.employee_student_type) {
-        validationErrors.value.employee_student_type = 'Employee/Student type is required.';
-    }
-    if (!createaccount.office_level) {
-        validationErrors.value.office_level = 'Required.';
-    }
-    if (!createaccount.department_program) {
-        validationErrors.value.department_program = 'Department/Program is required.';
-    }
     if (!createaccount.contact_no) {
         validationErrors.value.contact_no = 'Contact number is required.';
     }
@@ -104,8 +95,17 @@ const validateForm = async () => {
     if (!createaccount.civil_status) {
         validationErrors.value.civil_status = 'Civil status is required.';
     }
-    if (!createaccount.guardian) {
-        validationErrors.value.guardian = 'Parent/Guardian is required.';
+    if (!createaccount.guardian_firstname) {
+        validationErrors.value.guardian_firstname = 'Parent/Guardian Firstname is required.';
+    }
+    if (!createaccount.guardian_middlename) {
+        validationErrors.value.guardian_middlename = 'Parent/Guardian Middlename is required.';
+    }
+    if (!createaccount.guardian_lastname) {
+        validationErrors.value.guardian_lastname = 'Parent/Guardian Lastname is required.';
+    }
+    if (!createaccount.guardian_no) {
+        validationErrors.value.guardian_no = 'Guardian contact number is required.';
     }
     if (!createaccount.guardian_no) {
         validationErrors.value.guardian_no = 'Guardian contact number is required.';
@@ -131,6 +131,7 @@ const validateForm = async () => {
     // Check if there are any validation errors
     if (Object.keys(validationErrors.value).length === 0) {
         // Submit the form if there are no validation errors
+        createaccount.school_id_number = createaccount.school_id_number + createaccount.school_id_number_dependent
         const create = await CreateAcc(createaccount, toast);
         if(create==='received'){
             createAccStore.resetAccDetails();
@@ -165,7 +166,7 @@ const visibleDataPrivacy = ref(false)
                 
             <Fieldset legend="Personal Profile" class="mb-4">
                 <div class="p-fluid formgrid grid">
-                    <div class="field col-12 md:col-4">
+                    <div class="field col-12 md:col-4" hidden>
                         <label>Type</label>
                         <Dropdown v-model="createaccount.type" 
                                 :options="typeChoice" 
@@ -304,9 +305,19 @@ const visibleDataPrivacy = ref(false)
             <Fieldset legend="Emergency Contact Information" class="mb-4">
                 <div class="p-fluid formgrid grid">
                     <div class="field col-6 md:col-6">
-                        <label>Contact Person</label>
-                        <InputText v-model="createaccount.guardian" type="text" :class="{'p-invalid': validationErrors.guardian}" />
-                        <small v-if="validationErrors.guardian" class="p-error">{{ validationErrors.guardian }}</small>
+                        <label>Contact Person Firstname</label>
+                        <InputText v-model="createaccount.guardian_firstname" type="text" :class="{'p-invalid': validationErrors.guardian_firstname}" />
+                        <small v-if="validationErrors.guardian_firstname" class="p-error">{{ validationErrors.guardian_firstname }}</small>
+                    </div>
+                    <div class="field col-6 md:col-6">
+                        <label>Contact Person Middlename</label>
+                        <InputText v-model="createaccount.guardian_middlename" type="text" :class="{'p-invalid': validationErrors.guardian_middlename}" />
+                        <small v-if="validationErrors.guardian_middlename" class="p-error">{{ validationErrors.guardian_middlename }}</small>
+                    </div>
+                    <div class="field col-6 md:col-6">
+                        <label>Contact Person Lastname</label>
+                        <InputText v-model="createaccount.guardian_lastname" type="text" :class="{'p-invalid': validationErrors.guardian_lastname}" />
+                        <small v-if="validationErrors.guardian_lastname" class="p-error">{{ validationErrors.guardian_lastname }}</small>
                     </div>
                     <div class="field col-6 md:col-6">
                         <label>Contact Number</label>
