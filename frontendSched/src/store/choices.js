@@ -91,7 +91,7 @@ export const serviceRendered = defineStore('serviceRendered', () => {
         {id:12, name: 'Other Treatment'},
         {id:13, name: 'Oral Health Instruction'},
         {id:14, name: 'Referral'},
-        {id:15, name: 'Issuance of Med Cert'},
+        {id:15, name: 'Issuance of Certificate'},
         // {id:16, name: 'Examined Patient'},
         // {id:18, name: 'Patient Treated'},
     ]);

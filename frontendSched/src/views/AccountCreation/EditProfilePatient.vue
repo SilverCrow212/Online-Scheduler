@@ -98,7 +98,7 @@ const validateForm = async () => {
     if (!createaccount.firstname) {
         validationErrors.value.firstname = 'First name is required.';
     }
-    if (!createaccount.middlename) {
+    if (!createaccount.middlename || createaccount.middlename.length <= 1 || /^[A-Za-z]+(\s[A-Za-z]+)*$/.test(createaccount.middlename) === false) {
         validationErrors.value.middlename = 'Middle name is required.';
     }
     if (!createaccount.lastname) {
@@ -134,8 +134,17 @@ const validateForm = async () => {
     if (!createaccount.civil_status) {
         validationErrors.value.civil_status = 'Civil status is required.';
     }
-    if (!createaccount.guardian) {
-        validationErrors.value.guardian = 'Parent/Guardian is required.';
+    if (!createaccount.guardian_firstname) {
+        validationErrors.value.guardian_firstname = 'Parent/Guardian Firstname is required.';
+    }
+    if (!createaccount.guardian_middlename) {
+        validationErrors.value.guardian_middlename = 'Parent/Guardian Middlename is required.';
+    }
+    if (!createaccount.guardian_lastname) {
+        validationErrors.value.guardian_lastname = 'Parent/Guardian Lastname is required.';
+    }
+    if (!createaccount.guardian_no) {
+        validationErrors.value.guardian_no = 'Guardian contact number is required.';
     }
     if (!createaccount.guardian_no) {
         validationErrors.value.guardian_no = 'Guardian contact number is required.';
@@ -143,6 +152,13 @@ const validateForm = async () => {
     if(createaccount.type == 2 && !createaccount.employment_classification){
         validationErrors.value.employment_classification = 'Classification is required.';
     }
+    if(!createaccount.permanent_address){
+        validationErrors.value.permanent_address = 'Address is required.';
+    }
+    if(!createaccount.bsu_address){
+        validationErrors.value.bsu_address = 'Address is required.';
+    }
+
     
 
     // Check if there are any validation errors
@@ -368,11 +384,13 @@ const validatePasswordForm = async () => {
                     
                     <div class="field col-12">
                         <label>Permanent Address</label>
-                        <Textarea v-model="createaccount.permanent_address" rows="3" />
+                        <Textarea v-model="createaccount.permanent_address" rows="3":class="{'p-invalid': validationErrors.permanent_address}" />
+                        <small v-if="validationErrors.permanent_address" class="p-error">{{ validationErrors.permanent_address }}</small>
                     </div>
                     <div class="field col-12">
                         <label>Address while at BSU</label>
-                        <Textarea v-model="createaccount.bsu_address" rows="3" />
+                        <Textarea v-model="createaccount.bsu_address" rows="3" :class="{'p-invalid': validationErrors.bsu_address}"/>
+                        <small v-if="validationErrors.bsu_address" class="p-error">{{ validationErrors.bsu_address }}</small>
                     </div>
                     <div class="field col-12 flex justify-content-end gap-2">
                         <!-- <Button label="Back" @click="goBack" /> -->
@@ -382,10 +400,20 @@ const validatePasswordForm = async () => {
                 </Fieldset>
                 <Fieldset legend="Emergency Contact Information">
                     <div class="p-fluid formgrid grid" >
-                        <div class="field col-12 md:col-6">
-                            <label>Contact Person</label>
-                            <InputText v-model="createaccount.guardian" type="text" :class="{'p-invalid': validationErrors.guardian}" />
-                            <small v-if="validationErrors.guardian" class="p-error">{{ validationErrors.guardian }}</small>
+                        <div class="field col-6 md:col-6">
+                            <label>Contact Person Firstname</label>
+                            <InputText v-model="createaccount.guardian_firstname" type="text" :class="{'p-invalid': validationErrors.guardian_firstname}" />
+                            <small v-if="validationErrors.guardian_firstname" class="p-error">{{ validationErrors.guardian_firstname }}</small>
+                        </div>
+                        <div class="field col-6 md:col-6">
+                            <label>Contact Person Middlename</label>
+                            <InputText v-model="createaccount.guardian_middlename" type="text" :class="{'p-invalid': validationErrors.guardian_middlename}" />
+                            <small v-if="validationErrors.guardian_middlename" class="p-error">{{ validationErrors.guardian_middlename }}</small>
+                        </div>
+                        <div class="field col-6 md:col-6">
+                            <label>Contact Person Lastname</label>
+                            <InputText v-model="createaccount.guardian_lastname" type="text" :class="{'p-invalid': validationErrors.guardian_lastname}" />
+                            <small v-if="validationErrors.guardian_lastname" class="p-error">{{ validationErrors.guardian_lastname }}</small>
                         </div>
                         <div class="field col-12 md:col-6">
                             <label>Contact Number</label>

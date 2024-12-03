@@ -127,10 +127,51 @@ watch(selectedPatientId, () => {
 // useAppoinment.status = 2;
 ////
 const clickClose = () => {
-  useAppoinment.consent_form = consentform;
-  visibleInformedConsent.value = false;
-  console.log('consent form',consentform)
+  if (validateForm()) {
+    useAppoinment.consent_form = consentform;
+    visibleInformedConsent.value = false;
+    console.log('consent form',consentform)
+  } else {
+    alert(errorMessage.value);
+  }
 
+};
+const errorMessage = ref('')
+const validateForm = () => {
+  console.log('consent form', consentform.dentalHistory)
+  if (
+    !consentform.details.name ||
+    !consentform.details.collegeOffice ||
+    !consentform.details.reason ||
+    !consentform.dentalHistory.previousDentist ||
+    !consentform.dentalHistory.address ||
+    !consentform.dentalHistory.lastDentalVisit ||
+    !consentform.dentalHistory.reason ||
+    !consentform.medicalHistory.physician ||
+    !consentform.medicalHistory.specialty ||
+    !consentform.medicalHistory.clinicAddress ||
+    !consentform.medicalHistory.contactNumber ||
+    !consentform.medicalHistory.q1.answ ||
+    !consentform.medicalHistory.q2.answ ||
+    !consentform.medicalHistory.q3.answ ||
+    !consentform.medicalHistory.q4.answ ||
+    !consentform.medicalHistory.q5.answ ||
+    !consentform.medicalHistory.q6.answ ||
+    !consentform.medicalHistory.q7.answ ||
+    !consentform.preconsent.treatment ||
+    !consentform.preconsent.drugs ||
+    !consentform.preconsent.treatmentPlan ||
+    !consentform.preconsent.radiograph ||
+    !consentform.preconsent.removal ||
+    !consentform.preconsent.periodontal ||
+    !consentform.preconsent.fillings ||
+    !consentform.finalconsent.patient ||
+    !consentform.finalconsent.date
+  ) {
+    errorMessage.value = 'Please fill in all the required fields before closing.';
+    return false;
+  }
+  return true;
 };
 </script>
 
@@ -185,7 +226,7 @@ const clickClose = () => {
         </div>
     </div>
 
-    <Dialog v-model:visible="visibleInformedConsent" modal header="Dental Health Record - Informed Consent" :style="{ width: '75%' }" :dismissableMask="true">
+    <Dialog v-model:visible="visibleInformedConsent" modal header="Dental Health Record - Informed Consent" :style="{ width: '75%' }" :closable="false">
         <InformedConsent/>
         <div class="flex justify-content-end gap-2">
             <!-- <Button type="button" label="Cancel" severity="secondary" @click="visibleInformedConsent = false"></Button> -->
