@@ -19,7 +19,7 @@
       // Check if response contains the URL
       if (response.data.fileUrl) {
         // Trigger the download by setting the URL as the location
-        window.location.href = response.data.fileUrl;
+        alert('Databased backed up successfully');
       } else {
         console.error('Backup URL not found in the response.');
       }
