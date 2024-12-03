@@ -103,8 +103,14 @@ const validateForm = async () => {
     if (!createaccount.civil_status) {
         validationErrors.value.civil_status = 'Civil status is required.';
     }
-    if (!createaccount.guardian) {
-        validationErrors.value.guardian = 'Parent/Guardian is required.';
+    if (!createaccount.guardian_firstname) {
+        validationErrors.value.guardian_firstname = 'Parent/Guardian Firstname is required.';
+    }
+    if (!createaccount.guardian_middlename) {
+        validationErrors.value.guardian_middlename = 'Parent/Guardian Middlename is required.';
+    }
+    if (!createaccount.guardian_lastname) {
+        validationErrors.value.guardian_lastname = 'Parent/Guardian Lastname is required.';
     }
     if (!createaccount.guardian_no) {
         validationErrors.value.guardian_no = 'Guardian contact number is required.';
@@ -314,9 +320,19 @@ const visibleDataPrivacy = ref(false)
             <Fieldset legend="Emergency Contact Information" class="mb-4">
                 <div class="p-fluid formgrid grid">
                     <div class="field col-6 md:col-6">
-                        <label>Contact Person</label>
-                        <InputText v-model="createaccount.guardian" type="text" :class="{'p-invalid': validationErrors.guardian}" />
-                        <small v-if="validationErrors.guardian" class="p-error">{{ validationErrors.guardian }}</small>
+                        <label>Contact Person Firstname</label>
+                        <InputText v-model="createaccount.guardian_firstname" type="text" :class="{'p-invalid': validationErrors.guardian_firstname}" />
+                        <small v-if="validationErrors.guardian_firstname" class="p-error">{{ validationErrors.guardian_firstname }}</small>
+                    </div>
+                    <div class="field col-6 md:col-6">
+                        <label>Contact Person Middlename</label>
+                        <InputText v-model="createaccount.guardian_middlename" type="text" :class="{'p-invalid': validationErrors.guardian_middlename}" />
+                        <small v-if="validationErrors.guardian_middlename" class="p-error">{{ validationErrors.guardian_middlename }}</small>
+                    </div>
+                    <div class="field col-6 md:col-6">
+                        <label>Contact Person Lastname</label>
+                        <InputText v-model="createaccount.guardian_lastname" type="text" :class="{'p-invalid': validationErrors.guardian_lastname}" />
+                        <small v-if="validationErrors.guardian_lastname" class="p-error">{{ validationErrors.guardian_lastname }}</small>
                     </div>
                     <div class="field col-6 md:col-6">
                         <label>Contact Number</label>
