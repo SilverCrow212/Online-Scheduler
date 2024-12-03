@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'backups'),
 
     /*
     |--------------------------------------------------------------------------
@@ -75,7 +75,9 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        // public_path('storage') => storage_path('app/public'),
+        // Dont forget to run this command -> php artisan storage:link
+        public_path('backups') => storage_path('app/backups'),
     ],
 
 ];

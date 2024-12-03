@@ -2,85 +2,101 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Symfony\Component\Process\Process;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Artisan;
+use Log;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
+use Illuminate\Http\Request;
 
 class BackupController extends Controller
 {
-    public function backup()
-    {
-        // try {
-        //     Artisan::call('backup:run');
-        //     return response()->json(['message' => 'Backup created successfully.']);
-        // } catch (\Exception $e) {
-        //     return response()->json(['error' => $e->getMessage()], 500);
-        // }
-        $mysqldumpPath = 'C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe';
-        $defaultFilePath = '--defaults-file=G:\\External Projects\\Jampong\\Online-Scheduler\\.my.cnf';
+    public function backup(){
+        try {
+            $dbName = env('DB_DATABASE');
+            $dbUser = env('DB_USERNAME');
+            $dbPassword = env('DB_PASSWORD');
+            $dbHost = env('DB_HOST');
+            $backupFile = 'backup-' . date('Y-m-d_H-i-s') . '.sql';
 
-        $dbHost = env('DB_HOST', '127.0.0.1'); // Use 127.0.0.1 as default
-        $dbName = env('DB_DATABASE');
-        $dbUser = env('DB_USERNAME');
-        $dbPass = env('DB_PASSWORD');
-        $backupFile = storage_path('app/backups/' . $dbName . '_backup_' . date('Y-m-d_H-i-s') . '.sql');
+            // Full path to mysqldump executable
+            $mysqldumpPath = '"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe"'; // Adjust this to your actual path
 
-        if (!file_exists(dirname($backupFile))) {
-            mkdir(dirname($backupFile), 0777, true);
+            // Backup file path
+            $backupPath = storage_path('app/backups/' . $backupFile);
+
+            // Create the command to run mysqldump
+            $command = sprintf(
+                '%s -u%s -p%s -h%s %s > "%s"',
+                $mysqldumpPath,
+                escapeshellarg($dbUser),
+                escapeshellarg($dbPassword),
+                escapeshellarg($dbHost),
+                escapeshellarg($dbName),
+                escapeshellarg($backupPath)
+            );
+
+            // Execute the command
+            exec($command, $output, $returnVar);
+
+            // Check if the command ran successfully
+            if ($returnVar !== 0) {
+                // If mysqldump failed, return the output/error
+                return response()->json(['error' => 'Backup failed', 'output' => $output], 500);
+            }
+
+            // Return the URL of the backup file
+            $fileUrl = asset('backups/' . $backupFile);
+            return response()->json(['fileUrl' => $fileUrl]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
 
-
-        // Prepare the command as an array
-        $command = [
-            $mysqldumpPath,
-            $defaultFilePath,
-            '--no-tablespaces',
-            $dbName
-        ];
-
-        // Run the process and write the output to the file
-        $process = new Process($command);
-        $process->setTimeout(null); // Optional: Remove timeout for large databases
-
-        // Run the process and capture the output directly
-        $process->run();
-
-        if ($process->isSuccessful()) {
-            // Output the SQL file for download
-            return response()->download($backupFile)->deleteFileAfterSend();
-        } else {
-            return response()->json(['error' => 'Backup failed: ' . $process->getErrorOutput()], 500);
-        }
     }
-    public function restore(Request $request)
-    {
-        $request->validate([
-            'sql_file' => 'required|mimes:sql|max:10240', // Limit to 10MB
-        ]);
+    public function restore(Request $request){
+        try {
+            $request->validate([
+                'backup_file' => 'required|file|mimetypes:sql,text/plain',
+            ]);
 
-        $sqlFile = $request->file('sql_file')->getPathname();
-        $dbHost = env('DB_HOST', '127.0.0.1');
-        $dbName = env('DB_DATABASE');
-        $dbUser = env('DB_USERNAME');
-        $dbPass = env('DB_PASSWORD');
+            $dbName = env('DB_DATABASE');
+            $dbUser = env('DB_USERNAME');
+            $dbPassword = env('DB_PASSWORD');
+            $dbHost = env('DB_HOST');
 
-        $command = sprintf(
-            'mysql --user=%s --password=%s --host=%s %s < %s',
-            escapeshellarg($dbUser),
-            escapeshellarg($dbPass),
-            escapeshellarg($dbHost),
-            escapeshellarg($dbName),
-            escapeshellarg($sqlFile)
-        );
+            $file = $request->file('backup_file');
+            $filePath = $file->storeAs('temp', 'restore.sql');
 
-        $process = Process::fromShellCommandline($command);
-        $process->run();
+            // Specify the full path to mysql.exe
+            $mysqlPath = '"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe"';  // Adjust this path
 
-        if ($process->isSuccessful()) {
-            return response()->json(['message' => 'Database restored successfully.']);
-        } else {
-            return response()->json(['error' => 'Restore failed: ' . $process->getErrorOutput()], 500);
+            $command = sprintf(
+                '%s -u%s -p%s -h%s %s < %s 2>&1',
+                $mysqlPath,
+                escapeshellarg($dbUser),
+                escapeshellarg($dbPassword),
+                escapeshellarg($dbHost),
+                escapeshellarg($dbName),
+                escapeshellarg(storage_path('app/' . $filePath))
+            );
+
+            $output = [];
+            $returnVar = 0;
+            exec($command, $output, $returnVar);
+
+            Log::error('Database restore command output:', ['output' => implode("\n", $output)]);
+            Log::error('Database restore return code:', ['returnVar' => $returnVar]);
+
+            if ($returnVar === 0) {
+                return response()->json(['message' => 'Database restored successfully']);
+            } else {
+                return response()->json(['error' => 'Database restore failed.'], 500);
+            }
+
+        } catch (\Exception $e) {
+            // Log the exception for further debugging
+            Log::error('Database restore failed:', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Failed to restore the database.'], 500);
         }
     }
 

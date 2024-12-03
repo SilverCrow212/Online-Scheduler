@@ -250,7 +250,7 @@ return [
         'notifications' => [],
         'notifiable' => null,
         'mail' => [
-            'to' => null,
+            'to' => env('BACKUP_NOTIFICATION_EMAIL'),
         ],
     ],
 
