@@ -41,7 +41,7 @@ const goBack = async () => {
 const user_details = JSON.parse(localStorage.getItem('user_details'));
 if (localStorage.getItem('user_details')) {
     if (user_details.user_type === 'admin') {
-        userTypeChoice.push('admin');
+        // userTypeChoice.push('admin');
     }
 }
 const confirmPassword = ref('');
