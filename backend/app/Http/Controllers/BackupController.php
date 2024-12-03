@@ -20,33 +20,26 @@ class BackupController extends Controller
             $backupFile = 'backup-' . date('Y-m-d_H-i-s') . '.sql';
 
             // Full path to mysqldump executable
-            $mysqldumpPath = '"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqldump.exe"'; // Adjust this to your actual path
+            $mysqldumpPath = '"D:\\xampp\\mysql\\bin\\mysqldump.exe"'; // Adjust this to your actual path
 
-            // Backup file path
-            $backupPath = storage_path('app/backups/' . $backupFile);
+            // Backup file path (full path to backup file)
+            $backupPath = storage_path('app\\backups\\' . $backupFile);
 
             // Create the command to run mysqldump
-            $command = sprintf(
-                '%s -u%s -p%s -h%s %s > "%s"',
-                $mysqldumpPath,
-                escapeshellarg($dbUser),
-                escapeshellarg($dbPassword),
-                escapeshellarg($dbHost),
-                escapeshellarg($dbName),
-                escapeshellarg($backupPath)
-            );
+            $command = "\"D:\\xampp\\mysql\\bin\\mysqldump.exe\" --user={$dbUser} --password={$dbPassword} --host={$dbHost} {$dbName} > \"{$backupPath}\"";
+
+            // File URL (for public access)
+            $fileUrl = asset('storage/backups/' . $backupFile);
 
             // Execute the command
-            exec($command, $output, $returnVar);
-
+            exec($command);
             // Check if the command ran successfully
-            if ($returnVar !== 0) {
-                // If mysqldump failed, return the output/error
-                return response()->json(['error' => 'Backup failed', 'output' => $output], 500);
-            }
+            // if ($returnVar !== 0) {
+            //     // If mysqldump failed, return the output/error
+            //     return response()->json(['error' => 'Backup failed', 'output' => $output], 500);
+            // }
 
             // Return the URL of the backup file
-            $fileUrl = asset('backups/' . $backupFile);
             return response()->json(['fileUrl' => $fileUrl]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -64,25 +57,23 @@ class BackupController extends Controller
             $dbPassword = env('DB_PASSWORD');
             $dbHost = env('DB_HOST');
 
+            // Get the uploaded file
             $file = $request->file('backup_file');
-            $filePath = $file->storeAs('temp', 'restore.sql');
+            // $filePath = $file->storeAs('temp', 'restore.sql');
+            $fileName = $file->getClientOriginalName();
+            $filePath = storage_path('app\\backups\\' . $fileName);
 
             // Specify the full path to mysql.exe
-            $mysqlPath = '"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe"';  // Adjust this path
+            $mysqlPath = "D:\\xampp\\mysql\\bin\\mysql.exe";  // Adjust this path
 
-            $command = sprintf(
-                '%s -u%s -p%s -h%s %s < %s 2>&1',
-                $mysqlPath,
-                escapeshellarg($dbUser),
-                escapeshellarg($dbPassword),
-                escapeshellarg($dbHost),
-                escapeshellarg($dbName),
-                escapeshellarg(storage_path('app/' . $filePath))
-            );
-
+            // Construct the restore command
+            $command = "\"$mysqlPath\" -h $dbHost -u $dbUser $dbName < \"$filePath\"";
+            // return $command;
+            // Execute the command
+            exec($command);
             $output = [];
             $returnVar = 0;
-            exec($command, $output, $returnVar);
+            // exec($command, $output, $returnVar);
 
             Log::error('Database restore command output:', ['output' => implode("\n", $output)]);
             Log::error('Database restore return code:', ['returnVar' => $returnVar]);
