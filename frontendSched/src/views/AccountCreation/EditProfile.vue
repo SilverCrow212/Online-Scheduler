@@ -139,6 +139,12 @@ const validateForm = async () => {
     if(createaccount.type == 2 && !createaccount.employment_classification){
         validationErrors.value.employment_classification = 'Classification is required.';
     }
+    if(!createaccount.permanent_address){
+        validationErrors.value.permanent_address = 'Address is required.';
+    }
+    if(!createaccount.bsu_address){
+        validationErrors.value.bsu_address = 'Address is required.';
+    }
     
 
     // Check if there are any validation errors
@@ -364,11 +370,13 @@ const validatePasswordForm = async () => {
                     
                     <div class="field col-12">
                         <label>Permanent Address</label>
-                        <Textarea v-model="createaccount.permanent_address" rows="3" />
+                        <Textarea v-model="createaccount.permanent_address" rows="3":class="{'p-invalid': validationErrors.permanent_address}" />
+                        <small v-if="validationErrors.permanent_address" class="p-error">{{ validationErrors.permanent_address }}</small>
                     </div>
                     <div class="field col-12">
                         <label>Address while at BSU</label>
-                        <Textarea v-model="createaccount.bsu_address" rows="3" />
+                        <Textarea v-model="createaccount.bsu_address" rows="3" :class="{'p-invalid': validationErrors.bsu_address}"/>
+                        <small v-if="validationErrors.bsu_address" class="p-error">{{ validationErrors.bsu_address }}</small>
                     </div>
                     <div class="field col-12 flex justify-content-end gap-2">
                         <!-- <Button label="Back" @click="goBack" /> -->

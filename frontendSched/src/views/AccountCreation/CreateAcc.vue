@@ -57,7 +57,7 @@ const validateForm = async () => {
     if (!createaccount.firstname) {
         validationErrors.value.firstname = 'First name is required.';
     }
-    if (!createaccount.middlename) {
+    if (!createaccount.middlename || createaccount.middlename.length <= 1 || /^[A-Za-z]+(\s[A-Za-z]+)*$/.test(createaccount.middlename) === false) {
         validationErrors.value.middlename = 'Middle name is required.';
     }
     if (!createaccount.lastname) {
@@ -121,7 +121,12 @@ const validateForm = async () => {
     if(createaccount.type == 2 && !createaccount.employment_classification){
         validationErrors.value.employment_classification = 'Classification is required.';
     }
-
+    if(!createaccount.permanent_address){
+        validationErrors.value.permanent_address = 'Address is required.';
+    }
+    if(!createaccount.bsu_address){
+        validationErrors.value.bsu_address = 'Address is required.';
+    }
 
     // Check if there are any validation errors
     if (Object.keys(validationErrors.value).length === 0) {
@@ -294,11 +299,13 @@ const visibleDataPrivacy = ref(false)
                     
                     <div class="field col-12">
                         <label>Permanent Address</label>
-                        <Textarea v-model="createaccount.permanent_address" rows="3" />
+                        <Textarea v-model="createaccount.permanent_address" rows="3":class="{'p-invalid': validationErrors.permanent_address}" />
+                        <small v-if="validationErrors.permanent_address" class="p-error">{{ validationErrors.permanent_address }}</small>
                     </div>
                     <div class="field col-12">
                         <label>Address while at BSU</label>
-                        <Textarea v-model="createaccount.bsu_address" rows="3" />
+                        <Textarea v-model="createaccount.bsu_address" rows="3" :class="{'p-invalid': validationErrors.bsu_address}"/>
+                        <small v-if="validationErrors.bsu_address" class="p-error">{{ validationErrors.bsu_address }}</small>
                     </div>
                     
                     
