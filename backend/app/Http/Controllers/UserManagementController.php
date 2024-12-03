@@ -62,10 +62,21 @@ class UserManagementController extends Controller
             ], 200);
 
         } catch (\Throwable $th) {
+            if ($th instanceof \Illuminate\Database\QueryException && $th->getCode() === '23000') {
+                if (strpos($th->getMessage(), 'school_id_number_UNIQUE') !== false) {
+                    $errorMessage = 'School ID number is already taken.';
+                } elseif (strpos($th->getMessage(), 'users_email_unique') !== false) {
+                    $errorMessage = 'Email is already taken.';
+                } else {
+                    $errorMessage = 'A database error occurred.';
+                }
+            } else {
+                $errorMessage = $th->getMessage();
+            }
             // IF ABOVE QUERIES ARE EXECUTED WITH ERROR, THE QUERIES WILL ROLLBACK. NOTHING WILL CHANGE TO THE DATABASE
             DB::rollBack();
             // throw error message
-            throw $th;
+            throw new \Exception($errorMessage);
         }
 
     }

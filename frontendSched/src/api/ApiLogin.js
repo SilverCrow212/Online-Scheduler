@@ -31,7 +31,7 @@ export async function CreateAcc(details, toast) {
         return 'received';
     } catch (err) {
         console.error('error', err);
-        toast.add({ severity: 'error', summary: 'An error has occured', detail: 'Message Detail', life: 3000 });
+        toast.add({ severity: 'error', summary: err.response.data.message, detail: 'Message Detail', life: 3000 });
     }
 }
 
