@@ -51,7 +51,7 @@ class UserManagementController extends Controller
                 ]);
 
                 $logsController = new LogsController();
-                $logsController->logAction('created user account: '.$createUser->id);
+                $logsController->logAction('created user account: '.$r->school_id_number);
 
             DB::commit(); // IF ABOVE QUERIES ARE EXECUTED SUCCESSFULLY, ALL QUERIES WILL BE COMITTED AND THE DATABASE WILL BE AFFECTED
 

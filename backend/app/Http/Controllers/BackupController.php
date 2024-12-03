@@ -8,6 +8,8 @@ use Log;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\LogsController;
+use Carbon\Carbon;
 
 class BackupController extends Controller
 {
@@ -38,7 +40,8 @@ class BackupController extends Controller
             //     // If mysqldump failed, return the output/error
             //     return response()->json(['error' => 'Backup failed', 'output' => $output], 500);
             // }
-
+            $logsController = new LogsController();
+            $logsController->logAction('backup database: '.Carbon::now());
             // Return the URL of the backup file
             return response()->json(['fileUrl' => $fileUrl]);
         } catch (\Exception $e) {
@@ -71,6 +74,9 @@ class BackupController extends Controller
             // return $command;
             // Execute the command
             exec($command);
+
+            $logsController = new LogsController();
+            $logsController->logAction('restored database: '.Carbon::now());
             $output = [];
             $returnVar = 0;
             // exec($command, $output, $returnVar);

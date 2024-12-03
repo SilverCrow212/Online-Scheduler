@@ -36,7 +36,7 @@ class AppointmentController extends Controller
         }
 
         $logsController = new LogsController();
-        $logsController->logAction('created appointment: '.$appointment->id);
+        $logsController->logAction('created appointment: '.$r->appointment_date. 'appointment time:'.$r->appointment_time. ' created at: '.Carbon::now());
 
         return json_encode([
             'status'=> $status,
@@ -155,7 +155,7 @@ class AppointmentController extends Controller
 
 
         $logsController = new LogsController();
-        $logsController->logAction('updated appointment: '.$r->id);
+        $logsController->logAction('updated appointment: '.$r->id.' appointment date:' .$r->appointment_date . ' appointment time:'.$r->appointment_time. 'updated at:'. Carbon::now());
 
         return json_encode([
             'status'=> $status,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Controllers\LogsController;
 class PrintablesController extends Controller
 {
 
@@ -26,6 +27,8 @@ class PrintablesController extends Controller
 
     public function exportReport(Request $r)
     {
+        $logsController = new LogsController();
+        $logsController->logAction('report exported at: '.Carbon::now());
         $inputDate = $r->date;  // Example input: '2024-11-14'
 
         // Parse the input date using Carbon

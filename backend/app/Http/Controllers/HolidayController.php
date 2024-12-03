@@ -20,7 +20,7 @@ class HolidayController extends Controller
         ]);
 
         $logsController = new LogsController();
-        $logsController->logAction('created holiday: '.$holiday->id);
+        $logsController->logAction('created holiday: '.$r->date. ' description:'. $r->description.' created at:'.Carbon::now());
     }
 
     /**
@@ -43,7 +43,7 @@ class HolidayController extends Controller
         ]);
 
         $logsController = new LogsController();
-        $logsController->logAction('updated holiday: '.$r->id);
+        $logsController->logAction('updated holiday: '.$r->date. ' description:'. $r->description.' created at:'.Carbon::now());
     }
 
     /**
