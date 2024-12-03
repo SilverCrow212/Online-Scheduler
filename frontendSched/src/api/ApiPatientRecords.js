@@ -15,7 +15,7 @@ export async function fetchAllPatient() {
 };
 
 
-export async function fetchPatientRecord(patientId) {
+export async function fetchPatientRecord(patientId,toast) {
   try {
     const token = localStorage.getItem('token');
     const response = await axios.post('/patientrecord',{id:patientId},  {
@@ -23,9 +23,16 @@ export async function fetchPatientRecord(patientId) {
         Authorization: `Bearer ${token}`,
       },
     });
+    toast.add({ 
+      severity: 'success', 
+      summary: 'Account Created Successfully', 
+      detail: 'You have created an account successfully.', 
+      life: 3000 
+  });
     return response.data;
   } catch (error) {
     console.error('Error fetching all patient data:', error);
+    toast.add({ severity: 'error', summary: error.response.data.message, detail: 'Message Detail', life: 3000 });
   }
 };
 
