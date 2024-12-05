@@ -1,12 +1,13 @@
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref,onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { createacc } from '@/store/createacc';
 import { departmentChoices, sexChoices, civilStatusChoices } from '@/store/choices';
+import {  savePendingRecord } from '@/api/ApiPatientRecords';
 import { CreateAcc, SecurityQuestions } from '@/api/ApiLogin';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
-
+import axios from 'axios';
 
 const toast = useToast();
 
@@ -45,7 +46,119 @@ if (localStorage.getItem('user_details')) {
     }
 }
 const confirmPassword = ref('');
-const validateForm = async () => {
+const validateForm = async (event) => {
+    visibleDataPrivacy.value=false
+    visible.value = false 
+    validationErrors.value = {};
+// Get the uploaded file from the event
+    const uploadedFile = event.files[0];
+
+    // Store the uploaded file in Pinia store
+    createaccount.file = uploadedFile;
+    console.log('uploaded file', createaccount.file)
+    // Required fields validation
+    if (!createaccount.school_id_number) {
+        validationErrors.value.school_id_number = 'ID number is required.';
+    }
+    if (!createaccount.firstname) {
+        validationErrors.value.firstname = 'First name is required.';
+    }
+    if (!createaccount.middlename || createaccount.middlename.length <= 1 || /^[A-Za-z]+(\s[A-Za-z]+)*$/.test(createaccount.middlename) === false) {
+        validationErrors.value.middlename = 'Middle name is required.';
+    }
+    if (!createaccount.lastname) {
+        validationErrors.value.lastname = 'Last name is required.';
+    }
+    if (!createaccount.email) {
+        validationErrors.value.email = 'Email is required.';
+    } else if (!/\S+@\S+\.\S+/.test(createaccount.email)) {
+        validationErrors.value.email = 'Email is not valid.';
+    }
+    if (!createaccount.password || createaccount.password.trim() === '') {
+        validationErrors.value.password = 'Password is required.';
+    } else if (createaccount.password.length < 8 || createaccount.password.length > 16) {
+        validationErrors.value.password = 'Password must be between 8 and 16 characters.';
+    }
+    if (!createaccount.age) {
+        validationErrors.value.age = 'Age is required.';
+    }
+    if (!createaccount.sex) {
+        validationErrors.value.sex = 'Sex is required.';
+    }
+    if (!createaccount.user_type) {
+        validationErrors.value.user_type = 'User type is required.';
+    }
+    if (!createaccount.type) {
+        validationErrors.value.type = 'Type is required.';
+    }
+    if (!createaccount.employee_student_type) {
+        validationErrors.value.employee_student_type = 'Employee/Student type is required.';
+    }
+    if (!createaccount.office_level) {
+        validationErrors.value.office_level = 'Required.';
+    }
+    if (!createaccount.department_program) {
+        validationErrors.value.department_program = 'Department/Program is required.';
+    }
+    if (!createaccount.contact_no) {
+        validationErrors.value.contact_no = 'Contact number is required.';
+    }
+    if (createaccount.contact_no==createaccount.guardian_no) {
+        validationErrors.value.same_no = 'Contact number should not be the same.';
+    }
+    if (!createaccount.civil_status) {
+        validationErrors.value.civil_status = 'Civil status is required.';
+    }
+    if (!createaccount.guardian_firstname) {
+        validationErrors.value.guardian_firstname = 'Parent/Guardian Firstname is required.';
+    }
+    if (!createaccount.guardian_middlename) {
+        validationErrors.value.guardian_middlename = 'Parent/Guardian Middlename is required.';
+    }
+    if (!createaccount.guardian_lastname) {
+        validationErrors.value.guardian_lastname = 'Parent/Guardian Lastname is required.';
+    }
+    if (!createaccount.guardian_no) {
+        validationErrors.value.guardian_no = 'Guardian contact number is required.';
+    }
+    if (createaccount.password !== confirmPassword.value) {
+        validationErrors.value.confirmPassword = 'Passwords do not match.';
+    }
+    if (!createaccount.security_question) {
+        validationErrors.value.question = 'Security Question is required.';
+    }
+    if (!createaccount.security_answer) {
+        validationErrors.value.answer = 'Security Question Answer is required.';
+    }
+    if(createaccount.type == 2 && !createaccount.employment_classification){
+        validationErrors.value.employment_classification = 'Classification is required.';
+    }
+    if(!createaccount.permanent_address){
+        validationErrors.value.permanent_address = 'Address is required.';
+    }
+    if(!createaccount.bsu_address){
+        validationErrors.value.bsu_address = 'Address is required.';
+    }
+    if(!createaccount.file){
+        validationErrors.value.file = 'File is required.';
+    }
+
+    // Check if there are any validation errors
+    if (Object.keys(validationErrors.value).length === 0) {
+        // Submit the form if there are no validation errors
+        const create = await savePendingRecord(createaccount, toast);
+        if(create==='received'){
+            createAccStore.resetAccDetails();
+            console.log('Form submitted:', createaccount);
+            const delay = 3000;
+
+            setTimeout(() => {
+            goBack();
+            }, delay);
+        }
+    }
+};
+const validateFormAdmin = async () => {
     visibleDataPrivacy.value=false
     visible.value = false 
     validationErrors.value = {};
@@ -150,7 +263,6 @@ const validateForm = async () => {
     }
 };
 
-
 const security = ref({
     question:null,
     answer:null,
@@ -160,6 +272,38 @@ const security_questions = ref([]);
 
 const visible = ref(null);
 const visibleDataPrivacy = ref(false)
+
+const handleFileChange = (e) => {
+  console.log('File changed:', e.files);
+  if (e.files && e.files.length > 0) {
+    createaccount.file = e.files[0]; // Manually update the store
+  }
+};
+
+watch(() => createaccount.file, (newFile) => {
+  if (newFile) {
+    console.log('File selected:', newFile);
+  }
+});
+
+const customUploader = async (event) => {
+  // Show success toast notification
+  toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
+  console.log('Upload success:', event);
+
+  // Get the uploaded file from the event
+  const uploadedFile = event.files[0];
+
+  // Store the uploaded file in Pinia store
+  createaccount.file = uploadedFile;  // This will store the file in Pinia state
+
+  // Log the uploaded file for debugging
+  console.log('File uploaded:', createaccount.file);
+
+  
+};
+
+const visibleDataPrivacyCreate = ref(false)
 </script>
 
 <template>
@@ -378,11 +522,25 @@ const visibleDataPrivacy = ref(false)
                             <InputText v-model="createaccount.security_answer" type="text" :class="{'p-invalid': validationErrors.answer}" />
                             <small v-if="validationErrors.answer" class="p-error">{{ validationErrors.answer }}</small>
                         </div>
+                        <!-- {{ createaccount.file }} -->
+                        <div class="field col-12 md:col-6" v-if="!user_details">
+                            <label>Upload Proof of School ID</label>
+                            <FileUpload name="demo[]" customUpload @uploader="validateForm" accept="image/*" :maxFileSize="1000000" uploadLabel="Submit Form">
+                                <template #empty>
+                                    <p>Drag and drop files to here to upload.</p>
+                                </template>
+                            </FileUpload>
+                        </div>
+                        <div class="field col-12 md:col-6" v-if="!user_details">
+                            <label>Data Privacy</label>
+                            <Button label="Read" @click="visibleDataPrivacyCreate=true" />
+                        </div>
                     </div>
+                    
                 </Fieldset>
-            <div class="field col-12 flex justify-content-end gap-2">
+            <div class="field col-12 flex justify-content-end gap-2" >
                 <Button label="Back" @click="goBack()" />
-                <Button label="Submit" @click="visibleDataPrivacy=true" />
+                <Button label="Submit" @click="visibleDataPrivacy=true" v-if="user_details"/>
             </div>
         </div>
     </div>
@@ -398,13 +556,24 @@ const visibleDataPrivacy = ref(false)
         </div>
     </Dialog>
 
+    <Dialog v-model:visible="visibleDataPrivacyCreate" modal header="Data Privacy" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-12">
+            <label>I acknowledge that I have read and fully understood the terms outlined in this Data Privacy Consent Form. I voluntarily grant my consent to the Benguet State University Dental Clinic, located at Km6, La Trinidad, Benguet, to collect, process, and store my personal data, including my full name, address, contact details, and other pertinent information, solely for the purpose of maintaining accurate and comprehensive dental health records. I understand that my personal information will only be used for legitimate purposes and will not be shared with third parties without my explicit consent, except as required by law. Furthermore, I am aware of my rights under the Data Privacy Act of 2012 (RA 10173), which include the right to access, update, or correct my personal data, withdraw my consent at any time, and file a complaint with the National Privacy Commission should there be any violations of my data privacy.</label>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="visibleDataPrivacyCreate = false"></Button>
+            <Button type="button" label="I agree" @click="visibleDataPrivacyCreate=false"></Button>
+        </div>
+    </Dialog>
+
     <Dialog v-model:visible="visible" modal header="Confirmation" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
         <div class="field col-12 md:col-12">
             <label>Are you sure you entered the correct Details?</label>
         </div>
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
-            <Button type="button" label="Confirm" @click="validateForm"></Button>
+            <!-- <Button type="button" label="Confirm" @click="validateForm"></Button> -->
+            <Button type="button" label="Confirm" @click="validateFormAdmin"></Button>
         </div>
     </Dialog>
 </template>

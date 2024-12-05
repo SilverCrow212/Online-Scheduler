@@ -28,7 +28,8 @@ export const createacc = defineStore('createacc', () => {
         created_at:null,
         age:null,
         security_answer:null,
-        security_question:null
+        security_question:null,
+        file:null
      },
     );
     const resetAccDetails = () => {
@@ -58,7 +59,8 @@ export const createacc = defineStore('createacc', () => {
             created_at: null,
             age: null,
             security_answer: null,
-            security_question: null
+            security_question: null,
+            file:null
         };
         console.log('After Reset:', accDetails.value);  // Log state after reset
     };

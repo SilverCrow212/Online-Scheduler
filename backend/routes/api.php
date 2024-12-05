@@ -8,6 +8,7 @@ use App\Http\Controllers\TeethController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\PrintablesController;
+use App\Http\Controllers\PendingAccountsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
@@ -187,7 +188,12 @@ Route::middleware('auth:sanctum')->group (function (){
     Route::get('database/backup', [BackupController::class, 'backup']);
     Route::post('database/restore', [BackupController::class, 'restore']);
 
+
+    Route::get('getpendingaccounts', [PendingAccountsController::class, 'get_list']);
+    Route::delete('/pendingaccounts/{id}', [PendingAccountsController::class, 'deletePendingAccount']);
+
 });
+Route::post('savependingaccounts', [PendingAccountsController::class, 'save']);
 
 
 // SECURITY QUESTIONS

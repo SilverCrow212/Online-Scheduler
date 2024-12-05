@@ -19,6 +19,7 @@ if (localStorage.getItem('user_details')) {
                 { label: 'Logs', icon: 'pi pi-align-justify', to: '/logs' },
                 { label: 'Backup and Restore', icon: 'pi pi-database', to: '/backuprestore' },
                 { label: 'Accounts Status', icon: 'pi pi-users', to: '/patientaccounts' },
+                { label: 'Pending Accounts', icon: 'pi pi-users', to: '/pendingaccounts' },
                 ],
                 
             },
