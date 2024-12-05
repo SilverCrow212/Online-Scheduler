@@ -20,7 +20,7 @@
             const a = document.createElement('a');
             a.href = downloadUrl;
             a.download = downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1); // Extract filename from URL
-            a.target = '_blank';  // Open the download in a new tab (optional)
+            // a.target = '_blank';  // Open the download in a new tab (optional)
             
             // Append anchor tag to body and trigger click
             document.body.appendChild(a);
