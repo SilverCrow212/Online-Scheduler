@@ -31,7 +31,7 @@ class BackupController extends Controller
             $command = "\"D:\\xampp\\mysql\\bin\\mysqldump.exe\" --user={$dbUser} --password={$dbPassword} --host={$dbHost} {$dbName} > \"{$backupPath}\"";
 
             // File URL (for public access)
-            $fileUrl = asset('storage/backups/' . $backupFile);
+            $fileUrl = asset('backups/' . $backupFile);
 
             // Execute the command
             exec($command);

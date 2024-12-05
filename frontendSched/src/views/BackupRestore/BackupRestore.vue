@@ -3,31 +3,40 @@
   import axios from 'axios';
 
   const token = localStorage.getItem('token')
-  const backupFile = ref(null) // Store the uploaded file
-  console.log(token);
   const backupDatabase = async () => {
-    console.log(token);
-    
     try {
-      // Send request to backend to backup the database
-      const response = await axios.get('/database/backup', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        // Send request to backend to backup the database
+        const response = await axios.get('/database/backup', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
-      // Check if response contains the URL
-      if (response.data.fileUrl) {
-        // Trigger the download by setting the URL as the location
-        alert('Databased backed up successfully');
-      } else {
-        console.error('Backup URL not found in the response.');
-      }
+        // Check if response contains the URL
+        if (response.data.fileUrl) {
+            const downloadUrl = response.data.fileUrl;
+
+            // Create an invisible anchor element to trigger the download
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = downloadUrl.substring(downloadUrl.lastIndexOf('/') + 1); // Extract filename from URL
+            a.target = '_blank';  // Open the download in a new tab (optional)
+            
+            // Append anchor tag to body and trigger click
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);  // Remove the element after the download has started
+
+            alert('Database backed up successfully');
+        } else {
+            console.error('Backup URL not found in the response.');
+        }
     } catch (error) {
-      console.error('Error during backup:', error);
-      alert('Failed to backup the database');
+        console.error('Error during backup:', error);
+        alert('Failed to backup the database');
     }
-  }
+};
+
 
 
   // const handleFileUpload = (event) => {
