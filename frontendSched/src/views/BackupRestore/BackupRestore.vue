@@ -2,7 +2,11 @@
   import { ref } from 'vue';
   import axios from 'axios';
 
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token');
+
+  // Define backupFile as a reactive reference
+  const backupFile = ref(null);
+
   const backupDatabase = async () => {
     try {
         // Send request to backend to backup the database
@@ -15,7 +19,7 @@
         // Check if response contains the URL
         if (response.data.fileUrl) {
             const downloadUrl = response.data.fileUrl;
-            console.log('this is backup link', response.data.fileUrl)
+            console.log('this is backup link', response.data.fileUrl);
             // Create an invisible anchor element to trigger the download
             const a = document.createElement('a');
             a.href = downloadUrl;
@@ -35,71 +39,43 @@
         console.error('Error during backup:', error);
         alert('Failed to backup the database');
     }
-};
+  };
 
+  // File upload handler
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    console.log(file); 
 
+    if (file && file.size > 0) {
+      backupFile.value = file;
+    } else {
+      alert('Invalid file selected. Please choose a valid SQL backup file.');
+    }
+  };
 
-  // const handleFileUpload = (event) => {
-  //   backupFile.value = event.target.files[0];
-  // }
+  // Restore database handler
+  const restoreDatabase = async () => {
+    if (!backupFile.value) {
+      alert('Please select a backup file.');
+      return;
+    }
 
-  // const restoreDatabase = async () => {
-  //   if (!backupFile.value) {
-  //     alert('Please select a backup file.');
-  //     return;
-  //   }
+    const formData = new FormData();
+    formData.append('backup_file', backupFile.value); 
 
-  //   const formData = new FormData();
-  //   formData.append('backup_file', backupFile.value);
-
-  //   try {
-  //     // Send the file to the backend to restore the database
-  //     const response = await axios.post('/database/restore', formData, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     alert('Database restored successfully');
-  //   } catch (error) {
-  //     console.error('Error during restore:', error);
-  //     alert('Failed to restore the database');
-  //   }
-  // }
-
-    const handleFileUpload = (event) => {
-      const file = event.target.files[0];
-      console.log(file); 
-
-      if (file && file.size > 0) {
-        backupFile.value = file;
-      } else {
-        alert('Invalid file selected. Please choose a valid SQL backup file.');
-      }
-    };
-
-    const restoreDatabase = async () => {
-      if (!backupFile.value) {
-        alert('Please select a backup file.');
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('backup_file', backupFile.value); 
-
-      try {
-       
-        const response = await axios.post('/database/restore', formData, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        alert('Database restored successfully');
-      } catch (error) {
-        console.error('Error during restore:', error);
-        alert('Failed to restore the database');
-      }
-    };
+    try {
+      const response = await axios.post('/database/restore', formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      alert('Database restored successfully');
+    } catch (error) {
+      console.error('Error during restore:', error);
+      alert('Failed to restore the database');
+    }
+  };
 </script>
 
 <template>
