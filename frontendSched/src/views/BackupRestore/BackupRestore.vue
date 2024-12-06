@@ -15,7 +15,7 @@
         // Check if response contains the URL
         if (response.data.fileUrl) {
             const downloadUrl = response.data.fileUrl;
-
+            console.log('this is backup link', response.data.fileUrl)
             // Create an invisible anchor element to trigger the download
             const a = document.createElement('a');
             a.href = downloadUrl;
