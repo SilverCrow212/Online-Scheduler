@@ -38,10 +38,14 @@ const formattedDate = computed(() => {
 const visibleSetAppointment = ref(false);
 
 async function clickSave(){
+    disabler.value = true;
     if(useAppoinment.user_details_id!== null&& useAppoinment.appointment_date!==null && useAppoinment.appointment_time!==null && useAppoinment.consent_form!== null){
         console.log('sent to backend', useAppoinment);
-        await storeAppointment(useAppoinment,toast);
+        const waiter = await storeAppointment(useAppoinment,toast);
         patients.value = await fetchAppointment(formattedDate.value);
+        if(waiter){
+            disabler.value = false;
+        }
         appointmentStore.resetAppointmentDetails();
         visibleSetAppointment.value = false
     }
@@ -78,7 +82,7 @@ watch(date, async (newValue, oldValue) => {
     console.log("FETCHED APPTS: ", patients.value);
     
 });
-
+const disabler = ref(false);
 const getStatusName = (statusId) => {
     console.log('Looking for status name for ID:', statusId);
     const status = useStatus.find(item => item.id == statusId);
@@ -189,7 +193,7 @@ function viewConsentForm(consentForm) {
         </div>
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Cancel" severity="secondary" @click="visibleSetAppointment = false"></Button>
-            <Button type="button" label="Save" @click="clickSave()"></Button>
+            <Button type="button" label="Save" @click="clickSave()" :disabled="disabler"></Button>
         </div>
     </Dialog>
 
