@@ -71,6 +71,7 @@ async function clickSave() {
     };
     if(patientData.appointment === 4){
       console.log('send email')
+      await sendEmail(userData.value);
     }
     const response = await storeClinicalDetails(appointmentId, patientData, toast);
     await fetchingDetails();
