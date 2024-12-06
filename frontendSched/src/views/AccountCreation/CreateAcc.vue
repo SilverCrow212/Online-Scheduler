@@ -145,8 +145,20 @@ const validateForm = async (event) => {
 
     // Check if there are any validation errors
     if (Object.keys(validationErrors.value).length === 0) {
-        // Submit the form if there are no validation errors
-        const create = await savePendingRecord(createaccount, toast);
+        visibleDataPrivacyCreate.value = true; // Show the dialog to continue
+        return;
+        
+    }
+};
+async function openDataPrivacy(){
+    dialogVisible.value = true;
+    return
+}
+const continueFormSubmission = async () => {
+  dialogVisible.value = false; // Close dialog
+  visibleDataPrivacyCreate.value = false;
+  // Submit the form if there are no validation errors
+  const create = await savePendingRecord(createaccount, toast);
         if(create==='received'){
             createAccStore.resetAccDetails();
             console.log('Form submitted:', createaccount);
@@ -156,7 +168,6 @@ const validateForm = async (event) => {
             goBack();
             }, delay);
         }
-    }
 };
 const validateFormAdmin = async () => {
     visibleDataPrivacy.value=false
@@ -263,22 +274,12 @@ const validateFormAdmin = async () => {
     }
 };
 
-const security = ref({
-    question:null,
-    answer:null,
-});
+
 const security_questions = ref([]);
 
 
 const visible = ref(null);
 const visibleDataPrivacy = ref(false)
-
-const handleFileChange = (e) => {
-  console.log('File changed:', e.files);
-  if (e.files && e.files.length > 0) {
-    createaccount.file = e.files[0]; // Manually update the store
-  }
-};
 
 watch(() => createaccount.file, (newFile) => {
   if (newFile) {
@@ -286,22 +287,7 @@ watch(() => createaccount.file, (newFile) => {
   }
 });
 
-const customUploader = async (event) => {
-  // Show success toast notification
-  toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
-  console.log('Upload success:', event);
-
-  // Get the uploaded file from the event
-  const uploadedFile = event.files[0];
-
-  // Store the uploaded file in Pinia store
-  createaccount.file = uploadedFile;  // This will store the file in Pinia state
-
-  // Log the uploaded file for debugging
-  console.log('File uploaded:', createaccount.file);
-
-  
-};
+const dialogVisible = ref(false);
 
 const visibleDataPrivacyCreate = ref(false)
 </script>
@@ -523,17 +509,13 @@ const visibleDataPrivacyCreate = ref(false)
                             <small v-if="validationErrors.answer" class="p-error">{{ validationErrors.answer }}</small>
                         </div>
                         <!-- {{ createaccount.file }} -->
-                        <div class="field col-12 md:col-6" v-if="!user_details">
+                        <div class="field col-12 md:col-12" v-if="!user_details">
                             <label>Upload Proof of School ID</label>
-                            <FileUpload name="demo[]" customUpload @uploader="validateForm" accept="image/*" :maxFileSize="1000000" uploadLabel="Submit Form">
+                            <FileUpload name="demo[]" customUpload @uploader="validateForm" accept="image/*" :maxFileSize="1000000" uploadLabel="Submit Form" :showCancelButton="false" >
                                 <template #empty>
                                     <p>Drag and drop files to here to upload.</p>
                                 </template>
                             </FileUpload>
-                        </div>
-                        <div class="field col-12 md:col-6" v-if="!user_details">
-                            <label>Data Privacy</label>
-                            <Button label="Read" @click="visibleDataPrivacyCreate=true" />
                         </div>
                     </div>
                     
@@ -545,7 +527,15 @@ const visibleDataPrivacyCreate = ref(false)
         </div>
     </div>
 
-
+    <Dialog  v-model:visible="dialogVisible" header="Validation Error" :modal="true" :closable="false">
+        <div class="field col-12 md:col-12">
+            <label>Are you sure you entered the correct Details?</label>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <Button type="button" label="Cancel" severity="secondary" @click="dialogVisible = false"></Button>
+            <Button type="button" label="Confirm" @click="continueFormSubmission"></Button>
+        </div>
+    </Dialog>
     <Dialog v-model:visible="visibleDataPrivacy" modal header="Data Privacy" :style="{ width: '35rem' }" :dismissableMask="false" class="p-fluid formgrid grid">
         <div class="field col-12 md:col-12">
             <label>I acknowledge that I have read and fully understood the terms outlined in this Data Privacy Consent Form. I voluntarily grant my consent to the Benguet State University Dental Clinic, located at Km6, La Trinidad, Benguet, to collect, process, and store my personal data, including my full name, address, contact details, and other pertinent information, solely for the purpose of maintaining accurate and comprehensive dental health records. I understand that my personal information will only be used for legitimate purposes and will not be shared with third parties without my explicit consent, except as required by law. Furthermore, I am aware of my rights under the Data Privacy Act of 2012 (RA 10173), which include the right to access, update, or correct my personal data, withdraw my consent at any time, and file a complaint with the National Privacy Commission should there be any violations of my data privacy.</label>
@@ -562,7 +552,7 @@ const visibleDataPrivacyCreate = ref(false)
         </div>
         <div class="flex justify-content-end gap-2">
             <Button type="button" label="Cancel" severity="secondary" @click="visibleDataPrivacyCreate = false"></Button>
-            <Button type="button" label="I agree" @click="visibleDataPrivacyCreate=false"></Button>
+            <Button type="button" label="I agree" @click="openDataPrivacy"></Button>
         </div>
     </Dialog>
 

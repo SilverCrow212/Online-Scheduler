@@ -52,7 +52,7 @@ export async function fetchPendingRecord() {
 };
 
 
-export async function savePendingRecord(patientDetails) {
+export async function savePendingRecord(patientDetails, toast) {
   try {
     const token = localStorage.getItem('token');
     const formData = new FormData();
@@ -79,11 +79,12 @@ export async function savePendingRecord(patientDetails) {
         'Content-Type': 'multipart/form-data',
       },
     });
-
+    toast.add({ severity: 'success', summary: 'Success', detail: 'Please wait for account activation', life: 3000 });
     console.log('Response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error uploading data:', error);
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete record', life: 3000 });
   }
 };
 

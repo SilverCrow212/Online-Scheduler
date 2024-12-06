@@ -160,7 +160,7 @@ function openAccept(data){
                     </Column>
                     <Column header="Image">
                         <template #body="slotProps">
-                            <!-- {{ slotProps.data.file_path}} -->
+                            <!-- {{ slotProps.data.file_url}} -->
                             <a :href="slotProps.data.file_url" target="_blank" rel="noopener noreferrer">
                                 <img :src="slotProps.data.file_url" alt="Uploaded Image" class="uploaded-image" />
                             </a>
