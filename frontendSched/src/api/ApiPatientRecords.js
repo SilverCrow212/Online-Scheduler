@@ -108,3 +108,22 @@ export async function deletePendingAccount(id, toast) {
       toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete record', life: 3000 });
   }
 }
+
+
+export async function fetchAllDependent(school_id_number) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get('user/get_dependents',  {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        school_id_number: school_id_number,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all patient data:', error);
+  }
+};
+

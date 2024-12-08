@@ -135,7 +135,7 @@ watch(selectedDate, () => {
 ////
 
 useAppoinment.user_details_id = user_details.user_details.user_id;
-
+useAppoinment.age = user_details.user_details.age;
 
 // useAppoinment.status = 2;
 ////

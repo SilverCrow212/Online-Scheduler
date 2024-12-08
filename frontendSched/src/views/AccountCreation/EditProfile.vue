@@ -101,7 +101,7 @@ const validateForm = async () => {
         validationErrors.value.lastname = 'Last name is required.';
     }
     if (!createaccount.age) {
-        validationErrors.value.age = 'Age is required.';
+        validationErrors.value.age = 'Birthday is required.';
     }
     if (!createaccount.sex) {
         validationErrors.value.sex = 'Sex is required.';
@@ -263,12 +263,13 @@ const validatePasswordForm = async () => {
                         <small v-if="validationErrors.lastname" class="p-error">{{ validationErrors.lastname }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
-                        <label>Age</label>
-                        <InputText v-model="createaccount.age" type="text" :class="{'p-invalid': validationErrors.age}" />
+                        <label>Birthday</label>
+                        <!-- <InputText v-model="createaccount.age" type="text" :class="{'p-invalid': validationErrors.age}" /> -->
+                        <Calendar  v-model="createaccount.age" dateFormat="dd/mm/yy" :class="{'p-invalid': validationErrors.age}" :manualInput="false"/>
                         <small v-if="validationErrors.age" class="p-error">{{ validationErrors.age }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
-                        <label>Sex</label>
+                        <label>Sex Assigned at Birth</label>
                         <!-- <InputText v-model="createaccount.sex" type="text" :class="{'p-invalid': validationErrors.sex}" /> -->
                         <Dropdown v-model="createaccount.sex" 
                                 :options="sexchoices" 

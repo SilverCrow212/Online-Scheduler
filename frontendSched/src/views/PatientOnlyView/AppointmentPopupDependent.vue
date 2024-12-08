@@ -1,30 +1,64 @@
 <script setup>
-import { ref,computed,watch,onMounted, defineProps } from 'vue';
-import axios from 'axios';
+import { ref,computed,watch,onMounted } from 'vue';
 import InformedConsent from '@/views/InformedConsent/InformedConsent.vue';
 import { appointment } from '@/store/appointmentenc';
 import { informedConsent } from '@/store/informedconsent';
+import {fetchAppointmentOngoing} from '@/api/ApiAppointment';
+import { fetchHoliday } from '@/api/ApiHolidays';
 /////////////////
 import { fetchAllPatient } from '@/api/ApiPatientRecords';
 const patients = ref(null);
-const selectedPatientId = ref(null);
 const filteredPatient = ref();
-// compute the school_id_number into the id number input below 
+const user_details = JSON.parse(localStorage.getItem('user_details'));
+const selectedPatientId = ref(user_details);
+const holiday = ref([]);
 const props = defineProps({
   patientDetails: {
     type: Object,
     required: true,
   },
 });
-
 selectedPatientId.value = props.patientDetails.school_id_number;
+onMounted(async () => {
+
+    // informedConsentStore.resetData();
+    // appointmentStore.resetAppointmentDetails();
+    const data = await fetchAllPatient(); // Fetch the patient records
+    const disabled = await fetchAppointmentOngoing(minDate.value);
+    const holidays = await fetchHoliday();
+    
+    sampleDates.value = disabled.map(dateObj => ({
+      ...dateObj,
+      date: formatDatefromApi(dateObj.date)  // Modify the date format directly here
+    }));
+    
+    holidays.forEach(holidayItem => {
+    const formattedDate = formatDatefromApi(holidayItem.date);  // Format the holiday date
+    sampleDates.value.push({
+      date: formattedDate,
+      available_time: [
+        '8:30 am - 9:30 am',
+        '9:30 am - 10:30 am', 
+        '10:30 am - 11:30 am',
+        // '11:30 am - 12:30 pm',
+        '1:30 pm - 2:30 pm', 
+        '2:30 pm - 3:30 pm', 
+        '3:30 pm - 4:30 pm',] 
+    });
+  });
+    console.log('Updated sampleDates:', sampleDates.value);
+    patients.value = data;
+    console.log('patients data', patients.value)
+});
+// compute the school_id_number into the id number input below 
+
 
 const search = (event) => {
-  setTimeout(() => {
+    setTimeout(() => {
         if (!event.query.trim().length) {
             filteredPatient.value = [...patients.value];
         } else {
-          filteredPatient.value = patients.value.filter(patient => {
+            filteredPatient.value = patients.value.filter(patient => {
                 // Check if user_details exists and filter based on school_id_number
                 return patient.user_details && 
                        patient.user_details.school_id_number &&
@@ -38,18 +72,11 @@ const informedConsentStore= informedConsent();
 const consentform= informedConsentStore.data;
 const appointmentStore = appointment();
 const useAppoinment =  appointmentStore.appointmentDetails;
+useAppoinment.age = props.patientDetails.user_details.age;
 const filledSlots = ref(['2024-05-28', '2024-05-30']);
 const minDate = new Date();
 const visibleInformedConsent = ref(false);
 const selectedDate = ref(null);
-
-
-  onMounted(async () => {
-      informedConsentStore.resetData();
-      const data = await fetchAllPatient(); // Fetch the patient records
-      patients.value = data;
-      console.log('patients data', patients.value)
-  });
 // console.log('testing',test)
 const checkboxOptions = ref([
   '8:30 am - 9:30 am',
@@ -61,6 +88,21 @@ const checkboxOptions = ref([
   '3:30 pm - 4:30 pm',
 ]);
 // { label: '4:00 pm - 5:00 pm', value: 8, checked: false },
+const formatDatefromApi = (dateString) => {
+  // Ensure the dateString is converted into a Date object, if it isn't already
+  const date = new Date(dateString);
+
+  // Check if the date is valid
+  if (isNaN(date)) {
+    console.error('Invalid date:', dateString);
+    return dateString;  // Return the original string if invalid
+  }
+
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}/${day}/${year}`;
+};
 const formatDate = (date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
   const day = String(date.getDate()).padStart(2, '0');
@@ -68,27 +110,10 @@ const formatDate = (date) => {
   // return `${month}/${day}/${year}`;
   return `${year}-${month}-${day}`;
 };
+// const sampleDates = ref([]);
 const sampleDates = ref(
   [
-    {date: '10/28/2024' , available_time: [
-      '8:00 am - 9:00 am',
-      '9:00 am - 10:00 am', 
-      '10:00 am - 11:00 am',
-      '11:00 am - 12:00 pm',
-      '1:00 pm - 2:00 pm', 
-      '2:00 pm - 3:00 pm', 
-      '3:00 pm - 4:00 pm',
-      ]
-    },
-    {date: '10/29/2024' , available_time: [
-      '9:00 am - 10:00 am', 
-      '10:00 am - 11:00 am',
-      '11:00 am - 12:00 pm',
-      '1:00 pm - 2:00 pm', 
-      '2:00 pm - 3:00 pm', 
-      '3:00 pm - 4:00 pm',
-      ]
-    },
+
   ]
 );
 const stringToDate = (dateString) => {
@@ -98,13 +123,13 @@ const stringToDate = (dateString) => {
 // Computed property to determine disabled dates
 const disabledDates = computed(() => {
   return sampleDates.value
-    .filter(dateObj => dateObj.available_time.length >= 7)
+    .filter(dateObj => dateObj.available_time.length >= 6)
     .map(dateObj => stringToDate(dateObj.date));
 });
 const isCategoryDisabled = (category) => {
   // Check if a date is selected
   if (!selectedDate.value) return false;
-  const formattedSelectedDate = formatDate(selectedDate.value);
+  const formattedSelectedDate = formatDatefromApi(selectedDate.value);
   // Find the selected date in sampleDates
   const dateInfo = sampleDates.value.find(dateObj => dateObj.date === formattedSelectedDate);
   
@@ -116,14 +141,8 @@ watch(selectedDate, () => {
   useAppoinment.appointment_date = formatDate(selectedDate.value);
 });
 ////
+
 useAppoinment.user_details_id = props.patientDetails.user_details.user_id
-useAppoinment.age = props.patientDetails.user_details.age;
-watch(selectedPatientId, () => {
-  useAppoinment.user_details_id = props.patientDetails.school_id_number; // Set the user ID in the appointment details
-});
-
-
-
 
 // useAppoinment.status = 2;
 ////
@@ -180,10 +199,12 @@ const validateForm = () => {
       <div class="grid p-fluid">
         <!-- {{test.data}} -->
         <div class="col-12 md:col-12">
+          <!-- {{ useAppoinment }} -->
           <!-- {{ formattedSelectedDate }} -->
           <!-- {{selectedPatientId}}
            asdasd<br/>
           {{ useAppoinment.user_details_id }} -->
+              <!-- {{ sampleDates }} -->
               <Button label="Informed Consent" @click="visibleInformedConsent=true"/>
               <div class="field col-12 md:col-12">
                   <label>ID number</label>
@@ -198,7 +219,7 @@ const validateForm = () => {
                     disabled
                     />
               </div>
-
+              <!-- {{ sampleDates }} -->
               <div class="field col-12 md:col-12">
                 <label>Choose Appointment Date</label>
                 <Calendar

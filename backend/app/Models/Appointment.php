@@ -14,6 +14,7 @@ class Appointment extends Model
     protected $fillable = [
         "user_details_id",
         "consent_form",
+        "appointment_age" ,
         "enccode" ,
         "appointment_date" ,
         "appointment_time" ,

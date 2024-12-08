@@ -249,4 +249,116 @@ class UserManagementController extends Controller
             ], 500);
         }
     }
+
+    //For dependents
+    public function get_dependents(Request $r) {
+       // Step 1: Retrieve the dependents for a given user from the user_details table
+    $getDependents = DB::table('user_details')
+    ->where('school_id_number', $r->school_id_number)
+    ->get(['dependents'])
+    ->first();
+
+    // Step 2: Decode the dependents array from JSON (if available)
+    if ($getDependents && isset($getDependents->dependents)) {
+    // Decode dependents JSON string to an array (e.g., ["1803214A", "1803214B"])
+    $dependentsArray = json_decode($getDependents->dependents, true);
+    } else {
+    $dependentsArray = []; // If no dependents found, return an empty array
+    }
+
+    // Step 3: Retrieve the actual details for each dependent using their school_id_number
+    // If there are dependents, query the User model to get the details of each dependent
+    if (!empty($dependentsArray)) {
+    $dependentsDetails = User::with('userDetails')  // Eager load userDetails
+                ->whereIn('school_id_number', $dependentsArray)  // Match dependents' school_id_numbers
+                ->get();
+    } else {
+    $dependentsDetails = [];  // Return empty if no dependents
+    }
+
+    // Step 4: Return the details of the dependents as a JSON response
+    return response()->json([
+    'dependents_details' => $dependentsDetails
+    ]);
+    }
+
+    public function save_dependents(Request $r){
+
+        try {
+
+                // THIS WILL CREATE A USER RECORD TO THE USER TABLE
+                $createUser = User::create([
+                    'school_id_number' => $r->school_id_number,
+                    'email' => null,
+                    'user_type' => $r->user_type,
+                    'password' => null,
+                    'security_question' => null,
+                    'security_answer' => null,
+                    'status' => 0,
+                ]);
+                // THIS WILL CREATE A USER DETAILS RELATED TO THE USER RECORD
+                UserDetails::create([
+                    'user_id' => $createUser->id,
+                    'school_id_number' =>  $r->school_id_number,
+                    'firstname' => $r->firstname,
+                    'lastname' => $r->lastname,
+                    'middlename' => $r->middlename,
+                    'type' => $r->type,
+                    'employee_student_type' => $r->employee_student_type,
+                    'employment_classification' => $r->employment_classification,
+                    'office_level' => $r->office_level,
+                    'department_program' => $r->department_program,
+                    'sex' => $r->sex,
+                    'email' => $r->email,
+                    'contact_no' => $r->contact_no,
+                    'civil_status' => $r->civil_status,
+                    'guardian_firstname' => $r->guardian_firstname,
+                    'guardian_middlename' => $r->guardian_middlename,
+                    'guardian_lastname' => $r->guardian_lastname,
+                    'guardian_no' => $r->guardian_no,
+                    'permanent_address' => $r->permanent_address,
+                    'bsu_address' => $r->bsu_address,
+                    'age' => $r->age,
+                ]);
+
+                $logsController = new LogsController();
+                $logsController->logAction('created user account: '.$r->school_id_number);
+
+                $updateDependents = DB::table('user_details')
+                    ->where('school_id_number', $r->school_id_number_original)
+                    ->first();
+
+                if ($updateDependents) {
+                    $dependents = json_decode($updateDependents->dependents, true); // Decode array
+                    $dependents[] = $r->school_id_number;
+                    $updatedDependents = json_encode($dependents);
+
+                    DB::table('user_details')
+                        ->where('school_id_number', $r->school_id_number_original)
+                        ->update(['dependents' => $updatedDependents]);
+                }
+            DB::commit(); // IF ABOVE QUERIES ARE EXECUTED SUCCESSFULLY, ALL QUERIES WILL BE COMITTED AND THE DATABASE WILL BE AFFECTED
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User created successfully',
+                'data' => $createUser,
+            ], 200);
+
+        } catch (\Throwable $th) {
+            if ($th instanceof \Illuminate\Database\QueryException && $th->getCode() === '23000') {
+                if (strpos($th->getMessage(), 'school_id_number_UNIQUE') !== false) {
+                    $errorMessage = 'School ID number is already taken.';
+                } elseif (strpos($th->getMessage(), 'users_email_unique') !== false) {
+                    $errorMessage = 'Email is already taken.';
+                } else {
+                    $errorMessage = $th;
+                }
+            } else {
+                $errorMessage = $th->getMessage();
+            }
+            // throw error message
+            throw new \Exception($errorMessage);
+        }
+    }
 }

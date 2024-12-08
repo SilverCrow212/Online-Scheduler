@@ -198,7 +198,7 @@ const validateFormAdmin = async () => {
         validationErrors.value.password = 'Password must be between 8 and 16 characters.';
     }
     if (!createaccount.age) {
-        validationErrors.value.age = 'Age is required.';
+        validationErrors.value.age = 'Birthday is required.';
     }
     if (!createaccount.sex) {
         validationErrors.value.sex = 'Sex is required.';
@@ -387,12 +387,13 @@ const visibleDataPrivacyCreate = ref(false)
                         <small v-if="validationErrors.lastname" class="p-error">{{ validationErrors.lastname }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
-                        <label>Age</label>
-                        <InputText v-model="createaccount.age" type="number" :class="{'p-invalid': validationErrors.age}" />
+                        <label>Birthday</label>
+                        <!-- <InputText v-model="createaccount.age" type="number" :class="{'p-invalid': validationErrors.age}" /> -->
+                        <Calendar  v-model="createaccount.age" dateFormat="dd/mm/yy" :class="{'p-invalid': validationErrors.age}" :manualInput="false"/>
                         <small v-if="validationErrors.age" class="p-error">{{ validationErrors.age }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
-                        <label>Sex</label>
+                        <label>Sex Assigned at Birth</label>
                         <!-- <InputText v-model="createaccount.sex" type="text" :class="{'p-invalid': validationErrors.sex}" /> -->
                         <Dropdown v-model="createaccount.sex" 
                                 :options="sexchoices" 
@@ -400,14 +401,14 @@ const visibleDataPrivacyCreate = ref(false)
                                 :class="{'p-invalid': validationErrors.user_type}" />
                         <small v-if="validationErrors.sex" class="p-error">{{ validationErrors.sex }}</small>
                     </div>
-                    <div v-if="user_details && user_details.user_type === 'admin'" class="field col-12 md:col-4">
+                    <!-- <div v-if="user_details && user_details.user_type === 'admin'" class="field col-12 md:col-4">
                         <label>User Type</label>
                         <Dropdown v-model="createaccount.user_type" 
                                 :options="userTypeChoice" 
                                 placeholder="Select One"
                                 :class="{'p-invalid': validationErrors.user_type}" />
                         <small v-if="validationErrors.user_type" class="p-error">{{ validationErrors.user_type }}</small>
-                    </div>
+                    </div> -->
                     
                     <div class="field col-12 md:col-4">
                         <label>Email</label>

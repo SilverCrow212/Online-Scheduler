@@ -1,9 +1,9 @@
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref,onMounted, defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 import { createacc } from '@/store/createacc';
 import { departmentChoices, sexChoices, civilStatusChoices } from '@/store/choices';
-import { CreateAcc, SecurityQuestions } from '@/api/ApiLogin';
+import { CreateAccDependent, SecurityQuestions } from '@/api/ApiLogin';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 
@@ -45,6 +45,42 @@ if (localStorage.getItem('user_details')) {
 }
 createaccount.type = 3;
 createaccount.school_id_number = user_details.school_id_number;
+createaccount.school_id_number_original = user_details.school_id_number;
+const props = defineProps({
+  patients: {
+    type: Array,
+    required: true
+  }
+});
+
+// Get the number of patients in the array
+const patientsCount = props.patients.length;
+
+// Get the last school_id_number (assuming it's the last patient ID in the array)
+const lastPatientId = props.patients[props.patients.length - 1]?.school_id_number || "";  // Fallback if array is empty
+
+// Extract the numeric part (first part) and the letter part (last character)
+const numericPart = lastPatientId.slice(0, -1); // Remove the last character (the letter part)
+const letterPart = lastPatientId.slice(-1); // Get the last character (the letter part)
+
+// Determine the next letter based on the last letter (increment it)
+let nextLetter = 'A'; // Default to 'A' if array is empty
+
+if (letterPart) {
+  const lastCharCode = letterPart.charCodeAt(0); // Get the char code of the last letter (e.g., 'A' -> 65)
+  nextLetter = String.fromCharCode(lastCharCode + 1); // Increment the letter by 1
+} else if (patientsCount > 0) {
+  // If the array is empty but we have patients, we start with 'A'
+  nextLetter = 'A';
+}
+
+// Update the school_id_number by appending the new letter
+createaccount.school_id_number = numericPart + nextLetter;
+
+
+
+
+
 const confirmPassword = ref('');
 const validateForm = async () => {
     visible.value = false 
@@ -52,9 +88,6 @@ const validateForm = async () => {
     validationErrors.value = {};
 
     // Required fields validation
-    if (!createaccount.school_id_number_dependent) {
-        validationErrors.value.school_id_number = 'Letter is required.';
-    }
     if (!createaccount.firstname) {
         validationErrors.value.firstname = 'First name is required.';
     }
@@ -64,18 +97,8 @@ const validateForm = async () => {
     if (!createaccount.lastname) {
         validationErrors.value.lastname = 'Last name is required.';
     }
-    if (!createaccount.email) {
-        validationErrors.value.email = 'Email is required.';
-    } else if (!/\S+@\S+\.\S+/.test(createaccount.email)) {
-        validationErrors.value.email = 'Email is not valid.';
-    }
-    if (!createaccount.password || createaccount.password.trim() === '') {
-        validationErrors.value.password = 'Password is required.';
-    } else if (createaccount.password.length < 8 || createaccount.password.length > 16) {
-        validationErrors.value.password = 'Password must be between 8 and 16 characters.';
-    }
     if (!createaccount.age) {
-        validationErrors.value.age = 'Age is required.';
+        validationErrors.value.age = 'Birthday is required.';
     }
     if (!createaccount.sex) {
         validationErrors.value.sex = 'Sex is required.';
@@ -86,44 +109,8 @@ const validateForm = async () => {
     if (!createaccount.type) {
         validationErrors.value.type = 'Type is required.';
     }
-    if (!createaccount.contact_no) {
-        validationErrors.value.contact_no = 'Contact number is required.';
-    }
-    if (createaccount.contact_no==createaccount.guardian_no) {
-        validationErrors.value.same_no = 'Contact number should not be the same.';
-    }
-    if (!createaccount.civil_status) {
-        validationErrors.value.civil_status = 'Civil status is required.';
-    }
-    if (!createaccount.guardian_firstname) {
-        validationErrors.value.guardian_firstname = 'Parent/Guardian Firstname is required.';
-    }
-    if (!createaccount.guardian_middlename) {
-        validationErrors.value.guardian_middlename = 'Parent/Guardian Middlename is required.';
-    }
-    if (!createaccount.guardian_lastname) {
-        validationErrors.value.guardian_lastname = 'Parent/Guardian Lastname is required.';
-    }
-    if (!createaccount.guardian_no) {
-        validationErrors.value.guardian_no = 'Guardian contact number is required.';
-    }
-    if (!createaccount.guardian_no) {
-        validationErrors.value.guardian_no = 'Guardian contact number is required.';
-    }
-    if (createaccount.password !== confirmPassword.value) {
-        validationErrors.value.confirmPassword = 'Passwords do not match.';
-    }
-    if (!createaccount.security_question) {
-        validationErrors.value.question = 'Security Question is required.';
-    }
-    if (!createaccount.security_answer) {
-        validationErrors.value.answer = 'Security Question Answer is required.';
-    }
     if(!createaccount.permanent_address){
         validationErrors.value.permanent_address = 'Address is required.';
-    }
-    if(!createaccount.bsu_address){
-        validationErrors.value.bsu_address = 'Address is required.';
     }
 
 
@@ -131,8 +118,8 @@ const validateForm = async () => {
     // Check if there are any validation errors
     if (Object.keys(validationErrors.value).length === 0) {
         // Submit the form if there are no validation errors
-        createaccount.school_id_number = createaccount.school_id_number + createaccount.school_id_number_dependent
-        const create = await CreateAcc(createaccount, toast);
+        createaccount.school_id_number = createaccount.school_id_number
+        const create = await CreateAccDependent(createaccount, toast);
         if(create==='received'){
             createAccStore.resetAccDetails();
             console.log('Form submitted:', createaccount);
@@ -160,10 +147,11 @@ const visibleDataPrivacy = ref(false)
 
 <template>
     <Toast />
+    <!-- {{ props.patients }} -->
     <div class="flex justify-content-center">
-        <div class="card" style="width: 100%; max-width: 800px;">
-            <h5 class="text-center">Patient Profile</h5>
-                
+        <div class="card" style="width: 100%; max-width: 100%;">
+            <!-- <h5 class="text-center">Patient Profile</h5> -->
+                <!-- {{ createaccount }} -->
             <Fieldset legend="Personal Profile" class="mb-4">
                 <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-4" hidden>
@@ -242,12 +230,13 @@ const visibleDataPrivacy = ref(false)
                         <small v-if="validationErrors.lastname" class="p-error">{{ validationErrors.lastname }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
-                        <label>Age</label>
-                        <InputText v-model="createaccount.age" type="number" :class="{'p-invalid': validationErrors.age}" />
+                        <label>Birthday</label>
+                        <!-- <InputText v-model="createaccount.age" type="number" :class="{'p-invalid': validationErrors.age}" /> -->
+                        <Calendar  v-model="createaccount.age" dateFormat="dd/mm/yy" :class="{'p-invalid': validationErrors.age}" :manualInput="false"/>
                         <small v-if="validationErrors.age" class="p-error">{{ validationErrors.age }}</small>
                     </div>
                     <div class="field col-12 md:col-4">
-                        <label>Sex</label>
+                        <label>Sex Assigned at Birth</label>
                         <!-- <InputText v-model="createaccount.sex" type="text" :class="{'p-invalid': validationErrors.sex}" /> -->
                         <Dropdown v-model="createaccount.sex" 
                                 :options="sexchoices" 
@@ -264,45 +253,16 @@ const visibleDataPrivacy = ref(false)
                         <small v-if="validationErrors.user_type" class="p-error">{{ validationErrors.user_type }}</small>
                     </div>
                     
-                    <div class="field col-12 md:col-4">
-                        <label>Email</label>
-                        <InputText v-model="createaccount.email" type="text" :class="{'p-invalid': validationErrors.email}" />
-                        <small v-if="validationErrors.email" class="p-error">{{ validationErrors.email }}</small>
-                    </div>
-                    <div class="field col-12 md:col-4">
-                        <label>Contact Number</label>
-                        <!-- <InputText v-model="createaccount.contact_no" type="text" :class="{'p-invalid': validationErrors.contact_no}" /> -->
-                        <InputMask  v-model="createaccount.contact_no" mask="09999999999" placeholder="09090909090" :class="{'p-invalid': validationErrors.contact_no,'p-invalid': validationErrors.same_no}"/>
-                        <small v-if="validationErrors.contact_no" class="p-error">{{ validationErrors.contact_no }}</small>
-                        <small v-if="validationErrors.same_no" class="p-error">{{ validationErrors.same_no }}</small>
-                    </div>
-                    <div class="field col-12 md:col-12">
-                        <label>Civil Status</label>
-                            <Dropdown v-model="createaccount.civil_status" 
-                                :options="civilStatusChoice"
-                                optionLabel="name"
-                                optionValue="id"
-                                placeholder="Select One"
-                                :class="{'p-invalid': validationErrors.civil_status}" />
-                        <!-- <InputText v-model="createaccount.civil_status" type="text" :class="{'p-invalid': validationErrors.civil_status}" /> -->
-                        <small v-if="validationErrors.civil_status" class="p-error">{{ validationErrors.civil_status }}</small>
-                    </div>
-                    
                     <div class="field col-12">
                         <label>Permanent Address</label>
                         <Textarea v-model="createaccount.permanent_address" rows="3":class="{'p-invalid': validationErrors.permanent_address}" />
                         <small v-if="validationErrors.permanent_address" class="p-error">{{ validationErrors.permanent_address }}</small>
                     </div>
-                    <div class="field col-12">
-                        <label>Address while at BSU</label>
-                        <Textarea v-model="createaccount.bsu_address" rows="3" :class="{'p-invalid': validationErrors.bsu_address}"/>
-                        <small v-if="validationErrors.bsu_address" class="p-error">{{ validationErrors.bsu_address }}</small>
-                    </div>
                     
                     
                 </div>
             </Fieldset>
-            <Fieldset legend="Emergency Contact Information" class="mb-4">
+            <!-- <Fieldset legend="Emergency Contact Information" class="mb-4">
                 <div class="p-fluid formgrid grid">
                     <div class="field col-6 md:col-6">
                         <label>Contact Person Firstname</label>
@@ -321,56 +281,14 @@ const visibleDataPrivacy = ref(false)
                     </div>
                     <div class="field col-6 md:col-6">
                         <label>Contact Number</label>
-                        <!-- <InputText v-model="createaccount.guardian_no" type="text" :class="{'p-invalid': validationErrors.guardian_no}" /> -->
                         <InputMask  v-model="createaccount.guardian_no" mask="09999999999" placeholder="09090909090" :class="{'p-invalid': validationErrors.guardian_no,'p-invalid': validationErrors.same_no}"/>
                         <small v-if="validationErrors.guardian_no" class="p-error">{{ validationErrors.guardian_no }}</small>
                         <small v-if="validationErrors.same_no" class="p-error">{{ validationErrors.same_no }}</small>
                     </div>
                 </div>
-            </Fieldset>
-            <Fieldset legend="Details" class="mb-4">
-                    <div class="p-fluid formgrid grid">
-                        <div class="field col-12 md:col-4 formgrid grid">
-                            <label class="col-12">ID number</label>
-                            <div class="col-8 md:col-7">
-                                <InputText v-model="createaccount.school_id_number" disabled/>
-                            </div>
-                            <div class="col-4 md:col-5">
-                                <InputMask v-model="createaccount.school_id_number_dependent" mask="*" placeholder="A-Z" :class="{'p-invalid': validationErrors.school_id_number}" />
-                                <small v-if="validationErrors.school_id_number" class="p-error">{{ validationErrors.school_id_number }}</small>
-                            </div>
-                        </div>
-                        <div class="field col-12 md:col-4">
-                            <label>Password</label>
-                            <Password v-model="createaccount.password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.password}" />
-                            <small v-if="validationErrors.password" class="p-error">{{ validationErrors.password }}</small>
-                        </div>
-                        <div class="field col-12 md:col-4">
-                            <label>Confirm Password</label>
-                            <Password v-model="confirmPassword" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :class="{'p-invalid': validationErrors.confirmPassword}" />
-                            <small v-if="validationErrors.confirmPassword" class="p-error">{{ validationErrors.confirmPassword }}</small>
-                        </div>
-                        <div class="field col-12 md:col-6">
-                            <label>Choose Security Question</label>
-                            <!-- {{security}} -->
-                            <!-- <InputText v-model="createaccount.sex" type="text" :class="{'p-invalid': validationErrors.sex}" /> -->
-                            <Dropdown v-model="createaccount.security_question" 
-                                    :options="security_questions"
-                                    optionLabel="item"
-                                    optionValue="id"
-                                    placeholder="Select One"
-                                    :class="{'p-invalid': validationErrors.question}" />
-                            <small v-if="validationErrors.question" class="p-error">{{ validationErrors.question }}</small>
-                        </div>
-                        <div class="field col-12 md:col-6">
-                            <label>Answer <span style="color:red;">(!Case Sensitive!)</span></label>
-                            <InputText v-model="createaccount.security_answer" type="text" :class="{'p-invalid': validationErrors.answer}" />
-                            <small v-if="validationErrors.answer" class="p-error">{{ validationErrors.answer }}</small>
-                        </div>
-                    </div>
-                </Fieldset>
+            </Fieldset> -->
             <div class="field col-12 flex justify-content-end gap-2">
-                <Button label="Back" @click="goBack()" />
+                <!-- <Button label="Back" @click="goBack()" /> -->
                 <Button label="Submit" @click="visibleDataPrivacy=true" />
             </div>
         </div>

@@ -118,6 +118,9 @@ Route::middleware('auth:sanctum')->group (function (){
         Route::post('activate_account', [UserManagementController::class,'activateAccount']);
         // REACTIVATE ACCOUNT
         Route::post('deactivate_account', [UserManagementController::class,'deactivateAccount']);
+        //FOR DEPENDENTS
+        Route::get('get_dependents', [UserManagementController::class,'get_dependents']);
+        Route::post('save_dependents', [UserManagementController::class,'save_dependents']);
     });
 
     // TEETH

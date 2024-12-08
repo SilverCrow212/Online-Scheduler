@@ -176,3 +176,26 @@ export async function ResetPassword(password,toast) {
         toast.add({ severity: 'error', summary: err, detail: 'Message Detail', life: 3000 });
     }
 }
+
+export async function CreateAccDependent(details, toast) {
+    const token = localStorage.getItem('token');
+    try {
+        const receive = await axios.post('user/save_dependents', details,{
+            headers: {
+                Authorization: `Bearer ${token}`,
+              },
+        }
+        );
+        toast.add({ 
+            severity: 'success', 
+            summary: 'Dependent Added Successfully', 
+            detail: 'You have added an dependent successfully.', 
+            life: 3000 
+        });
+        console.log('received');
+        return 'received';
+    } catch (err) {
+        console.error('error', err);
+        toast.add({ severity: 'error', summary: err.response.data.message, detail: 'Message Detail', life: 3000 });
+    }
+  }

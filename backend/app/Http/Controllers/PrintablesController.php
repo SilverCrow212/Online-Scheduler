@@ -43,6 +43,7 @@ class PrintablesController extends Controller
         ->whereMonth('appointment.appointment_date', '=', $carbonDate->month)
         ->whereYear('appointment.appointment_date', '=', $carbonDate->year)
         ->get();
+
         // return $results;
         // legends = {
         //     PE:patients_examined,
@@ -374,7 +375,7 @@ class PrintablesController extends Controller
         }
 
         foreach($results as $result){
-            $age = $result->age;
+            $age = $result->appointment_age;
             $sex = substr($result->sex, 0, 1);
             if($result->type==2 && $result->services_rendered){
                 $decodedData = json_decode($result->services_rendered);

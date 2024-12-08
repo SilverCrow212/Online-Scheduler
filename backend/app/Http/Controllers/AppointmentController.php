@@ -16,10 +16,17 @@ class AppointmentController extends Controller
      */
     public function store(Request $r)
     {
+
+        $birthDateString = $r->age;
+        $birthDate = Carbon::parse($birthDateString);
+        $currentDate = Carbon::now();
+        $age = $currentDate->diffInYears($birthDate);
+
         $consentform = json_encode($r->consent_form);
         $appointment = Appointment::create([
             'user_details_id' => $r->user_details_id,
             'consent_form' => $consentform,
+            'appointment_age' => $age,
             'enccode' => $r->enccode,
             'appointment_date' => $r->appointment_date,
             'appointment_time' => $r->appointment_time,

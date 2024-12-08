@@ -77,6 +77,11 @@ const routes = [
                 name: 'pendingaccounts',
                 component: () => import('@/views/AccountList/AccountListPending.vue')
             },
+            {
+                path: 'dependents',
+                name: 'dependents',
+                component: () => import('@/views/Dependent/Dependent.vue')
+            },
         ]
     },
     {

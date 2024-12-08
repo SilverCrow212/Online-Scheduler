@@ -31,7 +31,7 @@ if (localStorage.getItem('user_details')) {
                 label: 'Menu',
                 items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' },
                 // { label: 'Appointments/Records', icon: 'pi pi-calendar-plus', to: '/appointment' },
-                { label: 'Create Account For Dependent', icon: 'pi pi-user-plus', to: '/create-account-dependent' },
+                { label: 'Dependent', icon: 'pi pi-user-plus', to: '/dependents' },
                 ],  
             },
         ];
