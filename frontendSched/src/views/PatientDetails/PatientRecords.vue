@@ -16,7 +16,7 @@ const { type } = departmentChoices();  // Get the type options from the store
 // Function to get the corresponding type name based on type.id
 const getTypeName = (typeId) => {
   const typeItem = type.find(t => t.id == typeId);
-  return typeItem ? typeItem.name : 'Unknown';  // Return 'Unknown' if no match
+  return typeItem ? typeItem.name : 'Dependent';  // Return 'Unknown' if no match
 };
 
 
