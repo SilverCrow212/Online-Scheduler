@@ -148,11 +148,11 @@ const visibleDataPrivacy = ref(false)
 
 <template>
     <Toast />
-    {{ props.patients }}
+    <!-- {{ props.patients }} -->
     <div class="flex justify-content-center">
         <div class="card" style="width: 100%; max-width: 100%;">
             <!-- <h5 class="text-center">Patient Profile</h5> -->
-                {{ createaccount }}
+                <!-- {{ createaccount }} -->
             <Fieldset legend="Personal Profile" class="mb-4">
                 <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-4" hidden>
