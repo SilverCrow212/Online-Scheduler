@@ -97,3 +97,23 @@ export async function storeClinicalDetails(appointmentId,patientData,toast) {
       console.error('Error fetching all patient data:', error);
     }
   };
+
+
+  export async function fetchUserDependent(dependentData) {
+    try {
+      const token = localStorage.getItem('token');
+      
+      // Construct the URL using a template literal
+      const url = `/user/user_details_dependent/${dependentData}`;
+      
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      return response.data;
+    } catch (error) {
+      console.error('Error Occured:', error);
+    }
+  }

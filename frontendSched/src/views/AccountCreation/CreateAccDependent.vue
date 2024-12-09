@@ -56,26 +56,28 @@ const props = defineProps({
 // Get the number of patients in the array
 const patientsCount = props.patients.length;
 
-// Get the last school_id_number (assuming it's the last patient ID in the array)
-const lastPatientId = props.patients[props.patients.length - 1]?.school_id_number || "";  // Fallback if array is empty
+// Default values
+let nextLetter = 'A';
+let numericPart = user_details.school_id_number; // Initialize numericPart to an empty string by default
 
-// Extract the numeric part (first part) and the letter part (last character)
-const numericPart = lastPatientId.slice(0, -1); // Remove the last character (the letter part)
-const letterPart = lastPatientId.slice(-1); // Get the last character (the letter part)
+if (patientsCount > 0) {
+  // If there are patients, get the last school_id_number to find the next letter
+  const lastPatientId = props.patients[props.patients.length - 1]?.school_id_number || "";
 
-// Determine the next letter based on the last letter (increment it)
-let nextLetter = 'A'; // Default to 'A' if array is empty
+  // Extract the numeric part (first part) and the letter part (last character)
+  numericPart = lastPatientId.slice(0, -1); // Remove the last character (the letter part)
+  const letterPart = lastPatientId.slice(-1); // Get the last character (the letter part)
 
-if (letterPart) {
-  const lastCharCode = letterPart.charCodeAt(0); // Get the char code of the last letter (e.g., 'A' -> 65)
-  nextLetter = String.fromCharCode(lastCharCode + 1); // Increment the letter by 1
-} else if (patientsCount > 0) {
-  // If the array is empty but we have patients, we start with 'A'
-  nextLetter = 'A';
+  // Determine the next letter by incrementing the last letter
+  if (letterPart) {
+    const lastCharCode = letterPart.charCodeAt(0); // Get the char code of the last letter (e.g., 'A' -> 65)
+    nextLetter = String.fromCharCode(lastCharCode + 1); // Increment the letter by 1
+  }
 }
 
-// Update the school_id_number by appending the new letter
+// Create the new school_id_number by appending the next letter
 createaccount.school_id_number = numericPart + nextLetter;
+
 
 
 
@@ -112,6 +114,9 @@ const validateForm = async () => {
     if(!createaccount.permanent_address){
         validationErrors.value.permanent_address = 'Address is required.';
     }
+    if(!createaccount.relation){
+        validationErrors.value.relation = 'Relationship is required.';
+    }
 
 
 
@@ -120,15 +125,11 @@ const validateForm = async () => {
         // Submit the form if there are no validation errors
         createaccount.school_id_number = createaccount.school_id_number
         const create = await CreateAccDependent(createaccount, toast);
-        if(create==='received'){
-            createAccStore.resetAccDetails();
-            console.log('Form submitted:', createaccount);
-            const delay = 3000;
 
-            setTimeout(() => {
-            goBack();
-            }, delay);
-        }
+        setTimeout(() => {
+        goBack();
+        }, 2000);
+        
     }
 };
 
@@ -147,11 +148,11 @@ const visibleDataPrivacy = ref(false)
 
 <template>
     <Toast />
-    <!-- {{ props.patients }} -->
+    {{ props.patients }}
     <div class="flex justify-content-center">
         <div class="card" style="width: 100%; max-width: 100%;">
             <!-- <h5 class="text-center">Patient Profile</h5> -->
-                <!-- {{ createaccount }} -->
+                {{ createaccount }}
             <Fieldset legend="Personal Profile" class="mb-4">
                 <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-4" hidden>
@@ -257,6 +258,11 @@ const visibleDataPrivacy = ref(false)
                         <label>Permanent Address</label>
                         <Textarea v-model="createaccount.permanent_address" rows="3":class="{'p-invalid': validationErrors.permanent_address}" />
                         <small v-if="validationErrors.permanent_address" class="p-error">{{ validationErrors.permanent_address }}</small>
+                    </div>
+                    <div class="field col-12">
+                        <label>Relationship with dependent</label>
+                        <InputText v-model="createaccount.relation" rows="3":class="{'p-invalid': validationErrors.relation}" />
+                        <small v-if="validationErrors.relation" class="p-error">{{ validationErrors.relation }}</small>
                     </div>
                     
                     

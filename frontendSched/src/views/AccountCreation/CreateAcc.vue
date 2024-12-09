@@ -159,15 +159,10 @@ const continueFormSubmission = async () => {
   visibleDataPrivacyCreate.value = false;
   // Submit the form if there are no validation errors
   const create = await savePendingRecord(createaccount, toast);
-        if(create==='received'){
-            createAccStore.resetAccDetails();
-            console.log('Form submitted:', createaccount);
-            const delay = 3000;
-
-            setTimeout(() => {
-            goBack();
-            }, delay);
-        }
+    createAccStore.resetAccDetails();
+    setTimeout(() => {
+    goBack();
+    }, 2000);
 };
 const validateFormAdmin = async () => {
     visibleDataPrivacy.value=false
@@ -262,15 +257,13 @@ const validateFormAdmin = async () => {
     if (Object.keys(validationErrors.value).length === 0) {
         // Submit the form if there are no validation errors
         const create = await CreateAcc(createaccount, toast);
-        if(create==='received'){
             createAccStore.resetAccDetails();
             console.log('Form submitted:', createaccount);
-            const delay = 3000;
 
             setTimeout(() => {
             goBack();
-            }, delay);
-        }
+            }, 2000);
+
     }
 };
 

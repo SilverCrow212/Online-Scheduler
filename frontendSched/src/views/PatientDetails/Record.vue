@@ -7,7 +7,7 @@ import { statusChoices } from '@/store/choices';
 import { createacc } from '@/store/createacc';
 import { teeth } from '@/store/teeth';
 import { otherInputs } from '@/store/teethothers';
-import { storeClinicalDetails, updateClinicalDetails, fetchClinicalDetails, fetchClinicalDetailsUser, sendEmail } from '@/api/ApiStoreClinicalDetails';
+import { storeClinicalDetails, updateClinicalDetails, fetchClinicalDetails, fetchClinicalDetailsUser, sendEmail, fetchUserDependent } from '@/api/ApiStoreClinicalDetails';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import { appointment } from '@/store/appointmentenc'
@@ -28,10 +28,10 @@ const buttonSelecter = ref(false);
 // const statuschoices = statusStore.legend
 const loader = ref(false);
 onMounted(async () => {
-    
     await fetchingDetails();
 });
 const userData = ref();
+const dependentData = ref();
 async function fetchingDetails() {
     teethStore.resetTeethData(); 
     teethStore.resetFirstPage(); 
@@ -41,6 +41,9 @@ async function fetchingDetails() {
         const fetchData = await fetchClinicalDetails(appointmentId);
         const fetchUser = await fetchClinicalDetailsUser(appointmentId);
         userData.value = fetchUser[0];
+        console.log('keke',userData.value)
+        dependentData.value = await fetchUserDependent(userData.value.dependent_of);
+        
         // Check if fetchData is valid
         if (fetchData) {
             Object.assign(teethData, fetchData.teethData);
@@ -185,6 +188,14 @@ const isCancelButtonDisabled = computed(() => {
       <div>
         <span class="font-bold">Appointment Time:</span>
         {{ userData?.appointment_time}}
+      </div>
+      <div v-if="dependentData">
+        <span class="font-bold">Dependent of:</span>
+        {{ dependentData?.user_details?.lastname }}, {{ dependentData?.user_details?.firstname}} {{ dependentData?.user_details.middlename}}
+      </div>
+      <div v-if="dependentData">
+        <span class="font-bold">Relationship:</span>
+        {{ userData?.relation}}
       </div>
     </div>
 

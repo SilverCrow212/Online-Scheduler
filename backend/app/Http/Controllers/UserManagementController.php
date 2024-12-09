@@ -319,6 +319,8 @@ class UserManagementController extends Controller
                     'permanent_address' => $r->permanent_address,
                     'bsu_address' => $r->bsu_address,
                     'age' => $r->age,
+                    'dependent_of' => $r->school_id_number_original,
+                    'relation' => $r->relation
                 ]);
 
                 $logsController = new LogsController();
@@ -360,5 +362,11 @@ class UserManagementController extends Controller
             // throw error message
             throw new \Exception($errorMessage);
         }
+    }
+
+    public function user_details_dependent(Request $r){
+        // return $r->appointment_id;
+        $userDetails = User::with('userDetails')->where('school_id_number', $r->appointment_id)->get()->first();
+        return $userDetails;
     }
 }

@@ -121,6 +121,7 @@ Route::middleware('auth:sanctum')->group (function (){
         //FOR DEPENDENTS
         Route::get('get_dependents', [UserManagementController::class,'get_dependents']);
         Route::post('save_dependents', [UserManagementController::class,'save_dependents']);
+        Route::get('user_details_dependent/{appointment_id}', [UserManagementController::class,'user_details_dependent']);
     });
 
     // TEETH

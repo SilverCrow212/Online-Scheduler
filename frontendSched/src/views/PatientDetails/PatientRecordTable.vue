@@ -6,7 +6,7 @@ import { statusChoices } from '@/store/choices'
 import InformedConsentPopUp from '@/views/InformedConsent/InformedConsentPopUp.vue';
 const statusStore = statusChoices();
 const useStatus = statusStore.legend;
-
+const user_details = JSON.parse(localStorage.getItem('user_details'));
 const getStatusName = (statusId) => {
     console.log('Looking for status name for ID:', statusId);
     const status = useStatus.find(item => item.id == statusId);
@@ -34,7 +34,7 @@ const records = ref([]);
 
 function dialogOpen(event) {
     const selectedPatient = event.data;
-    if (selectedPatient) {
+    if (selectedPatient && user_details.user_type === 'admin') {
         router.push({ name: 'record', params: { id: selectedPatient.id } });
         console.log('patid', selectedPatient.id);
     } else {
